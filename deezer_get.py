@@ -48,7 +48,8 @@ def download_song(link, path, mail, password, quality="MP3_256"):
 
 def test_download_and_play(mail, password):
     """test if the download and the play function works"""
-    download_song('https://www.deezer.com/us/track/3135553', dir_path + os.sep + 'musics', mail, password, quality="FLAC")
+    download_song('https://www.deezer.com/us/track/3135553', dir_path + os.sep + 'musics', mail, password,
+                  quality="FLAC")
     play_song('musics' + os.sep + 'Daft Punk' + os.sep + 'Daft Punk One More Time.mp3')
     input("Press Enter to stop")
 
@@ -62,6 +63,19 @@ def read_id():
             return mail, password
     except:
         print("[error] missing the file identifier.txt or missing mail and password in this file")
+
+
+def record(new_data):
+    """record the data in a json file"""
+    with open('songDB.json', 'w') as outfile:
+        json.dump(new_data, outfile)
+
+
+def getSongDB():
+    """get the song data as a list of songs"""
+    with open('songDB.json') as json_file:
+        data = json.load(json_file)
+    return data
 
 
 mail, password = read_id()
