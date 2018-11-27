@@ -15,6 +15,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
 def request_example(address):
+    """return the content of a selected request in a json format"""
     request = requests.get(address)
     content = request.content.decode('utf-8')
     ordered_content = json.loads(content)
@@ -54,6 +55,10 @@ def test_download_and_play(mail, password):
 
 
 def read_id():
+    """read the id (mail and password) in the file identifiers.txt
+    the file must look like that :
+    YOUR_EMAIL
+    YOUR_PASSWORD"""
     try:
         with open("identifiers.txt", "r") as id_file:
             ids = id_file.readlines()
