@@ -1,6 +1,7 @@
 import utils
 import os
 import platform
+from time import sleep
 
 OS_RASPBERRY = 'raspberrypi'
 
@@ -43,6 +44,7 @@ class SongChooser:
         song_list = content["tracks"]["data"]
         for song in song_list:
             self.get_new_song(song)
+            sleep(5)
 
         paths = self.generate_path_list(song_list)
         return paths
