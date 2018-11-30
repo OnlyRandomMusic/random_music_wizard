@@ -9,7 +9,7 @@ if platform.uname()[1] == OS_RASPBERRY:
 
 
 class SongChooser:
-    def __init__(self, song_quality="MP3_256"):
+    def __init__(self, song_quality="MP3_128"):
         """music_quality can be FLAC, MP3_320, MP3_256 or MP3_128"""
         # name of the current directory in order to save musics in the right place
         self.dir_path = os.path.dirname(os.path.realpath(__file__))
