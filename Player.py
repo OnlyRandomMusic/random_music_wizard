@@ -13,6 +13,11 @@ class Player:
         """add a music at the end of the current Playlist"""
         self.media_list.add_media(path)
 
+    def add_musics(self, path_list):
+        """add a group of musics at the end of the current Playlist"""
+        for path in path_list:
+            self.media_list.add_media(path)
+
     def play(self):
         """launch te player"""
         self.music_player.play()
