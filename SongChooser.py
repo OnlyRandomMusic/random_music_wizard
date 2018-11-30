@@ -33,10 +33,12 @@ class SongChooser:
         """add a new song to the database and download it"""
         utils.record(song_data)
         link = song_data["link"]
+        print("[RASP] downloading song " + link)
         self.download_song(link)
 
     def get_new_playlist(self, link):
         """add each song of a playlist in the database and download them"""
+        print("[RASP] downloading playlist " + link)
         content = utils.get_request(link)
         song_list = content["tracks"]["data"]
         for song in song_list:
