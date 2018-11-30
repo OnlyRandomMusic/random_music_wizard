@@ -2,13 +2,19 @@ import Player
 import SongChooser
 import utils
 
+print("[RASP] starting")
 
 song_chooser = SongChooser.SongChooser()
 # feedback_receiver = FeedBackReceiver()
 player = Player.Player()
+
+print("[RASP] vlc player initialized")
+
 path_list = song_chooser.get_test_playlist()
 player.add_musics(path_list)
 player.play()
+
+print("[RASP] starting to play")
 
 while True:
 

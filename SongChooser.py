@@ -26,8 +26,8 @@ class SongChooser:
             # check=False for not check if song already exist
             # recursive=False for download the song if quality selected doesn't exist
             # quality can be FLAC, MP3_320, MP3_256 or MP3_128
-        else:
-            print("[RASP] download " + link)
+
+        print("[RASP] download " + link)
 
     def get_new_song(self, song_data):
         """add a new song to the database and download it"""
