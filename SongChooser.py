@@ -16,13 +16,13 @@ class SongChooser:
         self.dir_path = os.path.dirname(os.path.realpath(__file__))
         self.musics_path = self.dir_path + os.sep + "musics"
         self.music_quality = song_quality
-        self.mail, self.password = utils.read_id()
+        mail, password = utils.read_id()
+        self.downloader = deezloader.Login(mail, password)
 
     def download_song(self, link):
         """download a song from a Deezer link in the musics directory"""
         if platform.uname()[1] == OS_RASPBERRY:
-            downloader = deezloader.Login(self.mail, self.password)
-            downloader.download_trackdee(link, output=self.musics_path, check=False, quality=self.music_quality,
+            self.downloader.download_trackdee(link, output=self.musics_path, check=False, quality=self.music_quality,
                                          recursive=True)
             # check=False for not check if song already exist
             # recursive=False for download the song if quality selected doesn't exist
@@ -44,7 +44,6 @@ class SongChooser:
         song_list = content["tracks"]["data"]
         for song in song_list:
             self.get_new_song(song)
-            sleep(5)
 
         paths = self.generate_path_list(song_list)
         return paths
