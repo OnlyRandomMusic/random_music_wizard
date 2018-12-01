@@ -28,6 +28,8 @@ print("[RASP] starting to play")
 queue_manager.start()
 
 while True:
+    player.check_if_track_changed()
+
     if song_queue.qsize() > 1 and player.need_recharge():
         new_path = song_queue.get()
         player.add_music(new_path)
@@ -39,7 +41,7 @@ while True:
 
     # if feedback_receiver.feedback:
     #    agir en conséquence
-    sleep(3)
+    sleep(0.5)
     continue
 
 
