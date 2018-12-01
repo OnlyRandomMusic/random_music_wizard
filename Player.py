@@ -40,7 +40,7 @@ class Player:
 
     def check_if_track_changed(self):
         real_current_media = self.music_player.get_media()
-        print(self.current_media != real_current_media)
+        print(self.current_media)
         if self.current_media != real_current_media:
             self.nb_media_played += 1
             self.current_media = real_current_media
