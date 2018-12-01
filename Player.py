@@ -22,8 +22,14 @@ class Player:
         """launch te player"""
         self.music_player.play()
 
+    def next_music(self):
+        """pass to the next music (never tested)"""
+        print("[RASP] pass to the next music")
+        self.music_player.next()
+
     def set_volume(self, percentage):
         self.music_player.audio_set_volume(percentage)
 
     def need_recharge(self):
+        print(self.music_player.get_state())
         return self.media_list.count() < 10
