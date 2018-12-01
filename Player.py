@@ -33,7 +33,8 @@ class Player:
 
     def need_recharge(self):
         """doesn't work because media_list size isn't changed when a music is finished"""
+        print(self.music_player.is_playing())
         print(self.music_player.audio_get_track_count())
-        print(type(self.music_player.audio_get_track()))
-        print(self.music_player.audio_get_track())
+        print(type(self.music_player.get_media()))
+        print(self.music_player.get_media())
         return self.media_list.count() < 10

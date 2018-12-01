@@ -29,7 +29,6 @@ queue_manager.start()
 
 while True:
     if song_queue.qsize() > 1 and player.need_recharge():
-        player.need_recharge()
         new_path = song_queue.get()
         player.add_music(new_path)
 
