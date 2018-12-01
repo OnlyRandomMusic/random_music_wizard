@@ -40,22 +40,27 @@ class SongChooser:
         # print("[RASP] download " + link)
 
     def get_new_song(self, song_data):
-        """add a new song to the database and download it"""
+        """add a new song to the database and download it
+        return True if no error occurs"""
         link = song_data["link"]
         # print("[RASP] downloading song " + link)
         error = self.download_song(link)
         if not error:
             utils.record(song_data)
+            return True
 
     def get_new_playlist(self, link):
         """add each song of a playlist in the database and download them"""
         # print("[RASP] downloading playlist " + link)
         content = utils.get_request(link)
         song_list = content["tracks"]["data"]
+        downloaded_songs = []
         for song in song_list:
-            self.get_new_song(song)
+            success = self.get_new_song(song)
+            if success:
+                downloaded_songs.append(song)
 
-        queue_data_list = self.generate_queue_data_list(song_list)
+        queue_data_list = self.generate_queue_data_list(downloaded_songs)
         return queue_data_list
 
     def get_random_from_playlist(self, link):
