@@ -79,9 +79,10 @@ class SongChooser:
     def generate_path(self, song_data):
         title = song_data["title"]
         artist = song_data["artist"]["name"]
+        duration = song_data["duration"]
         path = "musics" + os.sep + artist + os.sep + artist + " " + title + ".mp3"
         print("[RASP] downloaded song " + title)
-        return path
+        return path, duration
 
     def generate_path_list(self, songs_data):
         paths = []

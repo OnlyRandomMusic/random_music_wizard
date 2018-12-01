@@ -11,16 +11,24 @@ instructions = queue.Queue()  # the the queue used for receiving information fro
 queue_manager = QueueManager.QueueManager(song_queue)  # creating a thread that will work in parallel
 queue_manager.daemon = True  # when the main is closed this thread will also close
 
-#feedback_receiver = (instructions)  # creating a thread that will work in parallel
-#feedback_receiver.daemon = True  # when the main is closed this thread will also close
+# feedback_receiver = (instructions)  # creating a thread that will work in parallel
+# feedback_receiver.daemon = True  # when the main is closed this thread will also close
 
 # feedback_receiver = FeedBackReceiver()
 player = Player.Player()
+sleep_time = 0.5
 
 print("[RASP] vlc player initialized")
 
-new_path = song_queue.get()
-player.add_musics([new_path])
+
+def load_music():
+    global iterations_left
+    new_path, duration = song_queue.get()
+    iterations_left = duration / sleep_time  # WARNING the 0.1 is only for testing
+    player.add_musics([new_path])
+
+
+load_music()
 player.play()
 
 print("[RASP] starting to play")
@@ -28,11 +36,12 @@ print("[RASP] starting to play")
 queue_manager.start()
 
 while True:
-    player.check_if_track_changed()
+    iterations_left -= 1
+    if iterations_left <= 0:
+        player.music_ended()
 
     if song_queue.qsize() > 1 and player.need_recharge():
-        new_path = song_queue.get()
-        player.add_music(new_path)
+        load_music()
 
     # path, id_music = song_chooser.get_new_music()
     # player.add_music(path)
@@ -41,8 +50,5 @@ while True:
 
     # if feedback_receiver.feedback:
     #    agir en conséquence
-    sleep(0.5)
+    sleep(sleep_time)
     continue
-
-
-
