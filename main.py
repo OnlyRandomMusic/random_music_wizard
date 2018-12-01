@@ -40,7 +40,7 @@ while True:
 
     # if feedback_receiver.feedback:
     #    agir en conséquence
-    sleep(0.5)
+    sleep(3)
     continue
 
 
