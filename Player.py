@@ -35,11 +35,11 @@ class Player:
 
     def need_recharge(self):
         """doesn't work because media_list size isn't changed when a music is finished"""
-        print(self.media_list.count() - self.nb_media_played)
         return self.media_list.count() - self.nb_media_played < 10
 
     def music_ended(self):
         self.nb_media_played += 1
+        print("[RASP] music ended")
 
     #def check_if_track_changed(self):
     #    real_current_media = self.music_player.get_media()
