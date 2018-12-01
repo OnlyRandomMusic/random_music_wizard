@@ -23,11 +23,14 @@ class SongChooser:
     def download_song(self, link):
         """download a song from a Deezer link in the musics directory"""
         if platform.uname()[1] == OS_RASPBERRY:
-            self.downloader.download_trackdee(link, output=self.musics_path, check=False, quality=self.music_quality,
-                                         recursive=True)
-            # check=False for not check if song already exist
-            # recursive=False for download the song if quality selected doesn't exist
-            # quality can be FLAC, MP3_320, MP3_256 or MP3_128
+            try:
+                self.downloader.download_trackdee(link, output=self.musics_path, check=False, quality=self.music_quality,
+                                             recursive=True)
+                # check=False for not check if song already exist
+                # recursive=False for download the song if quality selected doesn't exist
+                # quality can be FLAC, MP3_320, MP3_256 or MP3_128
+            except:
+                print("[RASP] error couldn't download " + link)
 
         # print("[RASP] download " + link)
 

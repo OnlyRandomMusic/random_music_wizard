@@ -31,5 +31,5 @@ class Player:
         self.music_player.audio_set_volume(percentage)
 
     def need_recharge(self):
-        print(self.music_player.get_state())
+        """doesn't work because media_list size isn't changed when a music is finished"""
         return self.media_list.count() < 10
