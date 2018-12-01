@@ -21,7 +21,8 @@ class SongChooser:
             self.downloader = deezloader.Login(mail, password)
 
     def download_song(self, link):
-        """download a song from a Deezer link in the musics directory"""
+        """download a song from a Deezer link in the musics directory
+        return True if an error occurred"""
         if platform.uname()[1] == OS_RASPBERRY:
             try:
                 self.downloader.download_trackdee(link, output=self.musics_path, check=False, quality=self.music_quality,
@@ -31,15 +32,17 @@ class SongChooser:
                 # quality can be FLAC, MP3_320, MP3_256 or MP3_128
             except:
                 print("[RASP] error couldn't download " + link)
+                return True
 
         # print("[RASP] download " + link)
 
     def get_new_song(self, song_data):
         """add a new song to the database and download it"""
-        utils.record(song_data)
         link = song_data["link"]
         # print("[RASP] downloading song " + link)
-        self.download_song(link)
+        error = self.download_song(link)
+        if not error:
+            utils.record(song_data)
 
     def get_new_playlist(self, link):
         """add each song of a playlist in the database and download them"""
