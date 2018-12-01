@@ -20,6 +20,9 @@ class SongChooser:
         if platform.uname()[1] == OS_RASPBERRY:
             self.downloader = deezloader.Login(mail, password)
 
+        self.starting_playlist = utils.get_request("https://api.deezer.com/playlist/5164440904")
+
+
     def download_song(self, link):
         """download a song from a Deezer link in the musics directory
         return True if an error occurred"""
@@ -52,29 +55,33 @@ class SongChooser:
         for song in song_list:
             self.get_new_song(song)
 
-        paths = self.generate_path_list(song_list)
-        return paths
+        queue_data_list = self.generate_queue_data_list(song_list)
+        return queue_data_list
 
     def get_random_from_playlist(self, link):
         """choose a random song in a playlist add it in the database and download it"""
-        content = utils.get_request(link)
+        if link == -1:
+            content = self.starting_playlist
+        else:
+            content = utils.get_request(link)
+
         song_list = content["tracks"]["data"]
         random_index = random.randint(0, len(song_list) - 1)
         random_song = song_list[random_index]
         self.get_new_song(random_song)
 
-        path = self.generate_queue_data(random_song)
-        return path
+        queue_data = self.generate_queue_data(random_song)
+        return queue_data
 
     def get_test_playlist(self):
         """get the testing playlist for the rasp"""
-        paths = self.get_new_playlist("https://api.deezer.com/playlist/5164440904")
-        return paths
+        queue_data_list = self.get_new_playlist("https://api.deezer.com/playlist/5164440904")
+        return queue_data_list
 
     def get_start_song(self):
         """get the starting song for the rasp"""
-        path = self.get_random_from_playlist("https://api.deezer.com/playlist/5164440904")
-        return path
+        queue_data = self.get_random_from_playlist(-1)
+        return queue_data
 
     def generate_queue_data(self, song_data):
         title = song_data["title"]
@@ -84,15 +91,15 @@ class SongChooser:
         print("[RASP] downloaded song " + title)
         return path, duration
 
-    def generate_path_list(self, songs_data):
-        paths = []
+    def generate_queue_data_list(self, songs_data):
+        queue_data_list = []
         for song_data in songs_data:
-            path = self.generate_queue_data(song_data)
-            paths.append(path)
+            queue_data = self.generate_queue_data(song_data)
+            queue_data_list.append(queue_data)
 
-        return paths
+        return queue_data_list
 
     def get_next_song(self):
         """return the next song to play must be completed"""
-        path = self.get_random_from_playlist("https://api.deezer.com/playlist/5164440904")
-        return path
+        queue_data = self.get_random_from_playlist(-1)
+        return queue_data

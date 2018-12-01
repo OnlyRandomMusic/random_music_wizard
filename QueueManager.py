@@ -4,7 +4,7 @@ import threading
 
 class QueueManager(threading.Thread):
     def __init__(self, queue):
-        """queue is a list of local path in order to communicate with the player"""
+        """queue is a list of local path and duration in order to communicate with the player"""
         threading.Thread.__init__(self)
         self.queue = queue
         self.song_chooser = SongChooser.SongChooser()
