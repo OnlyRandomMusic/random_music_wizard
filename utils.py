@@ -25,10 +25,6 @@ def get_request(address):
     return ordered_content
 
 
-def get_playlist_data(playlist_link):
-    """retrun the list of the data of every song in the playlist"""
-
-
 # random utils
 def read_id():
     """read the id (mail and password) in the file identifiers.txt
