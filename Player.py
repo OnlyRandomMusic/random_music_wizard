@@ -38,6 +38,7 @@ class Player:
         return self.media_list.count() - self.nb_media_played < 10
 
     def music_ended(self):
+        """called when the main detect that the song is finished"""
         self.nb_media_played += 1
         print("[RASP] music ended")
 

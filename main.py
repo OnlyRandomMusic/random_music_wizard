@@ -24,11 +24,13 @@ print("[RASP] vlc player initialized")
 def load_music():
     global iterations_left
     new_path, duration = song_queue.get()
-    iterations_left = duration / sleep_time  # WARNING the 0.1 is only for testing
+    durations.append(duration)
     player.add_musics([new_path])
 
 
+durations = []
 load_music()
+iterations_left = durations.pop(0) / sleep_time
 player.play()
 
 print("[RASP] starting to play")
@@ -39,6 +41,7 @@ while True:
     iterations_left -= 1
     if iterations_left <= 0:
         player.music_ended()
+        iterations_left = durations.pop(0) / sleep_time
 
     if song_queue.qsize() > 1 and player.need_recharge():
         load_music()

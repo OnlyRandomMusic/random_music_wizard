@@ -63,7 +63,7 @@ class SongChooser:
         random_song = song_list[random_index]
         self.get_new_song(random_song)
 
-        path = self.generate_path(random_song)
+        path = self.generate_queue_data(random_song)
         return path
 
     def get_test_playlist(self):
@@ -76,7 +76,7 @@ class SongChooser:
         path = self.get_random_from_playlist("https://api.deezer.com/playlist/5164440904")
         return path
 
-    def generate_path(self, song_data):
+    def generate_queue_data(self, song_data):
         title = song_data["title"]
         artist = song_data["artist"]["name"]
         duration = song_data["duration"]
@@ -87,7 +87,7 @@ class SongChooser:
     def generate_path_list(self, songs_data):
         paths = []
         for song_data in songs_data:
-            path = self.generate_path(song_data)
+            path = self.generate_queue_data(song_data)
             paths.append(path)
 
         return paths
