@@ -24,6 +24,7 @@ class Player:
     def play(self):
         """launch te player"""
         self.music_list_player.play()
+        self.current_media = self.music_player.get_media()
 
     def next_music(self):
         """pass to the next music (never tested)"""

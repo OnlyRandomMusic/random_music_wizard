@@ -24,7 +24,6 @@ player.add_musics([new_path])
 player.play()
 
 print("[RASP] starting to play")
-sleep(1)
 
 queue_manager.start()
 
