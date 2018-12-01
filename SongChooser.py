@@ -22,14 +22,14 @@ class SongChooser:
 
         self.starting_playlist = utils.get_request("https://api.deezer.com/playlist/5164440904")
 
-
     def download_song(self, link):
         """download a song from a Deezer link in the musics directory
         return True if an error occurred"""
         if platform.uname()[1] == OS_RASPBERRY:
             try:
-                self.downloader.download_trackdee(link, output=self.musics_path, check=False, quality=self.music_quality,
-                                             recursive=True)
+                self.downloader.download_trackdee(link, output=self.musics_path, check=False,
+                                                  quality=self.music_quality,
+                                                  recursive=True)
                 # check=False for not check if song already exist
                 # recursive=False for download the song if quality selected doesn't exist
                 # quality can be FLAC, MP3_320, MP3_256 or MP3_128
@@ -71,9 +71,11 @@ class SongChooser:
             content = utils.get_request(link)
 
         song_list = content["tracks"]["data"]
-        random_index = random.randint(0, len(song_list) - 1)
-        random_song = song_list[random_index]
-        self.get_new_song(random_song)
+        success = False
+        while not success:
+            random_index = random.randint(0, len(song_list) - 1)
+            random_song = song_list[random_index]
+            success = self.get_new_song(random_song)
 
         queue_data = self.generate_queue_data(random_song)
         return queue_data
