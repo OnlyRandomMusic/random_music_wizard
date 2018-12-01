@@ -11,3 +11,4 @@ Dans un premier temps l'API de Deezer sera utilisée pour accélérer le develop
 - deezloader
 - requests
 - simplejson
+- threading
