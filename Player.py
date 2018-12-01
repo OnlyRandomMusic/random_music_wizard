@@ -24,3 +24,6 @@ class Player:
 
     def set_volume(self, percentage):
         self.music_player.audio_set_volume(percentage)
+
+    def need_recharge(self):
+        return self.media_list.count() < 10
