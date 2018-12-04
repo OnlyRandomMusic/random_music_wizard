@@ -8,26 +8,36 @@ class FeedbackReceiver(threading.Thread):
         """instructions_queue is a list of instructions in order to communicate with the main"""
         threading.Thread.__init__(self)
         self.player = player
+        self.stop = False
 
     def run(self):
         print("[RASP] waiting for instructions")
         while True:
             instruction = input()
-            decode_instruction(instruction, self.player)
+            self.decode_instruction(instruction)
             # print("[RASP] received instruction " + instruction)
 
+    def decode_instruction(self, instruction):
+        if "help" in instruction:
+            print("""+  increase the volume
+-   decrease the volume
+next   go to the next music
+quit   exit the program""")
 
-def decode_instruction(instruction, player):
-    if "+" in instruction:
-        step_number = instruction.count("+")
-        volume = player.increase_volume(step_number * volume_step)
-        print("[RASP] volume is now {}%".format(volume))
+        if "+" in instruction:
+            step_number = instruction.count("+")
+            volume = self.player.increase_volume(step_number * volume_step)
+            print("[RASP] volume is now {}%".format(volume))
 
-    if "-" in instruction:
-        step_number = instruction.count("-")
-        volume = player.increase_volume(- step_number * volume_step)
-        print("[RASP] volume is now {}%".format(volume))
+        if "-" in instruction:
+            step_number = instruction.count("-")
+            volume = self.player.increase_volume(- step_number * volume_step)
+            print("[RASP] volume is now {}%".format(volume))
 
-    if "next" in instruction:
-        player.play_next_music()
-        print("[RASP] the music has been changed")
+        if "next" in instruction:
+            self.player.play_next_music()
+            print("[RASP] the music has been changed")
+
+        if "quit" in instruction:
+            self.stop = True
+            print("[RASP] program ended")

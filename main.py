@@ -31,6 +31,9 @@ while True:
     if player.music_ended():
         player.play_next_music()
 
+    if feedback_receiver.stop:
+        break
+
     # path, id_music = song_chooser.get_new_music()
     # player.add_music(path)
     # while len(queue>10):
