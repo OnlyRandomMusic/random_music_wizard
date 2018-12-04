@@ -6,7 +6,7 @@ import random
 OS_RASPBERRY = 'raspberrypi'
 
 if platform.uname()[1] == OS_RASPBERRY:
-    import deezloader
+    import deezer_load
 
 
 class SongChooser:
@@ -18,7 +18,7 @@ class SongChooser:
         self.music_quality = song_quality
         mail, password = utils.read_id()
         if platform.uname()[1] == OS_RASPBERRY:
-            self.downloader = deezloader.Login(mail, password)
+            self.downloader = deezer_load.Login(mail, password)
 
         # to avoid making a lot of requests during the tests
         self.starting_playlist = utils.get_request("https://api.deezer.com/playlist/5164440904")

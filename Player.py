@@ -12,7 +12,7 @@ class Player:
 
     def play_next_music(self):
         """play the selected music"""
-        if self.music_queue.qsize() > 1:
+        if self.music_queue.qsize() > 0:
             self.current_music = self.music_queue.get()
             song = self.instance.media_new(self.current_music)
             self.music_player.set_media(song)
