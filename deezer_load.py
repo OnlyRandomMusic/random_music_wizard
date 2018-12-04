@@ -228,11 +228,11 @@ class Login:
             image = BeautifulSoup(image, "html.parser").find("img", class_="img_main").get("src").replace("120", "1200")
         music.append(url['title'])
 
-        array.append(url['artist'])
+        array.append(url['artist']['name'])
 
-        #for a in url['contributors']:
+        # for a in url['contributors']:
         #    array.append(a['name'])
-        #if len(array) > 1:
+        # if len(array) > 1:
         #    for a in array:
         #        for b in range(len(array)):
         #            try:
