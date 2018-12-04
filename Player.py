@@ -20,6 +20,16 @@ class Player:
         """set the player volume between 0 and 100"""
         self.music_player.audio_set_volume(percentage)
 
+    def increase_volume(self, percentage):
+        """increase the player volume (which is between 0 and 100), percentage can be negative"""
+        current_vol = self.music_player.audio_get_volume()
+        new_vol = current_vol + percentage
+        if new_vol > 100:
+            new_vol = 100
+        elif new_vol < 0:
+            new_vol = 0
+        self.music_player.audio_set_volume(new_vol)
+
     def music_ended(self):
         """called when the main detect that the song is finished"""
         return self.music_player.get_position() == 1.
