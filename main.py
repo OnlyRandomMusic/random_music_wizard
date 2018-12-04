@@ -16,35 +16,21 @@ queue_manager.daemon = True  # when the main is closed this thread will also clo
 
 # feedback_receiver = FeedBackReceiver()
 player = Player.Player()
-sleep_time = 0.5
+sleep_time = 0.2
 
 print("[RASP] vlc player initialized")
 
-
-def load_music():
-    global iterations_left
-    new_path, duration = song_queue.get()
-    durations.append(duration)
-    player.add_musics([new_path])
-
-
-durations = []
-load_music()
-iterations_left = durations.pop(0) / sleep_time
-player.play()
+new_path, duration = song_queue.get()
+player.play_music(new_path)
 
 print("[RASP] starting to play")
 
 queue_manager.start()
 
 while True:
-    iterations_left -= 1
-    if iterations_left <= 0:
-        player.music_ended()
-        iterations_left = durations.pop(0) / sleep_time
-
-    if song_queue.qsize() > 1 and player.need_recharge():
-        load_music()
+    if song_queue.qsize() > 1 and player.music_ended():
+        new_path, duration = song_queue.get()
+        player.play_music(new_path)
 
     # path, id_music = song_chooser.get_new_music()
     # player.add_music(path)
