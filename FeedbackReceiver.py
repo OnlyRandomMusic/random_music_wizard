@@ -20,9 +20,9 @@ class FeedbackReceiver(threading.Thread):
 def decode_instruction(instruction, player):
     if "+" in instruction:
         step_number = instruction.count("+")
-        player.increase_volume(step_number * volume_step)
-        print("[RASP] volume increased by {}%".format(step_number * volume_step))
+        volume = player.increase_volume(step_number * volume_step)
+        print("[RASP] volume is now {}%".format(volume))
     if "-" in instruction:
         step_number = instruction.count("-")
-        player.increase_volume(- step_number * volume_step)
-        print("[RASP] volume decreased by {}%".format(step_number * volume_step))
+        volume = player.increase_volume(- step_number * volume_step)
+        print("[RASP] volume is now {}%".format(volume))

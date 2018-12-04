@@ -29,6 +29,7 @@ class Player:
         elif new_vol < 0:
             new_vol = 0
         self.music_player.audio_set_volume(new_vol)
+        return new_vol
 
     def music_ended(self):
         """called when the main detect that the song is finished"""
