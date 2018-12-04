@@ -227,16 +227,19 @@ class Login:
                 image = requests.get(URL).text
             image = BeautifulSoup(image, "html.parser").find("img", class_="img_main").get("src").replace("120", "1200")
         music.append(url['title'])
-        for a in url['contributors']:
-            array.append(a['name'])
-        if len(array) > 1:
-            for a in array:
-                for b in range(len(array)):
-                    try:
-                        if a in array[b] and a != array[b]:
-                            del array[b]
-                    except IndexError:
-                        break
+
+        array.append(url['artist'])
+
+        #for a in url['contributors']:
+        #    array.append(a['name'])
+        #if len(array) > 1:
+        #    for a in array:
+        #        for b in range(len(array)):
+        #            try:
+        #                if a in array[b] and a != array[b]:
+        #                    del array[b]
+        #            except IndexError:
+        #                break
         artist.append(", ".join(OrderedDict.fromkeys(array)))
         album.append(url['album']['title'])
         tracknum.append(url['track_position'])
