@@ -6,7 +6,7 @@ class Player:
         """initialize a player and set a path for the file it will read"""
         self.instance = vlc.Instance()
         self.music_player = self.instance.media_player_new()  # the class used to play the tracks
-        self.set_volume(0.6)
+        self.set_volume(60)
         self.current_music = 0  # the id of the music played
 
     def play_music(self, path):
@@ -17,6 +17,7 @@ class Player:
         self.music_player.play()
 
     def set_volume(self, percentage):
+        """set the player volume between 0 and 100"""
         self.music_player.audio_set_volume(percentage)
 
     def music_ended(self):
