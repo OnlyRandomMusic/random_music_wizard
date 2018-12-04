@@ -20,8 +20,7 @@ feedback_receiver.daemon = True  # when the main is closed this thread will also
 
 print("[RASP] vlc player initialized")
 
-new_path = song_queue.get()
-player.play_music(new_path)
+player.play_next_music()
 
 print("[RASP] starting to play")
 
@@ -29,9 +28,8 @@ queue_manager.start()
 feedback_receiver.start()
 
 while True:
-    if song_queue.qsize() > 1 and player.music_ended():
-        new_path = song_queue.get()
-        player.play_music(new_path)
+    if player.music_ended():
+        player.play_next_music()
 
     # path, id_music = song_chooser.get_new_music()
     # player.add_music(path)
