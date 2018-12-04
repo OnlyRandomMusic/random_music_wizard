@@ -20,6 +20,7 @@ feedback_receiver.daemon = True  # when the main is closed this thread will also
 
 print("[RASP] vlc player initialized")
 
+sleep(2)
 player.play_next_music()
 
 print("[RASP] starting to play")
