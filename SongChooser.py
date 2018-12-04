@@ -20,6 +20,7 @@ class SongChooser:
         if platform.uname()[1] == OS_RASPBERRY:
             self.downloader = deezloader.Login(mail, password)
 
+        # to avoid making a lot of requests during the tests
         self.starting_playlist = utils.get_request("https://api.deezer.com/playlist/5164440904")
 
     def download_song(self, link):
@@ -93,10 +94,9 @@ class SongChooser:
     def generate_queue_data(self, song_data):
         title = song_data["title"]
         artist = song_data["artist"]["name"]
-        duration = song_data["duration"]
         path = "musics" + os.sep + artist + os.sep + artist + " " + title + ".mp3"
         print("[RASP] downloaded song " + title)
-        return path, duration
+        return path
 
     def generate_queue_data_list(self, songs_data):
         queue_data_list = []

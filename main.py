@@ -20,7 +20,7 @@ sleep_time = 0.2
 
 print("[RASP] vlc player initialized")
 
-new_path, duration = song_queue.get()
+new_path = song_queue.get()
 player.play_music(new_path)
 
 print("[RASP] starting to play")
@@ -29,7 +29,7 @@ queue_manager.start()
 
 while True:
     if song_queue.qsize() > 1 and player.music_ended():
-        new_path, duration = song_queue.get()
+        new_path = song_queue.get()
         player.play_music(new_path)
 
     # path, id_music = song_chooser.get_new_music()
