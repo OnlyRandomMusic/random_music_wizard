@@ -79,9 +79,9 @@ class Login:
             "checkFormLogin": check
         }
         if "success" == req.post("https://www.deezer.com/ajax/action.php", post_data).text:
-            print("Success, you are in")
+            print("[RASP] Success, you are logged in")
         else:
-            raise BadCredentials("Invalid password or username")
+            raise BadCredentials("[RASP] Invalid password or username")
 
     def download(self, track, location, quality, check):
         song = {}
@@ -169,6 +169,13 @@ class Login:
         open(location + name, "wb").write(fh.content)
         fo = open(location + name, "wb")
         decryptfile(fh.iter_content(2048), calcbfkey(ids), fo)
+
+
+
+
+
+
+
 
     def download_trackdee(self, URL, output=localdir + "/Songs/", check=True, quality="MP3_128", recursive=True):
         if output == localdir + "/Songs":
