@@ -12,7 +12,7 @@ song_queue = queue.Queue()  # the queue used for receiving information from the 
 queue_manager = QueueManager.QueueManager(song_queue)  # creating a thread that will work in parallel
 queue_manager.daemon = True  # when the main is closed this thread will also close
 
-player = Player.Player()  # initialize the music player
+player = Player.Player(song_queue)  # initialize the music player
 sleep_time = 0.2
 
 feedback_receiver = FeedbackReceiver.FeedbackReceiver(player)  # creating a thread that will work in parallel

@@ -22,7 +22,12 @@ def decode_instruction(instruction, player):
         step_number = instruction.count("+")
         volume = player.increase_volume(step_number * volume_step)
         print("[RASP] volume is now {}%".format(volume))
+
     if "-" in instruction:
         step_number = instruction.count("-")
         volume = player.increase_volume(- step_number * volume_step)
         print("[RASP] volume is now {}%".format(volume))
+
+    if "next" in instruction:
+        player.play_next_music()
+        print("[RASP] the music has been changed")

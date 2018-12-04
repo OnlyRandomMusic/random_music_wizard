@@ -2,12 +2,13 @@ import vlc
 
 
 class Player:
-    def __init__(self):
+    def __init__(self, queue):
         """initialize a player and set a path for the file it will read"""
         self.instance = vlc.Instance()
         self.music_player = self.instance.media_player_new()  # the class used to play the tracks
         self.set_volume(60)
         self.current_music = 0  # the id of the music played
+        self.music_queue = queue
 
     def play_music(self, path):
         """play the selected music"""
@@ -15,6 +16,14 @@ class Player:
         song = self.instance.media_new(path)
         self.music_player.set_media(song)
         self.music_player.play()
+
+    def play_next_music(self):
+        """play the selected music"""
+        if self.music_queue.qsize() > 2:
+            self.current_music = self.music_queue.get()
+            song = self.instance.media_new(self.current_music)
+            self.music_player.set_media(song)
+            self.music_player.play()
 
     def set_volume(self, percentage):
         """set the player volume between 0 and 100"""
