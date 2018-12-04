@@ -2,23 +2,36 @@ import vlc
 
 
 class Player:
-    def __init__(self):
+    def __init__(self, queue):
         """initialize a player and set a path for the file it will read"""
         self.instance = vlc.Instance()
         self.music_player = self.instance.media_player_new()  # the class used to play the tracks
         self.set_volume(60)
         self.current_music = 0  # the id of the music played
+        self.music_queue = queue
 
-    def play_music(self, path):
+    def play_next_music(self):
         """play the selected music"""
-        self.current_music = path
-        song = self.instance.media_new(path)
-        self.music_player.set_media(song)
-        self.music_player.play()
+        if self.music_queue.qsize() > 1:
+            self.current_music = self.music_queue.get()
+            song = self.instance.media_new(self.current_music)
+            self.music_player.set_media(song)
+            self.music_player.play()
 
     def set_volume(self, percentage):
         """set the player volume between 0 and 100"""
         self.music_player.audio_set_volume(percentage)
+
+    def increase_volume(self, percentage):
+        """increase the player volume (which is between 0 and 100), percentage can be negative"""
+        current_vol = self.music_player.audio_get_volume()
+        new_vol = current_vol + percentage
+        if new_vol > 100:
+            new_vol = 100
+        elif new_vol < 0:
+            new_vol = 0
+        self.music_player.audio_set_volume(new_vol)
+        return new_vol
 
     def music_ended(self):
         """called when the main detect that the song is finished"""
