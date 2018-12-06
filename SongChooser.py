@@ -92,7 +92,7 @@ class SongChooser:
         return queue_data
 
     def generate_queue_data(self, song_data):
-        title = song_data["title"]
+        title = song_data["title_short"]
         artist = song_data["artist"]["name"]
         path = "musics" + os.sep + artist + os.sep + artist + " " + title + ".mp3"
         print("[RASP] downloaded song " + title)
