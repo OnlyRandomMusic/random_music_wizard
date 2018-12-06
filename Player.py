@@ -35,8 +35,8 @@ class Player:
 
     def music_ended(self):
         """called when the main detect that the song is finished"""
-        print(self.music_player.get_position())
-        return self.music_player.get_position() == 1.
+        # print(self.music_player.get_position())
+        return self.music_player.get_position() > 0.995
 
     #def check_if_track_changed(self):
     #    real_current_media = self.music_player.get_media()
