@@ -170,6 +170,8 @@ class Login:
         fo = open(location + name, "wb")
         decryptfile(fh.iter_content(2048), calcbfkey(ids), fo)
 
+# the custom function to download a track
+
     def download_track_alternative(self, URL, output=localdir + "/Songs/", check=True, quality="MP3_128",
                                    recursive=True):
         if output == localdir + "/Songs":
@@ -207,7 +209,7 @@ class Login:
             image = BeautifulSoup(image, "html.parser").find("img", class_="img_main").get("src").replace("120", "1200")
         music.append(url['title_short'])
 
-        array.append(url['artist']['name'])  # modified
+        array.append(url['artist']['name'])
 
         artist.append(", ".join(OrderedDict.fromkeys(array)))
 
