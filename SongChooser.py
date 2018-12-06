@@ -28,7 +28,7 @@ class SongChooser:
         return True if an error occurred"""
         if platform.uname()[1] == OS_RASPBERRY:
             try:
-                self.downloader.download_trackdee(link, output=self.musics_path, check=False,
+                self.downloader.download_track_alternative(link, output=self.musics_path, check=False,
                                                   quality=self.music_quality,
                                                   recursive=True)
                 # check=False for not check if song already exist
@@ -92,7 +92,7 @@ class SongChooser:
         return queue_data
 
     def generate_queue_data(self, song_data):
-        title = song_data["title"]
+        title = song_data["title_short"]
         artist = song_data["artist"]["name"]
         path = "musics" + os.sep + artist + os.sep + artist + " " + title + ".mp3"
         print("[RASP] downloaded song " + title)
