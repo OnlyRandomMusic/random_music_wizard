@@ -178,10 +178,10 @@ class Login:
         array = []
         music = []
         artist = []
-        album = []
-        tracknum = []
-        discnum = []
-        year = []
+        # album = []
+        # tracknum = []
+        # discnum = []
+        # year = []
         # genre = []
         # ar_album = []
         if "?utm" in URL:
@@ -210,8 +210,8 @@ class Login:
         # try:
         #     if url1['error']['message'] == "Quota limit exceeded":
         #         raise QuotaExceeded("Too much requests limit yourself")
-        except KeyError:
-            None
+        # except KeyError:
+        #     None
         try:
             image = url['album']['cover_xl'].replace("1000", "1200")
         except:
@@ -225,10 +225,10 @@ class Login:
         array.append(url['artist']['name'])  # modified
 
         artist.append(", ".join(OrderedDict.fromkeys(array)))
-        album.append(url['album']['title'])
-        tracknum.append(url['track_position'])
-        discnum.append(url['disk_number'])
-        year.append(url['album']['release_date'])
+        # album.append(url['album']['title'])
+        # tracknum.append(url['track_position'])
+        # discnum.append(url['disk_number'])
+        # year.append(url['album']['release_date'])
         song = music[0] + " - " + artist[0]
         # try:
         #     if url1['error']['message'] == "no data":
@@ -250,12 +250,12 @@ class Login:
             None
         name = artist[0].replace("/", "").replace("$", "S") + " " + music[0].replace("/", "").replace("$", "S") + ".mp3"
         if os.path.isfile(dir + name):
-            if check == False:
+            if not check:
                 return dir + name
             ans = input("Song already exist do you want to redownload it?(y or n):")
             if not ans == "y":
                 return
-        print("\nDownloading:" + song)
+        print("[RASP] Downloading:" + song)
         try:
             self.download(URL, dir, quality, recursive)
         except TrackNotFound:
@@ -303,41 +303,41 @@ class Login:
             os.rename(dir + URL.split("/")[-1] + ".mp3", dir + name)
         except FileNotFoundError:
             None
-        try:
-            image = requests.get(image).content
-        except:
-            image = requests.get(image).content
-        try:
-            tag = EasyID3(dir + name)
-            tag.delete()
-        except mutagen.id3.ID3NoHeaderError:
-            try:
-                tag = mutagen.File(dir + name, easy=True)
-                tag.add_tags()
-            except mutagen.flac.FLACVorbisError:
-                tag = FLAC(dir + name)
-                tag.delete()
-                images = Picture()
-                images.type = 3
-                images.data = image
-                tag.add_picture(images)
-        except:
-            return dir + name
-        tag['artist'] = artist[0]
-        tag['title'] = music[0]
-        tag['date'] = year[0]
-        tag['album'] = album[0]
-        tag['tracknumber'] = str(tracknum[0])
-        tag['discnumber'] = str(discnum[0])
+        # try:
+        #     image = requests.get(image).content
+        # except:
+        #     image = requests.get(image).content
+        # try:
+        #     tag = EasyID3(dir + name)
+        #     tag.delete()
+        # except mutagen.id3.ID3NoHeaderError:
+        #     try:
+        #         tag = mutagen.File(dir + name, easy=True)
+        #         tag.add_tags()
+        #     except mutagen.flac.FLACVorbisError:
+        #         tag = FLAC(dir + name)
+        #         tag.delete()
+        #         images = Picture()
+        #         images.type = 3
+        #         images.data = image
+        #         tag.add_picture(images)
+        # except:
+        #     return dir + name
+        # tag['artist'] = artist[0]
+        # tag['title'] = music[0]
+        # tag['date'] = year[0]
+        # tag['album'] = album[0]
+        # tag['tracknumber'] = str(tracknum[0])
+        # tag['discnumber'] = str(discnum[0])
         # tag['genre'] = " & ".join(genre)
         # tag['albumartist'] = ", ".join(ar_album)
-        tag.save()
-        try:
-            audio = ID3(dir + name)
-            audio['APIC'] = APIC(encoding=3, mime='image/jpeg', type=3, desc=u'Cover', data=image)
-            audio.save()
-        except:
-            None
+        # tag.save()
+        # try:
+        #     audio = ID3(dir + name)
+        #     audio['APIC'] = APIC(encoding=3, mime='image/jpeg', type=3, desc=u'Cover', data=image)
+        #     audio.save()
+        # except:
+        #     None
         return dir + name
 
 ###############################
