@@ -178,12 +178,7 @@ class Login:
         array = []
         music = []
         artist = []
-        # album = []
-        # tracknum = []
-        # discnum = []
-        # year = []
-        # genre = []
-        # ar_album = []
+
         if "?utm" in URL:
             URL, a = URL.split("?utm")
         URL = "http://www.deezer.com/track/" + URL.split("/")[-1]
@@ -201,17 +196,7 @@ class Login:
                 raise InvalidLink("Invalid link ;)")
         except KeyError:
             None
-        # try:
-        #     url1 = json.loads(
-        #         requests.get("http://api.deezer.com/album/" + str(url['album']['id']), headers=header).text)
-        # except:
-        #     url1 = json.loads(
-        #         requests.get("http://api.deezer.com/album/" + str(url['album']['id']), headers=header).text)
-        # try:
-        #     if url1['error']['message'] == "Quota limit exceeded":
-        #         raise QuotaExceeded("Too much requests limit yourself")
-        # except KeyError:
-        #     None
+
         try:
             image = url['album']['cover_xl'].replace("1000", "1200")
         except:
@@ -225,24 +210,9 @@ class Login:
         array.append(url['artist']['name'])  # modified
 
         artist.append(", ".join(OrderedDict.fromkeys(array)))
-        # album.append(url['album']['title'])
-        # tracknum.append(url['track_position'])
-        # discnum.append(url['disk_number'])
-        # year.append(url['album']['release_date'])
+
         song = music[0] + " - " + artist[0]
-        # try:
-        #     if url1['error']['message'] == "no data":
-        #         raise TrackNotFound("Track not found: " + song)
-        # except KeyError:
-        #     None
-        # try:
-        #     for a in url1['genres']['data']:
-        #         genre.append(a['name'])
-        # except:
-        #     None
-        # for a in url1['contributors']:
-        #     if a['role'] == "Main":
-        #         ar_album.append(a['name'])
+
         dir = str(output) + "/" + artist[0].replace("/", "").replace("$", "S") + "/"
         try:
             os.makedirs(dir)
