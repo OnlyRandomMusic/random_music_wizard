@@ -303,41 +303,6 @@ class Login:
             os.rename(dir + URL.split("/")[-1] + ".mp3", dir + name)
         except FileNotFoundError:
             None
-        # try:
-        #     image = requests.get(image).content
-        # except:
-        #     image = requests.get(image).content
-        # try:
-        #     tag = EasyID3(dir + name)
-        #     tag.delete()
-        # except mutagen.id3.ID3NoHeaderError:
-        #     try:
-        #         tag = mutagen.File(dir + name, easy=True)
-        #         tag.add_tags()
-        #     except mutagen.flac.FLACVorbisError:
-        #         tag = FLAC(dir + name)
-        #         tag.delete()
-        #         images = Picture()
-        #         images.type = 3
-        #         images.data = image
-        #         tag.add_picture(images)
-        # except:
-        #     return dir + name
-        # tag['artist'] = artist[0]
-        # tag['title'] = music[0]
-        # tag['date'] = year[0]
-        # tag['album'] = album[0]
-        # tag['tracknumber'] = str(tracknum[0])
-        # tag['discnumber'] = str(discnum[0])
-        # tag['genre'] = " & ".join(genre)
-        # tag['albumartist'] = ", ".join(ar_album)
-        # tag.save()
-        # try:
-        #     audio = ID3(dir + name)
-        #     audio['APIC'] = APIC(encoding=3, mime='image/jpeg', type=3, desc=u'Cover', data=image)
-        #     audio.save()
-        # except:
-        #     None
         return dir + name
 
 ###############################
