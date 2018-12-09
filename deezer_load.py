@@ -172,14 +172,11 @@ class Login:
 
 # the custom function to download a track
 
-    def download_track_alternative(self, URL, output=localdir + "/Songs/", check=False, quality="MP3_128",
+    def download_track_alternative(self, URL, output=localdir + "/musics/", check=False, quality="MP3_128",
                                    recursive=True):
         if output == localdir + "/Songs":
             if not os.path.isdir("Songs"):
                 os.makedirs("Songs")
-        # array = []
-        # music = []
-        # artist = []
 
         if "?utm" in URL:
             URL, a = URL.split("?utm")
@@ -199,27 +196,13 @@ class Login:
         except KeyError:
             None
 
-        # try:
-        #     image = url['album']['cover_xl'].replace("1000", "1200")
-        # except:
-        #     try:
-        #         image = requests.get(URL).text
-        #     except:
-        #         image = requests.get(URL).text
-        #     image = BeautifulSoup(image, "html.parser").find("img", class_="img_main").get("src").replace("120", "1200")
-        # music.append(url['title_short'])
-        #
-        # array.append(url['artist']['name'])
-
-        # artist.append(", ".join(OrderedDict.fromkeys(array)))
-
         artist = url['artist']['name']
         title = url['title_short']
-        print(artist + ' ## ' + title)
 
         song = title + " - " + artist
 
         # attention à cette ligne, elle est utile mais ne doit pas être oubliée lors de la génération du path
+        # elle a pour but d'éviter les conflits si des caractères spéciaux sont présents dans les string
         dir = str(output) + "/" + artist.replace("/", "").replace("$", "S") + "/"
         try:
             os.makedirs(dir)
@@ -229,13 +212,12 @@ class Login:
         if os.path.isfile(dir + name):
             if not check:
                 return dir + name
-            # ans = input("Song already exist do you want to redownload it?(y or n):")
-            # if not ans == "y":
-            #     return
-        print("[RASP] Downloading:" + song)
+
+        print("[RASP] Downloading: " + song)
         try:
             self.download(URL, dir, quality, recursive)
         except TrackNotFound:
+            print("[RASP] " + song + " not found at the url given, trying to search it")
             try:
                 url = json.loads(requests.get(
                     "https://api.deezer.com/search/track/?q=" + title.replace("#", "") + " + " + artist.replace(
