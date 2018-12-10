@@ -10,7 +10,7 @@ class Database:
 
         try:
             cursor.execute('''CREATE TABLE music
-                           (id, title_short, link, duration, preview_link, bpm, gain, artist_id,
+                           (id, title_short, link, duration, preview_link, artist_id,
                             album_id, path, downloaded)''')
 
             # cursor.execute('''CREATE TABLE album
