@@ -44,6 +44,17 @@ class Database:
         self.connexion.commit()
         print("[RASP] Successfully added {} in database".format(song['title_short']))
 
+    def get_music_info(self, music_id, info_needed):
+        cursor = self.connexion.cursor()
+        if info_needed == 'artist':
+            cursor.execute(
+                'SELECT name FROM music JOIN artist ON artist.id = artist_id WHERE music.id={}'.format(music_id))
+        elif info_needed == 'title':
+            cursor.execute('SELECT title FROM music WHERE id={}'.format(music_id))
+
+        data = cursor.fetchone()[0]
+        return data
+
     def print_data(self, table='music', attribute='*'):
         cursor = self.connexion.cursor()
         cursor.execute('SELECT {} FROM {}'.format(attribute, table))
