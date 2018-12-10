@@ -50,7 +50,7 @@ class Database:
             cursor.execute(
                 'SELECT name FROM music JOIN artist ON artist.id = artist_id WHERE music.id={}'.format(music_id))
         elif info_needed == 'title':
-            cursor.execute('SELECT title FROM music WHERE id={}'.format(music_id))
+            cursor.execute('SELECT title_short FROM music WHERE id={}'.format(music_id))
 
         data = cursor.fetchone()[0]
         return data
