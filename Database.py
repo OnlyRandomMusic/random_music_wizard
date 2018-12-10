@@ -62,7 +62,7 @@ class Database:
         cursor = self.connexion.cursor()
         cursor.execute("""UPDATE music
 SET downloaded = 1, path = '{}'
-WHERE id = {}""".format(path, music_id))
+WHERE id = {}""".format('tr', music_id))
 
     def print_data(self, table='music', attribute='*'):
         cursor = self.connexion.cursor()
