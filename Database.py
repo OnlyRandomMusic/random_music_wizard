@@ -10,7 +10,7 @@ class Database:
 
         try:
             cursor.execute('''CREATE TABLE music
-                           (id, title_short, link, duration, r_date, preview_link, bpm, gain, artist_id,
+                           (id, title_short, link, duration, preview_link, bpm, gain, artist_id,
                             album_id, path, downloaded)''')
 
             # cursor.execute('''CREATE TABLE album
@@ -32,8 +32,8 @@ class Database:
             print("[RASP] Song {} already in database".format(song['title_short']))
             return
 
-        cursor.execute("INSERT INTO music VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", (
-            song['id'], song['title_short'], song['link'], song['duration'], song['release_date'], song['preview'],
+        cursor.execute("INSERT INTO music VALUES (?,?,?,?,?,?,?,?,?,?,?)", (
+            song['id'], song['title_short'], song['link'], song['duration'], song['preview'],
             song['bpm'], song['gain'], song['artist']['id'], song['album']['id'], path, downloaded))
 
         cursor.execute('SELECT * FROM artist WHERE id=?', (song['artist']['id'],))
