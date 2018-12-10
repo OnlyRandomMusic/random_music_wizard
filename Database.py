@@ -32,6 +32,7 @@ class Database:
             print("[RASP] Song {} already in database".format(song['title_short']))
             return
 
+        print(song.keys())
         cursor.execute("INSERT INTO music VALUES (?,?,?,?,?,?,?,?,?,?,?)", (
             song['id'], song['title_short'], song['link'], song['duration'], song['preview'],
             song['bpm'], song['gain'], song['artist']['id'], song['album']['id'], path, downloaded))
