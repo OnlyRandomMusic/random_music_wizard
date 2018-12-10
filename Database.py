@@ -16,8 +16,8 @@ class Database:
             # cursor.execute('''CREATE TABLE album
             #                 (id, genre_ids, artist_id)''')
             #
-            # cursor.execute('''CREATE TABLE artist
-            #                 (id, name)''')
+            cursor.execute('''CREATE TABLE artist
+                            (id, name)''')
         except:
             print('base de donnée déja créée')
 
@@ -28,21 +28,25 @@ class Database:
 
         cursor.execute('SELECT * FROM music WHERE id=?', (song['id'],))
 
-        if not cursor.fetchone():
-            cursor.execute("INSERT INTO music VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", (
-                song['id'], song['title_short'], song['link'], song['duration'], song['release_date'], song['preview'],
-                song['bpm'], song['gain'], song['artist']['id'], song['album']['id'], path, downloaded))
-
-            print("[RASP] Successfully added {} in database".format(song['title_short']))
-        else:
+        if cursor.fetchone():
             print("[RASP] Song {} already in database".format(song['title_short']))
             return
 
-        self.connexion.commit()
+        cursor.execute("INSERT INTO music VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", (
+            song['id'], song['title_short'], song['link'], song['duration'], song['release_date'], song['preview'],
+            song['bpm'], song['gain'], song['artist']['id'], song['album']['id'], path, downloaded))
 
-    def print_data(self):
+        cursor.execute('SELECT * FROM artist WHERE id=?', (song['artist']['id'],))
+
+        if not cursor.fetchone():
+            cursor.execute("INSERT INTO artist VALUES (?,?)", (song['artist']['id'], song['artist']['name']))
+
+        self.connexion.commit()
+        print("[RASP] Successfully added {} in database".format(song['title_short']))
+
+    def print_data(self, table='music', attribute='*'):
         cursor = self.connexion.cursor()
-        cursor.execute('SELECT * FROM music')
+        cursor.execute('SELECT {} FROM {}'.format(attribute, table))
         data = cursor.fetchall()
 
         for element in data:
