@@ -9,6 +9,7 @@ print("[RASP] starting")
 
 database = Database.Database()
 database.create()
+database.reset()
 
 song_queue = queue.Queue()  # the queue used for receiving information from the song_chooser thread
 # instructions = queue.Queue()  # the the queue used for receiving information from the feedback_receiver thread
