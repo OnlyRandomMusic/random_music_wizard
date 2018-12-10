@@ -33,9 +33,9 @@ class Database:
             return
 
         print(song.keys())
-        cursor.execute("INSERT INTO music VALUES (?,?,?,?,?,?,?,?,?,?,?)", (
+        cursor.execute("INSERT INTO music VALUES (?,?,?,?,?,?,?,?,?)", (
             song['id'], song['title_short'], song['link'], song['duration'], song['preview'],
-            song['bpm'], song['gain'], song['artist']['id'], song['album']['id'], path, downloaded))
+            song['artist']['id'], song['album']['id'], path, downloaded))
 
         cursor.execute('SELECT * FROM artist WHERE id=?', (song['artist']['id'],))
 
