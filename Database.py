@@ -4,6 +4,7 @@ import sqlite3
 class Database:
     def __init__(self, database_name='database'):
         self.connexion = sqlite3.connect(database_name + '.db')
+        self.database_name = database_name + 'db'
 
     def create(self):
         cursor = self.connexion.cursor()
@@ -45,7 +46,9 @@ class Database:
         print("[RASP] Successfully added {} in database".format(song['title_short']))
 
     def get_music_info(self, music_id, info_needed):
-        cursor = self.connexion.cursor()
+        # on utilise pas la connexion globale pour des problèmes de Thread
+        conn = sqlite3.connect(self.database_name)
+        cursor = conn.cursor()
         if info_needed == 'artist':
             cursor.execute(
                 'SELECT name FROM music JOIN artist ON artist.id = artist_id WHERE music.id={}'.format(music_id))
