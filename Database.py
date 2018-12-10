@@ -32,7 +32,6 @@ class Database:
             print("[RASP] Song {} already in database".format(song['title_short']))
             return
 
-        print(song.keys())
         cursor.execute("INSERT INTO music VALUES (?,?,?,?,?,?,?,?,?)", (
             song['id'], song['title_short'], song['link'], song['duration'], song['preview'],
             song['artist']['id'], song['album']['id'], path, downloaded))
@@ -61,8 +60,8 @@ class Database:
     def song_downloaded(self, music_id, path):
         cursor = self.connexion.cursor()
         cursor.execute("""UPDATE music
-SET downloaded = 1, path = '{}'
-WHERE id = {}""".format('tr', music_id))
+SET downloaded = 1, path = "{}"
+WHERE id = {}""".format(path, music_id))
 
     def print_data(self, table='music', attribute='*'):
         cursor = self.connexion.cursor()
