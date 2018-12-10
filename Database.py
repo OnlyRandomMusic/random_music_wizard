@@ -19,7 +19,7 @@ class Database:
             cursor.execute('''CREATE TABLE artist
                             (id, name)''')
         except:
-            print('base de donnée déja créée')
+            print('[RASP] Database already created')
 
         self.connexion.commit()
 
@@ -51,6 +51,8 @@ class Database:
                 'SELECT name FROM music JOIN artist ON artist.id = artist_id WHERE music.id={}'.format(music_id))
         elif info_needed == 'title':
             cursor.execute('SELECT title_short FROM music WHERE id={}'.format(music_id))
+        elif info_needed == 'path':
+            cursor.execute('SELECT path FROM music WHERE id={}'.format(music_id))
 
         data = cursor.fetchone()[0]
         return data
