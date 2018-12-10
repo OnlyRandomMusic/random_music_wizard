@@ -3,11 +3,12 @@ import sqlite3
 
 class Database:
     def __init__(self, database_name='database'):
-        self.connexion = sqlite3.connect(database_name + '.db')
+        # self.connexion = sqlite3.connect(database_name + '.db')
         self.database_name = database_name + 'db'
 
     def create(self):
-        cursor = self.connexion.cursor()
+        connexion = sqlite3.connect(self.database_name)
+        cursor = connexion.cursor()
 
         try:
             cursor.execute('''CREATE TABLE music
@@ -22,10 +23,12 @@ class Database:
         except:
             print('[RASP] Database already created')
 
-        self.connexion.commit()
+        connexion.commit()
+        connexion.close()
 
     def add_song(self, song, path=None, downloaded=0):
-        cursor = self.connexion.cursor()
+        connexion = sqlite3.connect(self.database_name)
+        cursor = connexion.cursor()
 
         cursor.execute('SELECT * FROM music WHERE id=?', (song['id'],))
 
@@ -42,13 +45,14 @@ class Database:
         if not cursor.fetchone():
             cursor.execute("INSERT INTO artist VALUES (?,?)", (song['artist']['id'], song['artist']['name']))
 
-        self.connexion.commit()
+        connexion.commit()
+        connexion.close()
         print("[RASP] Successfully added {} in database".format(song['title_short']))
 
     def get_music_info(self, music_id, info_needed):
         # on utilise pas la connexion globale pour des problèmes de Thread
-        conn = sqlite3.connect(self.database_name)
-        cursor = conn.cursor()
+        connexion = sqlite3.connect(self.database_name)
+        cursor = connexion.cursor()
         if info_needed == 'artist':
             cursor.execute(
                 'SELECT name FROM music JOIN artist ON artist.id = artist_id WHERE music.id={}'.format(music_id))
@@ -61,13 +65,19 @@ class Database:
         return data
 
     def song_downloaded(self, music_id, path):
-        cursor = self.connexion.cursor()
+        connexion = sqlite3.connect(self.database_name)
+        cursor = connexion.cursor()
+
         cursor.execute("""UPDATE music
 SET downloaded = 1, path = "{}"
 WHERE id = {}""".format(path, music_id))
 
+        connexion.commit()
+        connexion.close()
+
     def print_data(self, table='music', attribute='*'):
-        cursor = self.connexion.cursor()
+        connexion = sqlite3.connect(self.database_name)
+        cursor = connexion.cursor()
         cursor.execute('SELECT {} FROM {}'.format(attribute, table))
         data = cursor.fetchall()
 
@@ -75,11 +85,10 @@ WHERE id = {}""".format(path, music_id))
             print(element)
 
     def reset(self):
-        cursor = self.connexion.cursor()
+        connexion = sqlite3.connect(self.database_name)
+        cursor = connexion.cursor()
         cursor.execute('DROP TABLE IF EXISTS music')
         cursor.execute('DROP TABLE IF EXISTS album')
         cursor.execute('DROP TABLE IF EXISTS artist')
-        self.connexion.commit()
-
-    def close(self):
-        self.connexion.close()
+        connexion.commit()
+        connexion.close()
