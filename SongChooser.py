@@ -23,6 +23,8 @@ class SongChooser:
 
         # to avoid making a lot of requests during the tests
         self.starting_playlist = utils.get_request("https://api.deezer.com/playlist/5164440904")
+        for song in self.starting_playlist["tracks"]["data"]:
+            self.database.add_song(song)
 
     def download_song(self, music_id):
         """download a song from a Deezer link in the musics directory
@@ -40,9 +42,9 @@ class SongChooser:
     def get_new_song(self, song_data):
         """add a new song to the database and download it
         return True if no error occurs"""
-        self.database.add_song(song_data)
+        # self.database.add_song(song_data)
         path = self.download_song(song_data['id'])
-        print(path)
+
         if path:
             self.database.song_downloaded(song_data['id'], path)
             return True
