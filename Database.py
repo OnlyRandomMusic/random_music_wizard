@@ -61,8 +61,8 @@ class Database:
     def song_downloaded(self, music_id, path):
         cursor = self.connexion.cursor()
         cursor.execute("""UPDATE music
-SET downloaded = True, path = {}
-WHERE id = {}""".format(path,music_id))
+SET downloaded = true, path = {}
+WHERE id = {}""".format('tr', music_id))
 
     def print_data(self, table='music', attribute='*'):
         cursor = self.connexion.cursor()
