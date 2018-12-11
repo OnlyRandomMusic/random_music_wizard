@@ -174,12 +174,11 @@ class Login:
     def download_track(self, music_id, database, output=localdir + "/musics/", check=False, quality="MP3_128",
                                    recursive=True):
 
-        print('hey')
         artist = database.get_music_info(music_id, 'artist')
         title = database.get_music_info(music_id, 'title')
 
         song = title + " - " + artist
-        print(song)
+
         # attention à cette ligne, elle est utile mais ne doit pas être oubliée lors de la génération du path
         # elle a pour but d'éviter les conflits si des caractères spéciaux sont présents dans les string
         dir = str(output) + "/" + artist.replace("/", "").replace("$", "S") + "/"
@@ -189,7 +188,7 @@ class Login:
         except:
             None
         name = artist.replace("/", "").replace("$", "S") + " " + title.replace("/", "").replace("$", "S") + ".mp3"
-        print(name)
+
         if os.path.isfile(dir + name):
             if not check:
                 return dir + name
