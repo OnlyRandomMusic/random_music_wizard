@@ -44,7 +44,7 @@ class SongChooser:
         return True if no error occurs"""
         # self.database.add_song(song_data)
         path = self.download_song(song_data['id'])
-
+        print(path)
         if path:
             self.database.song_downloaded(song_data['id'], path)
             return True
