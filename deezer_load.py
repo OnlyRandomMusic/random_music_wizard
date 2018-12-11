@@ -174,6 +174,7 @@ class Login:
     def download_track(self, music_id, database, output=localdir + "/musics/", check=False, quality="MP3_128",
                                    recursive=True):
 
+        print('hey')
         artist = database.get_music_info(music_id, 'artist')
         title = database.get_music_info(music_id, 'title')
 
