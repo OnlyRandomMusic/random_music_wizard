@@ -2,11 +2,7 @@ import utils
 import os
 import platform
 import random
-
-OS_RASPBERRY = 'raspberrypi'
-
-if platform.uname()[1] == OS_RASPBERRY:
-    import deezer_load
+import deezer_load
 
 
 class SongChooser:
