@@ -14,8 +14,7 @@ class SongChooser:
         self.music_quality = song_quality
         self.database = database
         mail, password = utils.read_id()
-        if platform.uname()[1] == OS_RASPBERRY:
-            self.downloader = deezer_load.Login(mail, password)
+        self.downloader = deezer_load.Login(mail, password)
 
         # to avoid making a lot of requests during the tests
         self.starting_playlist = utils.get_request("https://api.deezer.com/playlist/5164440904")
