@@ -2,11 +2,7 @@ import utils
 import os
 import platform
 import random
-
-OS_RASPBERRY = 'raspberrypi'
-
-if platform.uname()[1] == OS_RASPBERRY:
-    import deezer_load
+import deezer_load
 
 
 class SongChooser:
@@ -17,8 +13,7 @@ class SongChooser:
         self.musics_path = self.dir_path + os.sep + "musics"
         self.music_quality = song_quality
         mail, password = utils.read_id()
-        if platform.uname()[1] == OS_RASPBERRY:
-            self.downloader = deezer_load.Login(mail, password)
+        self.downloader = deezer_load.Login(mail, password)
 
         # to avoid making a lot of requests during the tests
         self.starting_playlist = utils.get_request("https://api.deezer.com/playlist/5164440904")
@@ -26,17 +21,16 @@ class SongChooser:
     def download_song(self, link):
         """download a song from a Deezer link in the musics directory
         return True if an error occurred"""
-        if platform.uname()[1] == OS_RASPBERRY:
-            try:
-                self.downloader.download_track_alternative(link, output=self.musics_path, check=False,
-                                                  quality=self.music_quality,
-                                                  recursive=True)
-                # check=False for not check if song already exist
-                # recursive=False for download the song if quality selected doesn't exist
-                # quality can be FLAC, MP3_320, MP3_256 or MP3_128
-            except:
-                print("[RASP] error couldn't download " + link)
-                return True
+        try:
+            self.downloader.download_track_alternative(link, output=self.musics_path, check=False,
+                                              quality=self.music_quality,
+                                              recursive=True)
+            # check=False for not check if song already exist
+            # recursive=False for download the song if quality selected doesn't exist
+            # quality can be FLAC, MP3_320, MP3_256 or MP3_128
+        except:
+            print("[RASP] error couldn't download " + link)
+            return True
 
         # print("[RASP] download " + link)
 
