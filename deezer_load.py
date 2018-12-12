@@ -239,10 +239,10 @@ class Login:
                 except IndexError:
                     raise TrackNotFound("Track not found: " + song)
             self.download(URL, dir, quality, recursive)
-        try:
-            os.rename(dir + URL.split("/")[-1] + ".mp3", dir + name)
-        except FileNotFoundError:
-            None
+        # try:
+        #     os.rename(dir + URL.split("/")[-1] + ".mp3", dir + name)
+        # except FileNotFoundError:
+        #     None
         return dir + name
 
 ###########
