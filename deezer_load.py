@@ -178,24 +178,25 @@ class Login:
         title = database.get_music_info(music_id, 'title')
 
         song = title + " - " + artist
-
+        print("enter")
         # attention à cette ligne, elle est utile mais ne doit pas être oubliée lors de la génération du path
         # elle a pour but d'éviter les conflits si des caractères spéciaux sont présents dans les string
         dir = str(output) + "/" + artist.replace("/", "").replace("$", "S") + "/"
-
+        print(dir)
         try:
             os.makedirs(dir)
         except:
             None
+        print("dir")
         name = artist.replace("/", "").replace("$", "S") + " " + title.replace("/", "").replace("$", "S") + ".mp3"
-
+        print(name)
         if os.path.isfile(dir + name):
             if not check:
                 return dir + name
-
         print("[RASP] Downloading: " + song)
         try:
             self.download("http://www.deezer.com/track/" + str(music_id), dir, quality, recursive)
+            print("lala")
         except TrackNotFound:
             print("[RASP] " + song + " not found at the url given, trying to search it")
             try:
