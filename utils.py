@@ -38,4 +38,4 @@ def read_id():
             password = ids[1]
             return mail, password
     except:
-        print("[error] missing the file identifier.txt or missing mail and password in this file")
+        print("[error] missing the file identifiers.txt or missing mail and password in this file")
