@@ -12,7 +12,6 @@ database.reset()
 database.create()
 
 song_queue = queue.Queue()  # the queue used for receiving information from the song_chooser thread
-# instructions = queue.Queue()  # the the queue used for receiving information from the feedback_receiver thread
 
 queue_manager = QueueManager.QueueManager(song_queue, database)  # creating a thread that will work in parallel
 queue_manager.daemon = True  # when the main is closed this thread will also close

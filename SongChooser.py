@@ -1,6 +1,5 @@
 import utils
 import os
-import platform
 import random
 import deezer_load
 
