@@ -86,9 +86,6 @@ class Login:
     def download(self, ids, name, location, quality, check):
         song = {}
 
-        # ids = track.split("/")[-1]
-        # name = ids + ".mp3"
-
         def login():
             try:
                 token = json.loads(req.post("http://www.deezer.com/ajax/gw-light.php", params).text)['results'][
@@ -240,10 +237,7 @@ class Login:
                 except IndexError:
                     raise TrackNotFound("Track not found: " + song)
             self.download(music_id, name, dir, quality, recursive)
-        # try:
-        #     os.rename(dir + URL.split("/")[-1] + ".mp3", dir + name)
-        # except FileNotFoundError:
-        #     None
+
         return dir + name
 
     ###########

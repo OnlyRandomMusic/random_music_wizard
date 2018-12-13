@@ -17,7 +17,9 @@ class SongChooser:
         self.downloader = deezer_load.Login(mail, password)
 
         # to avoid making a lot of requests during the tests
-        self.starting_playlist = utils.get_request("https://api.deezer.com/playlist/5164440904")
+        # self.starting_playlist = utils.get_request("https://api.deezer.com/playlist/5164440904")  # playlist raspi
+        self.starting_playlist = utils.get_request("https://api.deezer.com/playlist/1083721131")  # playlist au coin du feu
+
         for song in self.starting_playlist["tracks"]["data"]:
             self.database.add_song(song)
 
