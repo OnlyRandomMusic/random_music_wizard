@@ -8,7 +8,7 @@ class QueueManager(threading.Thread):
         threading.Thread.__init__(self)
         self.queue = queue
         self.song_chooser = SongChooser.SongChooser(database)
-        queue.put(self.song_chooser.get_start_song())
+        queue.put(self.song_chooser.get_next_song())
 
     def run(self):
         """an infinite loop which add songs to the queue"""

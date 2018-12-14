@@ -61,7 +61,7 @@ class Database:
         elif info_needed == 'path':
             cursor.execute('SELECT path FROM music WHERE id={}'.format(music_id))
 
-        data = cursor.fetchone()[0]
+        data = cursor.fetchone()
         return data
 
     def song_downloaded(self, music_id, path):
