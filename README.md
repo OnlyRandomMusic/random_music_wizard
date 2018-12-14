@@ -8,6 +8,16 @@ Dans un premier temps l'API de Deezer sera utilisée pour accélérer le develop
 - s'améliorer et être autonome dans les choix de nouvelles musiques via un retour de l'utilisateur via un ou plusieurs boutons
 ## Dépendances
 - python-vlc
-- deezloader
 - requests
 - simplejson
+- mutagen
+- spotipy
+- tqdm
+- Crypto.Hash
+- bs4
+- spotipy.oauth2
+- mutagen.id3
+- collections
+- binascii
+- mutagen.flac
+- Crypto.Cipher
