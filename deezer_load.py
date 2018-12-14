@@ -83,10 +83,8 @@ class Login:
         else:
             raise BadCredentials("[RASP] Invalid password or username")
 
-    def download(self, track, location, quality, check):
+    def download(self, ids, name, location, quality, check):
         song = {}
-        ids = track.split("/")[-1]
-        name = ids + ".mp3"
 
         def login():
             try:
@@ -170,52 +168,33 @@ class Login:
         fo = open(location + name, "wb")
         decryptfile(fh.iter_content(2048), calcbfkey(ids), fo)
 
-# the custom function to download a track
+    # the custom function to download a track
+    def download_track(self, music_id, database, output=localdir + "/musics/", check=False, quality="MP3_128",
+                       recursive=True):
 
-    def download_track_alternative(self, URL, output=localdir + "/musics/", check=False, quality="MP3_128",
-                                   recursive=True):
-        if output == localdir + "/Songs":
-            if not os.path.isdir("Songs"):
-                os.makedirs("Songs")
-
-        if "?utm" in URL:
-            URL, a = URL.split("?utm")
-        URL = "http://www.deezer.com/track/" + URL.split("/")[-1]
-        try:
-            url = json.loads(requests.get("http://api.deezer.com/track/" + URL.split("/")[-1]).text)
-        except:
-            url = json.loads(requests.get("http://api.deezer.com/track/" + URL.split("/")[-1]).text)
-        try:
-            if url['error']['message'] == "Quota limit exceeded":
-                raise QuotaExceeded("Too much requests limit yourself")
-        except KeyError:
-            None
-        try:
-            if "error" in str(url):
-                raise InvalidLink("Invalid link ;)")
-        except KeyError:
-            None
-
-        artist = url['artist']['name']
-        title = url['title_short']
+        artist = database.get_music_info(music_id, 'artist')
+        title = database.get_music_info(music_id, 'title')
 
         song = title + " - " + artist
 
         # attention à cette ligne, elle est utile mais ne doit pas être oubliée lors de la génération du path
         # elle a pour but d'éviter les conflits si des caractères spéciaux sont présents dans les string
         dir = str(output) + "/" + artist.replace("/", "").replace("$", "S") + "/"
+
         try:
             os.makedirs(dir)
         except:
             None
+
         name = artist.replace("/", "").replace("$", "S") + " " + title.replace("/", "").replace("$", "S") + ".mp3"
+
         if os.path.isfile(dir + name):
             if not check:
                 return dir + name
-
         print("[RASP] Downloading: " + song)
         try:
-            self.download(URL, dir, quality, recursive)
+            self.download(music_id, name, dir, quality, recursive)
+
         except TrackNotFound:
             print("[RASP] " + song + " not found at the url given, trying to search it")
             try:
@@ -257,14 +236,11 @@ class Login:
                             break
                 except IndexError:
                     raise TrackNotFound("Track not found: " + song)
-            self.download(URL, dir, quality, recursive)
-        try:
-            os.rename(dir + URL.split("/")[-1] + ".mp3", dir + name)
-        except FileNotFoundError:
-            None
+            self.download(music_id, name, dir, quality, recursive)
+
         return dir + name
 
-###############################
+    ###########
 
     def download_trackdee(self, URL, output=localdir + "/Songs/", check=True, quality="MP3_128", recursive=True):
         if output == localdir + "/Songs":

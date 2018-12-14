@@ -2,19 +2,21 @@ import vlc
 
 
 class Player:
-    def __init__(self, queue):
+    def __init__(self, queue, database):
         """initialize a player and set a path for the file it will read"""
         self.instance = vlc.Instance()
         self.music_player = self.instance.media_player_new()  # the class used to play the tracks
         self.set_volume(60)
-        self.current_music = 0  # the id of the music played
+        self.current_music_id = 0  # the id of the music played
         self.music_queue = queue
+        self.database = database
 
     def play_next_music(self):
         """play the selected music"""
         if self.music_queue.qsize() > 0:
-            self.current_music = self.music_queue.get()
-            song = self.instance.media_new(self.current_music)
+            self.current_music_id = self.music_queue.get()
+            music_path = self.database.get_music_info(self.current_music_id, 'path')
+            song = self.instance.media_new(music_path)
             self.music_player.set_media(song)
             self.music_player.play()
 
@@ -37,10 +39,3 @@ class Player:
         """called when the main detect that the song is finished"""
         # print(self.music_player.get_position())
         return self.music_player.get_position() > 0.995
-
-    #def check_if_track_changed(self):
-    #    real_current_media = self.music_player.get_media()
-    #    print(self.current_media.tracks_get())
-    #    if self.current_media != real_current_media:
-    #        self.nb_media_played += 1
-    #        self.current_media = real_current_media

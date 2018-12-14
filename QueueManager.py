@@ -3,11 +3,11 @@ import threading
 
 
 class QueueManager(threading.Thread):
-    def __init__(self, queue):
-        """queue is a list of local path for musics in order to communicate with the main"""
+    def __init__(self, queue, database):
+        """queue is a list of music_id in order to communicate with the main"""
         threading.Thread.__init__(self)
         self.queue = queue
-        self.song_chooser = SongChooser.SongChooser()
+        self.song_chooser = SongChooser.SongChooser(database)
         queue.put(self.song_chooser.get_start_song())
 
     def run(self):
