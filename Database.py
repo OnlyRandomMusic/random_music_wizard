@@ -61,8 +61,9 @@ class Database:
         elif info_needed == 'path':
             cursor.execute('SELECT path FROM music WHERE id={}'.format(music_id))
 
-        data = cursor.fetchone()[0]
-        return data
+        data = cursor.fetchone()
+        if data:
+            return data[0]
 
     def song_downloaded(self, music_id, path):
         connexion = sqlite3.connect(self.database_name)
