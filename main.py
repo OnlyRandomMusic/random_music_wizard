@@ -8,7 +8,7 @@ import FeedbackReceiver
 print("[RASP] starting")
 
 database = Database.Database()
-database.reset()
+# database.reset()
 database.create()
 
 song_queue = queue.Queue()  # the queue used for receiving information from the song_chooser thread
