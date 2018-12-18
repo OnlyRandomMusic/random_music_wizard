@@ -6,32 +6,6 @@ class Database:
         # self.connexion = sqlite3.connect(database_name + '.db')
         self.database_name = database_name + '.db'
 
-    def create(self):
-        connexion = sqlite3.connect(self.database_name)
-        cursor = connexion.cursor()
-
-        try:
-            cursor.execute('''CREATE TABLE music
-                           (id, title_short, link, duration, preview_link, artist_id,
-                            album_id, path, downloaded)''')
-
-            # cursor.execute('''CREATE TABLE album
-            #                 (id, genre_ids, artist_id)''')
-            #
-            cursor.execute('''CREATE TABLE artist
-                            (id, name)''')
-
-            cursor.execute('''CREATE TABLE raw_playlist
-                            (id, name)''')
-
-            cursor.execute('''CREATE TABLE playlist_link
-                            (playlist_id, music_id)''')
-        except:
-            print('[RASP] Database already created')
-
-        connexion.commit()
-        connexion.close()
-
     def sql_request(self, request, values=None):
         connexion = sqlite3.connect(self.database_name)
         cursor = connexion.cursor()
@@ -43,6 +17,26 @@ class Database:
         connexion.commit()
         connexion.close()
         return data
+
+    def create(self):
+        try:
+            self.sql_request('''CREATE TABLE music
+                           (id, title_short, link, duration, preview_link, artist_id,
+                            album_id, path, downloaded)''')
+
+            # self.sql_request('''CREATE TABLE album
+            #                 (id, genre_ids, artist_id)''')
+            #
+            self.sql_request('''CREATE TABLE artist
+                            (id, name)''')
+
+            self.sql_request('''CREATE TABLE raw_playlist
+                            (id, name)''')
+
+            self.sql_request('''CREATE TABLE playlist_link
+                            (playlist_id, music_id)''')
+        except:
+            print('[RASP] Database already created')
 
     def add_song(self, song, path=None, downloaded=0):
         data = self.sql_request('SELECT * FROM music WHERE id=?', (song['id'],))
@@ -88,7 +82,7 @@ class Database:
             data = self.sql_request('SELECT path FROM music WHERE id={}'.format(music_id))
 
         if data:
-            return data[0]
+            return data[0][0]
 
     def song_downloaded(self, music_id, path):
         self.sql_request("""UPDATE music
@@ -105,15 +99,15 @@ WHERE id = {}""".format(path, music_id))
         data = self.sql_request('SELECT MAX(id) FROM raw_playlist')
 
         if data:
-            if data[0] == None:
+            if data[0][0] == None:
                 return 0
-            return data[0]
+            return data[0][0]
 
     def get_count(self, table):
         data = self.sql_request('SELECT COUNT(*) FROM {}'.format(table))
 
         if data:
-            return data[0]
+            return data[0][0]
 
     def reset(self):
         self.sql_request('DROP TABLE IF EXISTS music')
