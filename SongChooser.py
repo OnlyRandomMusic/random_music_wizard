@@ -20,6 +20,7 @@ class SongChooser:
         self.starting_playlist = utils.get_request("https://api.deezer.com/playlist/1083721131")  # playlist au coin du feu
 
         self.user_id = 430225295
+        self.user_data = utils.get_request("https://api.deezer.com/user/" + str(self.user_id))
         self.flow = []
 
         for song in self.starting_playlist["tracks"]["data"]:
@@ -58,8 +59,8 @@ class SongChooser:
     def get_flow(self):
         """return the next music in the flow"""
         if not self.flow:
-            user_data = utils.get_request("https://api.deezer.com/user/" + str(self.user_id))
-            self.flow = self.flow + [song['id'] for song in user_data['tracklist']['data']]
+            flow = utils.get_request(self.user_data['tracklist'])
+            self.flow = self.flow + [song['id'] for song in flow['data']]
         return self.flow.pop(0)
 
     def get_next_song(self):
