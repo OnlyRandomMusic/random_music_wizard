@@ -17,7 +17,12 @@ class SongChooser:
 
         # to avoid making a lot of requests during the tests
         # self.starting_playlist = utils.get_request("https://api.deezer.com/playlist/5164440904")  # playlist raspi
-        self.starting_playlist = utils.get_request("https://api.deezer.com/playlist/1083721131")  # playlist au coin du feu
+        self.starting_playlist = utils.get_request(
+            "https://api.deezer.com/playlist/1083721131")  # playlist au coin du feu
+
+        self.user_id = 430225295
+        self.user_data = utils.get_request("https://api.deezer.com/user/" + str(self.user_id))
+        self.flow = []
 
         for song in self.starting_playlist["tracks"]["data"]:
             self.database.add_song(song)
@@ -26,7 +31,8 @@ class SongChooser:
         """download a song from a Deezer link in the musics directory
         and add the path to it in the database"""
         try:
-            path = self.downloader.download_track(music_id, self.database, output=self.musics_path, quality=self.music_quality)
+            path = self.downloader.download_track(music_id, self.database, output=self.musics_path,
+                                                  quality=self.music_quality)
             # check=False for not check if song already exist
             # recursive=False for download the song if quality selected doesn't exist
             # quality can be FLAC, MP3_320, MP3_256 or MP3_128
@@ -52,7 +58,29 @@ class SongChooser:
         queue_data = random_song['id']
         return queue_data
 
+    def increase_flow_buffer(self):
+        """increase the size of the self.flow list"""
+        while not self.flow:
+            flow = utils.get_request(self.user_data['tracklist'])
+            self.flow = self.flow + [song['id'] for song in flow['data']]
+
+            for song in flow["data"]:
+                self.database.add_song(song)
+
+    def get_next_in_flow(self):
+        """return the next music in the flow"""
+        success = False
+        while not success:
+            if not self.flow:
+                self.increase_flow_buffer()
+
+            next_music_id = self.flow.pop(0)
+            success = self.download_song(next_music_id)
+
+        return next_music_id
+
     def get_next_song(self):
         """return the next song to play must be completed"""
-        queue_data = self.get_random_from_playlist(-1)
+        # queue_data = self.get_random_from_playlist(-1)
+        queue_data = self.get_next_in_flow()
         return queue_data

@@ -21,12 +21,12 @@ class Database:
     def create(self):
         try:
             self.sql_request('''CREATE TABLE music
-                           (id, title_short, link, duration, preview_link, artist_id,
+                           (id, title_short, duration, preview_link, artist_id,
                             album_id, path, downloaded)''')
 
             # self.sql_request('''CREATE TABLE album
             #                 (id, genre_ids, artist_id)''')
-            #
+
             self.sql_request('''CREATE TABLE artist
                             (id, name)''')
 
@@ -45,8 +45,8 @@ class Database:
             print("[RASP] Song {} already in database".format(song['title_short']))
             return
 
-        self.sql_request("INSERT INTO music VALUES (?,?,?,?,?,?,?,?,?)", (
-            song['id'], song['title_short'], song['link'], song['duration'], song['preview'],
+        self.sql_request("INSERT INTO music VALUES (?,?,?,?,?,?,?,?)", (
+            song['id'], song['title_short'], song['duration'], song['preview'],
             song['artist']['id'], song['album']['id'], path, downloaded))
 
         data = self.sql_request('SELECT * FROM artist WHERE id=?', (song['artist']['id'],))
