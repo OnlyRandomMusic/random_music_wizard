@@ -19,6 +19,9 @@ class SongChooser:
         # self.starting_playlist = utils.get_request("https://api.deezer.com/playlist/5164440904")  # playlist raspi
         self.starting_playlist = utils.get_request("https://api.deezer.com/playlist/1083721131")  # playlist au coin du feu
 
+        self.user_id = 430225295
+        self.flow = []
+
         for song in self.starting_playlist["tracks"]["data"]:
             self.database.add_song(song)
 
@@ -52,7 +55,15 @@ class SongChooser:
         queue_data = random_song['id']
         return queue_data
 
+    def get_flow(self):
+        """return the next music in the flow"""
+        if not self.flow:
+            user_data = utils.get_request("https://api.deezer.com/user/" + str(self.user_id))
+            self.flow = self.flow + [song['id'] for song in user_data['tracklist']['data']]
+        return self.flow.pop(0)
+
     def get_next_song(self):
         """return the next song to play must be completed"""
-        queue_data = self.get_random_from_playlist(-1)
+        # queue_data = self.get_random_from_playlist(-1)
+        queue_data = self.get_flow()
         return queue_data
