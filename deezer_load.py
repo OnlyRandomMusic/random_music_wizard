@@ -179,14 +179,14 @@ class Login:
 
         # attention à cette ligne, elle est utile mais ne doit pas être oubliée lors de la génération du path
         # elle a pour but d'éviter les conflits si des caractères spéciaux sont présents dans les string
-        dir = str(output) + "/" + artist.replace("/", "").replace("$", "S") + "/"
+        dir = str(output) + "/" + artist.replace("/", "").replace("$", "S").replace(":", "") + "/"
 
         try:
             os.makedirs(dir)
         except:
             None
 
-        name = artist.replace("/", "").replace("$", "S") + " " + title.replace("/", "").replace("$", "S") + ".mp3"
+        name = artist.replace("/", "").replace("$", "S").replace(":", "") + " " + title.replace("/", "").replace("$", "S").replace(":", "") + ".mp3"
 
         if os.path.isfile(dir + name):
             if not check:
