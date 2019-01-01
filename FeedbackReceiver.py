@@ -4,10 +4,11 @@ volume_step = 4  # the volume step in percentage
 
 
 class FeedbackReceiver(threading.Thread):
-    def __init__(self, player):
+    def __init__(self, player,song_chooser):
         """instructions_queue is a list of instructions in order to communicate with the main"""
         threading.Thread.__init__(self)
         self.player = player
+        self.song_chooser = song_chooser
         self.stop = False
 
     def run(self):
@@ -22,7 +23,8 @@ class FeedbackReceiver(threading.Thread):
             print("""+  increase the volume
 -   decrease the volume
 next   go to the next music
-quit   exit the program""")
+quit   exit the program
+search search for a music""")
 
         if "+" in instruction:
             step_number = instruction.count("+")
@@ -41,3 +43,7 @@ quit   exit the program""")
         if "quit" in instruction:
             self.stop = True
             print("[RASP] program ended")
+
+        if "search" in instruction:
+            research = input("What are you searching for ?  ")
+            self.song_chooser.play_search(research)

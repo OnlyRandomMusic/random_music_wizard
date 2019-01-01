@@ -6,7 +6,7 @@ class Player:
         """initialize a player and set a path for the file it will read"""
         self.instance = vlc.Instance()
         self.music_player = self.instance.media_player_new()  # the class used to play the tracks
-        self.set_volume(60)
+        self.set_volume(35)
         self.current_music_id = 0  # the id of the music played
         self.music_queue = queue
         self.database = database

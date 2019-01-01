@@ -24,6 +24,8 @@ class SongChooser:
         self.user_data = utils.get_request("https://api.deezer.com/user/" + str(self.user_id))
         self.flow = []
 
+        self.need_to_play_now = False
+
         for song in self.starting_playlist["tracks"]["data"]:
             self.database.add_song(song)
 
@@ -84,3 +86,22 @@ class SongChooser:
         # queue_data = self.get_random_from_playlist(-1)
         queue_data = self.get_next_in_flow()
         return queue_data
+
+    def play_search(self, research):
+        """play the researched song"""
+        results = utils.get_request("https://api.deezer.com/search?q=" + research)
+        try:
+            song = results['data'][0]
+            self.database.add_song(song)
+            self.download_song(song['id'])
+            self.play_now(song['id'])
+        except:
+            print('No results found')
+
+    def play_now(self, music_id):
+        self.need_to_play_now = music_id
+
+    def now_played(self):
+        self.need_to_play_now = 0
+
+
