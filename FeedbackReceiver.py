@@ -20,11 +20,14 @@ class FeedbackReceiver(threading.Thread):
 
     def decode_instruction(self, instruction):
         if "help" in instruction:
-            print("""+  increase the volume
--   decrease the volume
-next   go to the next music
-quit   exit the program
-search search for a music""")
+            print("""
++       increase the volume
+-       decrease the volume
+play    start playing music
+pause   pause the music
+next    go to the next music
+quit    exit the program
+search  search for a music""")
 
         if "+" in instruction:
             step_number = instruction.count("+")
@@ -47,3 +50,9 @@ search search for a music""")
         if "search" in instruction:
             research = input("What are you searching for ?  ")
             self.song_chooser.play_search(research)
+
+        if "play" in instruction:
+            self.player.play()
+
+        if "pause" in instruction:
+            self.player.pause()

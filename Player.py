@@ -39,3 +39,9 @@ class Player:
         """called when the main detect that the song is finished"""
         # print(self.music_player.get_position())
         return self.music_player.get_position() > 0.995
+
+    def play(self):
+        self.music_player.play()
+
+    def pause(self):
+        self.music_player.pause()
