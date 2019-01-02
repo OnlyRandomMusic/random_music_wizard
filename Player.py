@@ -41,9 +41,15 @@ class Player:
         return self.music_player.get_position() > 0.995
 
     def play(self):
-        if not self.music_player.is_playing:
+        if not self.music_player.is_playing():
             self.music_player.play()
+            print("[RASP] music now playing")
+        else:
+            print("[RASP] music already playing")
 
     def pause(self):
-        if self.music_player.is_playing:
+        if self.music_player.is_playing():
             self.music_player.pause()
+            print("[RASP] music now paused")
+        else:
+            print("[RASP] music already paused")
