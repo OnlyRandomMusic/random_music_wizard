@@ -27,16 +27,6 @@ class FeedbackReceiver(threading.Thread):
             # print("[RASP] received instruction " + instruction)
 
     def decode_instruction(self, instruction):
-        if "help" in instruction:
-            print("""
-+       increase the volume
--       decrease the volume
-play    start playing music
-pause   pause the music
-next    go to the next music
-quit    exit the program
-search  search for a music""")
-
         if "+" in instruction:
             step_number = instruction.count("+")
             volume = self.player.increase_volume(step_number * volume_step)
@@ -51,12 +41,12 @@ search  search for a music""")
             self.player.play_next_music()
             print("[RASP] the music has been changed")
 
-        if "quit" in instruction:
+        if "close" in instruction:
             self.stop = True
             print("[RASP] program ended")
 
         if "search" in instruction:
-            research = input("What are you searching for ?  ")
+            research = instruction.split(':')[1]
             self.song_chooser.play_search(research)
 
         if "play" in instruction:
