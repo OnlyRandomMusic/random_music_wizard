@@ -1,6 +1,6 @@
 import threading
 from multiprocessing.connection import Listener
-import Connexion
+import communication.Connexion as Connexion
 import queue
 
 

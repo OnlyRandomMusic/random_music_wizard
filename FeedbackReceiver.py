@@ -1,4 +1,6 @@
 import threading
+import communication.Receiver
+import queue
 
 volume_step = 4  # the volume step in percentage
 
@@ -10,12 +12,18 @@ class FeedbackReceiver(threading.Thread):
         self.player = player
         self.song_chooser = song_chooser
         self.stop = False
+        self.instructions_queue = queue.Queue()
+        self.receiver = communication.Receiver.Receiver(self.instructions_queue)
 
     def run(self):
         print("[RASP] waiting for instructions")
         while True:
-            instruction = input()
-            self.decode_instruction(instruction)
+            self.receiver.receive()
+
+            if self.instructions_queue.qsize() > 0:
+                instruction = self.instructions_queue.get()
+                self.decode_instruction(instruction)
+
             # print("[RASP] received instruction " + instruction)
 
     def decode_instruction(self, instruction):
