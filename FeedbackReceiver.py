@@ -6,14 +6,16 @@ volume_step = 4  # the volume step in percentage
 
 
 class FeedbackReceiver(threading.Thread):
-    def __init__(self, player,song_chooser):
+    def __init__(self, player, song_chooser):
         """instructions_queue is a list of instructions in order to communicate with the main"""
         threading.Thread.__init__(self)
         self.player = player
         self.song_chooser = song_chooser
         self.stop = False
+
         self.instructions_queue = queue.Queue()
         self.receiver = communication.Receiver.Receiver(self.instructions_queue)
+        self.receiver.daemon = True
 
     def run(self):
         print("[RASP] waiting for instructions")

@@ -5,6 +5,8 @@ from time import sleep
 class Receiver:
     def __init__(self, instruction_queue):
         self.connexion_manager = ConnexionManager.ConnexionManager()
+        self.connexion_manager.daemon = True
+
         self.connexion_manager.start()
         self.instruction_queue = instruction_queue
 
