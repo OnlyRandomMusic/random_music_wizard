@@ -5,8 +5,11 @@ conn = Client(address, authkey=b'secret password')
 
 while True:
     message = input()
-    conn.send(message)
+
     if message == 'quit':
         break
+
+    conn.send(message)
+
 
 conn.close()
