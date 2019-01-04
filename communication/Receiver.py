@@ -1,4 +1,5 @@
 import ConnexionManager
+from time import sleep
 
 
 class Receiver:
@@ -7,12 +8,13 @@ class Receiver:
         self.connexion_manager.start()
 
     def receive(self):
-        for connexion in self.connexion_manager.connexions_list:
+        for connexion_queue in self.connexion_manager.connexions_list:
             try:
-                msg = connexion.recv()
-                print(msg)
+                if connexion_queue.qsize() > 0:
+                    msg = connexion_queue.get()
+                    print(msg)
             except:
-                connexion.close()
+                continue
 
 
 # while True:
@@ -34,3 +36,4 @@ receiver = Receiver()
 
 while True:
     receiver.receive()
+    sleep(1)

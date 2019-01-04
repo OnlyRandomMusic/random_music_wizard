@@ -1,6 +1,7 @@
 import threading
 from multiprocessing.connection import Listener
 import Connexion
+import queue
 
 
 class ConnexionManager(threading.Thread):
@@ -18,11 +19,8 @@ class ConnexionManager(threading.Thread):
 
     def connexion_init(self):
         new_connexion = self.listener.accept()
-        new_connexion_thread = Connexion.Connexion(new_connexion)
+        new_connexion_queue = queue.Queue()
+        new_connexion_thread = Connexion.Connexion(new_connexion, new_connexion_queue)
         new_connexion_thread.start()
-        self.connexions_list.append(new_connexion_thread)
+        self.connexions_list.append(new_connexion_queue)
         print('[RASP] connexion accepted from', self.listener.last_accepted)
-
-
-c = ConnexionManager()
-c.start()
