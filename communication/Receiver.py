@@ -1,13 +1,13 @@
-import ConnexionWaiter
+import ConnexionManager
 
 
 class Receiver:
     def __init__(self):
-        self.connexion_waiter = ConnexionWaiter.ConnexionWaiter()
-        self.connexion_waiter.start()
+        self.connexion_manager = ConnexionManager.ConnexionManager()
+        self.connexion_manager.start()
 
     def receive(self):
-        for connexion in self.connexion_waiter.connexions_list:
+        for connexion in self.connexion_manager.connexions_list:
             try:
                 msg = connexion.recv()
                 print(msg)
