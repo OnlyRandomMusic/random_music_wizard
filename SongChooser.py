@@ -110,8 +110,8 @@ class SongChooser:
         the file must look like that :
         YOUR_EMAIL
         YOUR_PASSWORD"""
+        print(self.dir_path + "/identifiers.txt")
         try:
-            print(self.dir_path + "/identifiers.txt")
             with open(self.dir_path + "/identifiers.txt", "r") as id_file:
                 ids = id_file.readlines()
                 mail = ids[0]
