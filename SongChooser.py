@@ -9,6 +9,7 @@ class SongChooser:
         """music_quality can be FLAC, MP3_320, MP3_256 or MP3_128"""
         # name of the current directory in order to save musics in the right place
         self.dir_path = os.path.dirname(os.path.realpath(__file__))
+        print(self.dir_path)
         self.musics_path = self.dir_path + os.sep + "musics"
         self.music_quality = song_quality
         self.database = database
@@ -103,5 +104,19 @@ class SongChooser:
 
     def now_played(self):
         self.need_to_play_now = 0
+
+    def read_id(self):
+        """read the id (mail and password) in the file identifiers.txt
+        the file must look like that :
+        YOUR_EMAIL
+        YOUR_PASSWORD"""
+        try:
+            with open(self.dir_path + "identifiers.txt", "r") as id_file:
+                ids = id_file.readlines()
+                mail = ids[0]
+                password = ids[1]
+                return mail, password
+        except:
+            print("[error] missing the file identifiers.txt or missing mail and password in this file")
 
 
