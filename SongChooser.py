@@ -9,11 +9,10 @@ class SongChooser:
         """music_quality can be FLAC, MP3_320, MP3_256 or MP3_128"""
         # name of the current directory in order to save musics in the right place
         self.dir_path = os.path.dirname(os.path.realpath(__file__))
-        print(self.dir_path)
         self.musics_path = self.dir_path + os.sep + "musics"
         self.music_quality = song_quality
         self.database = database
-        mail, password = utils.read_id()
+        mail, password = self.read_id()
         self.downloader = deezer_load.Login(mail, password)
 
         # to avoid making a lot of requests during the tests
