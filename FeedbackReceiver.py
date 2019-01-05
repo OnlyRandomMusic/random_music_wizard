@@ -40,8 +40,11 @@ class FeedbackReceiver(threading.Thread):
             print("[RASP] volume is now {}%".format(volume))
 
         if "next" in instruction:
-            self.player.play_next_music()
-            print("[RASP] the music has been changed")
+            done = self.player.play_next_music()
+            if done:
+                print("[RASP] the music has been changed")
+            else:
+                print("[RASP] the music can't be changed now")
 
         if "close" in instruction:
             self.stop = True
