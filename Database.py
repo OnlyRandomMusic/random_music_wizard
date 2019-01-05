@@ -1,10 +1,12 @@
 import sqlite3
+import os
 
 
 class Database:
     def __init__(self, database_name='database'):
         # self.connexion = sqlite3.connect(database_name + '.db')
-        self.database_name = database_name + '.db'
+        self.dir_path = os.path.dirname(os.path.realpath(__file__))
+        self.database_name = self.dir_path + '/' + database_name + '.db'
 
     def sql_request(self, request, values=None):
         connexion = sqlite3.connect(self.database_name)
