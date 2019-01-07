@@ -1,5 +1,8 @@
 #! /usr/bin/env python3
 
+# line to add in rc.local to start on boot:
+# su rengati -c "python3 home/rengati/random_music_wizard/main.py &"
+
 import Player
 import QueueManager
 import queue
