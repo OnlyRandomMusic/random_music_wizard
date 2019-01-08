@@ -1,4 +1,4 @@
-import requests_utils
+import requests_tools
 import Database
 from time import sleep
 from random import randint
@@ -18,7 +18,7 @@ class Explorer:
         identifier = n
         while True:
             try:
-                data = requests_utils.get_request("playlist/" + str(identifier), True)
+                data = requests_tools.get_request("playlist/" + str(identifier), True)
                 if len(data['tracks']['data']) != 0:
                     self.database.add_raw_playlist(data)
             except:
@@ -34,7 +34,7 @@ class Explorer:
             identifier = randint(10000, 2000000000)
 
             try:
-                data = requests_utils.get_request("playlist/" + str(identifier), True)
+                data = requests_tools.get_request("playlist/" + str(identifier), True)
                 if len(data['tracks']['data']) != 0:
                     self.database.add_raw_playlist(data)
             except:
