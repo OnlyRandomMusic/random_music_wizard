@@ -8,7 +8,7 @@ class QueueManager(threading.Thread):
         threading.Thread.__init__(self)
         self.queue = queue
         self.player = player
-        self.song_chooser = SongChooser.SongChooser(database)
+        self.song_chooser = SongChooser.SongChooser(database, player)
         queue.put(self.song_chooser.get_next_song())
 
     def run(self):
@@ -19,14 +19,20 @@ class QueueManager(threading.Thread):
                 new_id = self.song_chooser.get_next_song()
                 self.queue.put(new_id)
 
-            if self.song_chooser.need_to_play_now != 0:
-                song_id = self.song_chooser.need_to_play_now
-                self.queue.put(song_id)
-                self.queue.put(song_id)  # add two times in order to detect hte end of the queue
-                self.song_chooser.now_played()
+            if self.song_chooser.need_to_put_first != 0:
+                self.put_first(self.song_chooser.need_to_put_first)
+                self.song_chooser.now_placed()
 
-                current_id = self.queue.get()
-                while current_id != song_id:
-                    current_id = self.queue.get()
+    def put_first(self, song_id):
+        """function used to put a song at the beginning of the queue"""
+        self.queue.put(song_id)
+        self.queue.put(song_id)  # add two times in order to detect the end of the queue
 
-                self.player.play_next_music()
+        current_id = self.queue.get()
+        old_ids = []  # list of old ids in order to place them in the queue again after the manipulation
+        while current_id != song_id:
+            old_ids.append(current_id)
+            current_id = self.queue.get()  # the last id is not added to old_ids because it is the song_id
+
+        for old_id in old_ids:
+            self.queue.put(old_id)

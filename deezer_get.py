@@ -1,5 +1,5 @@
 import json
-import requests
+import requests_utils
 import vlc
 import time
 import os
@@ -16,7 +16,7 @@ dir_path = os.path.dirname(os.path.realpath(__file__))
 
 def request_example(address):
     """return the content of a selected request in a json format"""
-    request = requests.get(address)
+    request = requests_utils.get(address)
     content = request.content.decode('utf-8')
     ordered_content = json.loads(content)
     return ordered_content

@@ -19,7 +19,12 @@ search  search for a music""")
 
     if "search" in message:
             research = input("What are you searching for ?  ")
-            message = "search:" + research
+            immediately = input("Would you like to play it immediately ? (yes/no) ")
+
+            if 'y' in immediately or 'Y' in immediately:
+                message = "search:{}:{}".format(research, '1')
+            else:
+                message = "search:{}:{}".format(research, '0')
 
     if message == 'quit':
         break

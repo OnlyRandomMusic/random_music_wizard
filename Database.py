@@ -78,6 +78,8 @@ class Database:
         if info_needed == 'artist':
             data = self.sql_request(
                 'SELECT name FROM music JOIN artist ON artist.id = artist_id WHERE music.id={}'.format(music_id))
+        elif info_needed == 'artist_id':
+            data = self.sql_request('SELECT artist_id FROM music WHERE id={}'.format(music_id))
         elif info_needed == 'title':
             data = self.sql_request('SELECT title_short FROM music WHERE id={}'.format(music_id))
         elif info_needed == 'path':

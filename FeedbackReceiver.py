@@ -51,8 +51,9 @@ class FeedbackReceiver(threading.Thread):
             print("[RASP] program ended")
 
         if "search" in instruction:
-            research = instruction.split(':')[1]
-            self.song_chooser.play_search(research)
+            research = instruction.split(':')
+            # instruction structure : "search:research_text:(1 or 0)" last boolean to indicate if the music should be play immediatly or not
+            self.song_chooser.play_search(research[1], int(research[2]))
 
         if "play" in instruction:
             self.player.play()
