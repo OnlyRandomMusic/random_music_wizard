@@ -3,7 +3,7 @@ import os
 import json
 import mutagen
 import spotipy
-import requests_tools
+import requests_utils
 from tqdm import tqdm
 from Crypto.Hash import MD5
 from bs4 import BeautifulSoup
@@ -15,7 +15,7 @@ from binascii import a2b_hex, b2a_hex
 from mutagen.flac import FLAC, Picture
 from Crypto.Cipher import AES, Blowfish
 
-req = requests_tools.Session()
+req = requests_utils.Session()
 localdir = os.getcwd()
 
 
@@ -159,9 +159,9 @@ class Login:
         except KeyError:
             raise QualityNotFound("The quality chose can't be downloaded")
         try:
-            fh = requests_tools.get(genurl(quality))
+            fh = requests_utils.get(genurl(quality))
         except:
-            fh = requests_tools.get(genurl(quality))
+            fh = requests_utils.get(genurl(quality))
         if len(fh.content) == 0:
             raise TrackNotFound("")
         open(location + name, "wb").write(fh.content)
@@ -198,11 +198,11 @@ class Login:
         except TrackNotFound:
             print("[RASP] " + song + " not found at the url given, trying to search it")
             try:
-                url = json.loads(requests_tools.get(
+                url = json.loads(requests_utils.get(
                     "https://api.deezer.com/search/track/?q=" + title.replace("#", "") + " + " + artist.replace(
                         "#", "")).text)
             except:
-                url = json.loads(requests_tools.get(
+                url = json.loads(requests_utils.get(
                     "https://api.deezer.com/search/track/?q=" + title.replace("#", "") + " + " + artist.replace(
                         "#", "")).text)
             try:
@@ -218,11 +218,11 @@ class Login:
             except IndexError:
                 try:
                     try:
-                        url = json.loads(requests_tools.get(
+                        url = json.loads(requests_utils.get(
                             "https://api.deezer.com/search/track/?q=" + title.replace("#", "").split(" ")[
                                 0] + " + " + artist.replace("#", "")).text)
                     except:
-                        url = json.loads(requests_tools.get(
+                        url = json.loads(requests_utils.get(
                             "https://api.deezer.com/search/track/?q=" + title.replace("#", "").split(" ")[
                                 0] + " + " + artist.replace("#", "")).text)
                     try:
@@ -259,9 +259,9 @@ class Login:
             URL, a = URL.split("?utm")
         URL = "http://www.deezer.com/track/" + URL.split("/")[-1]
         try:
-            url = json.loads(requests_tools.get("http://api.deezer.com/track/" + URL.split("/")[-1]).text)
+            url = json.loads(requests_utils.get("http://api.deezer.com/track/" + URL.split("/")[-1]).text)
         except:
-            url = json.loads(requests_tools.get("http://api.deezer.com/track/" + URL.split("/")[-1]).text)
+            url = json.loads(requests_utils.get("http://api.deezer.com/track/" + URL.split("/")[-1]).text)
         try:
             if url['error']['message'] == "Quota limit exceeded":
                 raise QuotaExceeded("Too much requests limit yourself")
@@ -274,10 +274,10 @@ class Login:
             None
         try:
             url1 = json.loads(
-                requests_tools.get("http://api.deezer.com/album/" + str(url['album']['id']), headers=header).text)
+                requests_utils.get("http://api.deezer.com/album/" + str(url['album']['id']), headers=header).text)
         except:
             url1 = json.loads(
-                requests_tools.get("http://api.deezer.com/album/" + str(url['album']['id']), headers=header).text)
+                requests_utils.get("http://api.deezer.com/album/" + str(url['album']['id']), headers=header).text)
         try:
             if url1['error']['message'] == "Quota limit exceeded":
                 raise QuotaExceeded("Too much requests limit yourself")
@@ -287,9 +287,9 @@ class Login:
             image = url['album']['cover_xl'].replace("1000", "1200")
         except:
             try:
-                image = requests_tools.get(URL).text
+                image = requests_utils.get(URL).text
             except:
-                image = requests_tools.get(URL).text
+                image = requests_utils.get(URL).text
             image = BeautifulSoup(image, "html.parser").find("img", class_="img_main").get("src").replace("120", "1200")
         music.append(url['title_short'])
 
@@ -341,11 +341,11 @@ class Login:
             self.download(URL, dir, quality, recursive)
         except TrackNotFound:
             try:
-                url = json.loads(requests_tools.get(
+                url = json.loads(requests_utils.get(
                     "https://api.deezer.com/search/track/?q=" + music[0].replace("#", "") + " + " + artist[0].replace(
                         "#", "")).text)
             except:
-                url = json.loads(requests_tools.get(
+                url = json.loads(requests_utils.get(
                     "https://api.deezer.com/search/track/?q=" + music[0].replace("#", "") + " + " + artist[0].replace(
                         "#", "")).text)
             try:
@@ -361,11 +361,11 @@ class Login:
             except IndexError:
                 try:
                     try:
-                        url = json.loads(requests_tools.get(
+                        url = json.loads(requests_utils.get(
                             "https://api.deezer.com/search/track/?q=" + music[0].replace("#", "").split(" ")[
                                 0] + " + " + artist[0].replace("#", "")).text)
                     except:
-                        url = json.loads(requests_tools.get(
+                        url = json.loads(requests_utils.get(
                             "https://api.deezer.com/search/track/?q=" + music[0].replace("#", "").split(" ")[
                                 0] + " + " + artist[0].replace("#", "")).text)
                     try:
@@ -385,9 +385,9 @@ class Login:
         except FileNotFoundError:
             None
         try:
-            image = requests_tools.get(image).content
+            image = requests_utils.get(image).content
         except:
-            image = requests_tools.get(image).content
+            image = requests_utils.get(image).content
         try:
             tag = EasyID3(dir + name)
             tag.delete()
