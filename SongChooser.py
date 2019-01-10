@@ -1,4 +1,4 @@
-import utils
+import requests_tools
 import os
 import random
 import deezer_load
@@ -17,12 +17,12 @@ class SongChooser:
         self.downloader = deezer_load.Login(mail, password)
 
         # to avoid making a lot of requests during the tests
-        # self.starting_playlist = utils.get_request("https://api.deezer.com/playlist/5164440904")  # playlist raspi
-        self.starting_playlist = utils.get_request(
+        # self.starting_playlist = requests_tools.get_request("https://api.deezer.com/playlist/5164440904")  # playlist raspi
+        self.starting_playlist = requests_tools.get_request(
             "https://api.deezer.com/playlist/1083721131")  # playlist au coin du feu
 
         self.user_id = 430225295
-        self.user_data = utils.get_request("https://api.deezer.com/user/" + str(self.user_id))
+        self.user_data = requests_tools.get_request("https://api.deezer.com/user/" + str(self.user_id))
         self.flow = []
 
         self.need_to_put_first = 0
@@ -50,7 +50,7 @@ class SongChooser:
         if link == -1:
             content = self.starting_playlist
         else:
-            content = utils.get_request(link)
+            content = requests_tools.get_request(link)
 
         song_list = content["tracks"]["data"]
         success = False
@@ -65,7 +65,7 @@ class SongChooser:
     def increase_flow_buffer(self):
         """increase the size of the self.flow list"""
         while not self.flow:
-            flow = utils.get_request(self.user_data['tracklist'])
+            flow = requests_tools.get_request(self.user_data['tracklist'])
             self.flow = self.flow + [song['id'] for song in flow['data']]
 
             for song in flow["data"]:
@@ -91,7 +91,7 @@ class SongChooser:
 
     def play_search(self, research, immediately):
         """play the researched song, immediately or after the current song"""
-        results = utils.get_request("https://api.deezer.com/search?q=" + research)
+        results = requests_tools.get_request("https://api.deezer.com/search?q=" + research)
         try:
             song = results['data'][0]
             self.database.add_song(song)
