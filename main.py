@@ -1,3 +1,8 @@
+#! /usr/bin/env python3
+
+# line to add in rc.local to start on boot:
+# su rengati -c "python3 home/rengati/random_music_wizard/main.py &"
+
 import Player
 import QueueManager
 import queue
@@ -25,6 +30,7 @@ feedback_receiver.daemon = True  # when the main is closed this thread will also
 print("[RASP] vlc player initialized")
 
 player.play_next_music()
+# player.pause()
 
 print("[RASP] starting to play")
 

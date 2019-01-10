@@ -1,49 +1,58 @@
-import requests
-import json
+import requests_tools
 import Database
 from time import sleep
-
-database = Database.Database()
-
-
-# database.reset()
-# database.create()
+from random import randint
 
 
-def brute_explore(n, m):
-    """make requests to deezer about playlist between id = n and id = m"""
-    identifier = n
-    while True:
-        try:
-            data = get_request("https://api.deezer.com/playlist/" + str(identifier))
-            if len(data['tracks']['data']) != 0:
-                database.add_raw_playlist(data)
-        except:
-            print('fail')
+class Explorer:
+    def __init__(self):
+        self.database = Database.Database()
 
-        identifier += 1
-        if identifier > m:
-            break
+    def explore_related(self, music_id):
+        artist_id = self.database.get_music_info(music_id, 'artist_id')
+
+        # first step
+
+    def playlist_brute_explore(self, n, m):
+        """make requests to deezer about playlist between id = n and id = m"""
+        identifier = n
+        while True:
+            try:
+                data = requests_tools.get_request("playlist/" + str(identifier), True)
+                if len(data['tracks']['data']) != 0:
+                    self.database.add_raw_playlist(data)
+            except:
+                print('fail')
+
+            identifier += 1
+            if identifier > m:
+                break
+
+    def playlist_random_explore(self, n):
+        """make requests to deezer about playlist randomly"""
+        for _ in range(n):
+            identifier = randint(10000, 2000000000)
+
+            try:
+                data = requests_tools.get_request("playlist/" + str(identifier), True)
+                if len(data['tracks']['data']) != 0:
+                    self.database.add_raw_playlist(data)
+            except:
+                print('fail')
+
+    def playlist_moderate_explore(self, identifier=0, step_size=50, sleep_time=10):
+        if identifier == 0:
+            identifier = self.database.get_raw_playlist_max_id()
+
+        while True:
+            # self.playlist_brute_explore(identifier, identifier + step_size)
+            # identifier += step_size
+            # print(identifier)
+
+            self.playlist_random_explore(step_size)
+
+            sleep(sleep_time)
 
 
-def get_request(address):
-    """return the content of a selected request in a json format"""
-    request = requests.get(address)
-    content = request.content.decode('utf-8')
-    ordered_content = json.loads(content)
-    return ordered_content
-
-
-def moderate_explore(identifier=database.get_raw_playlist_max_id(), step_size=50, sleep_time=10):
-    while True:
-        brute_explore(identifier, identifier + step_size)
-        identifier += step_size
-        print(identifier)
-        sleep(sleep_time)
-
-
-moderate_explore()
-# print(database.get_raw_playlist_max_id())
-# database.print_data('playlist_link')
-print(database.get_count('raw_playlist'))
-print(database.get_count('playlist_link'))
+exp = Explorer()
+exp.playlist_moderate_explore()

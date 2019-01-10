@@ -20,6 +20,10 @@ class Player:
             self.music_player.set_media(song)
             self.music_player.play()
 
+            return True
+        else:
+            return False
+
     def set_volume(self, percentage):
         """set the player volume between 0 and 100"""
         self.music_player.audio_set_volume(percentage)
