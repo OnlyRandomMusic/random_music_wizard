@@ -1,6 +1,43 @@
+body{
+	background: rgb(0,0,0);
+}
+
 .center {
     display: block;
     margin-left: auto;
     margin-right: auto;
     width: 50%;
+}
+
+.center_vert {
+    margin-top: 30%;
+}
+
+.logo_size {
+	width: 150px;
+	height: 225px;
+}
+
+.left {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	height: 300px;
+	width: 30%;
+}
+
+.right {
+	position: absolute;
+	right: 10px;
+	top: 10px;
+	height: 300px;
+	width: 30%;
+}
+
+.mid {
+	position: absolute;
+	height: 300px;
+	top: 10px;
+	left: 30%;
+	right: 30%;
 }
