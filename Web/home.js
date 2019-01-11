@@ -1,3 +1,5 @@
+var socket = io.connect('http://127.0.0.1:8484');
+
 function play(){
-	window.alert("play")
+	socket.send('lalala');
 }
