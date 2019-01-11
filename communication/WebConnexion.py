@@ -1,26 +1,19 @@
-from multiprocessing.connection import Listener
-from time import sleep
+import socket
 
-port = 6001
+HOST = '127.0.0.1'
+PORT = 8484
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.bind((HOST, PORT))
+s.listen(2)
 
-address = ('127.0.0.1', port)  # family is deduced to be 'AF_INET'
-listener = Listener(address)
+#JS
+conn1, addr1 = s.accept()
+print('Connected by', addr1)
 
-
-connexion = listener.accept()
-print('connection accepted from', listener.last_accepted)
-print('1')
-
-while True:
+while 1:
     try:
-        msg = connexion.recv()
-        print(msg)
-    except:
-        connexion.close()
-        print('new')
-        sleep(1)
-
-    # do something with msg
-
-
-# listener.close()
+        data = conn1.recv(1024)
+    except socket.error:
+        print('error')
+    if data:
+        print(data.decode('utf-8'))
