@@ -5,7 +5,9 @@ import json
 def songs_of_artist(artist_id, number_of_songs=30):
     """return the main songs of a given artist"""
     song_list = get_request('artist/{}/top?limit={}'.format(artist_id, number_of_songs), True)
-    return song_list
+    if 'error' in song_list.keys():
+        return
+    return song_list['data']
 
 
 def collaboration(artist_id, songs_list=None):
@@ -16,7 +18,7 @@ def collaboration(artist_id, songs_list=None):
 
     artists_list = []
 
-    for song in songs_list['data']:
+    for song in songs_list:
         if "contributors" in song.keys():
             for artist in song['contributors']:
                 if not artist['id'] in artists_list and artist['id'] != artist_id:

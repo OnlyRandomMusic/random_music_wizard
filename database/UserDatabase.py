@@ -17,11 +17,10 @@ class UserDatabase(Database.Database):
 
     def get_score(self, music_id):
         """return the score of a given music or 'not found' if it isn't in the table"""
-        data = self.sql_request('SELECT score FROM {} WHERE music_id=?'.format(self.current_user), (music_id,))
-
-        if data:
-            return data
-        return 'not found'
+        data = self.sql_request('SELECT score FROM {} WHERE music_id={}'.format(self.current_user, music_id))
+        if not data:
+            return 'not found'
+        return data[0][0]
 
     def update_score(self, music_id, score_to_add):
         """update the score of a song or add it to the user table"""
@@ -29,8 +28,16 @@ class UserDatabase(Database.Database):
 
         if score == 'not found':
             # attention injection SQL possible à ce niveau
-            self.sql_request("INSERT INTO {} VALUES (?,?)".format(self.current_user), (music_id, score))
+            self.sql_request("INSERT INTO {} VALUES (?,?)".format(self.current_user), (music_id, score_to_add))
         else:
             score += score_to_add
             self.sql_request("""UPDATE {} SET score = {} WHERE music_id = ?""".format(self.current_user, score),
                              (music_id,))
+
+# d = UserDatabase('remi')
+# d.update_score(12,1)
+# d.update_score(4,-1)
+# d.update_score(12,0.1)
+# d.update_score(11,0.5)
+# d.update_score(11,-0.5)
+# d.print_data('remi')

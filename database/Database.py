@@ -21,7 +21,7 @@ class Database:
         return data
 
     def print_data(self, table, attribute='*'):
-        data = self.sql_request('SELECT ? FROM ?', (attribute, table))
+        data = self.sql_request('SELECT {} FROM {}'.format(attribute, table))
 
         for element in data:
             print(element)
