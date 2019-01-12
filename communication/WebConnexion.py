@@ -12,7 +12,9 @@ print('Connected by', addr1)
 
 while 1:
     try:
+        print("receiving")
         data = conn1.recv(1024)
+        print("received")
     except socket.error:
         print('error')
     if data:
