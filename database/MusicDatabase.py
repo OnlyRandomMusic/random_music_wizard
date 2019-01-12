@@ -7,12 +7,15 @@ class MusicDatabase(Database.Database):
         Database.Database.__init__(self, "music_database")
 
     def create(self):
-        self.sql_request('''CREATE TABLE music
-                           (id, title_short, duration, preview_link, artist_id,
-                            album_id, path, downloaded)''')
+        try:
+            self.sql_request('''CREATE TABLE music
+                               (id, title_short, duration, preview_link, artist_id,
+                                album_id, path, downloaded)''')
 
-        self.sql_request('''CREATE TABLE artist
-                            (id, name)''')
+            self.sql_request('''CREATE TABLE artist
+                                (id, name)''')
+        except:
+            print('[RASP] Music Database already created')
 
     def add_song(self, song, path=None, downloaded=0):
         data = self.sql_request('SELECT * FROM music WHERE id=?', (song['id'],))
