@@ -5,13 +5,13 @@ import deezer_load
 
 
 class SongChooser:
-    def __init__(self, database, player, song_quality="MP3_128"):
+    def __init__(self, music_database, player, song_quality="MP3_128"):
         """music_quality can be FLAC, MP3_320, MP3_256 or MP3_128"""
         # name of the current directory in order to save musics in the right place
         self.dir_path = os.path.dirname(os.path.realpath(__file__))
         self.musics_path = self.dir_path + os.sep + "musics"
         self.music_quality = song_quality
-        self.database = database
+        self.music_database = music_database
         self.player = player
         mail, password = self.read_id()
         self.downloader = deezer_load.Login(mail, password)
@@ -29,21 +29,21 @@ class SongChooser:
         self.play_when_placed = False
 
         for song in self.starting_playlist["tracks"]["data"]:
-            self.database.add_song(song)
+            self.music_database.add_song(song)
 
     def download_song(self, music_id):
         """download a song from a Deezer link in the musics directory
         and add the path to it in the database"""
         try:
-            path = self.downloader.download_track(music_id, self.database, output=self.musics_path,
+            path = self.downloader.download_track(music_id, self.music_database, output=self.musics_path,
                                                   quality=self.music_quality)
             # check=False for not check if song already exist
             # recursive=False for download the song if quality selected doesn't exist
             # quality can be FLAC, MP3_320, MP3_256 or MP3_128
-            self.database.song_downloaded(music_id, path)
+            self.music_database.song_downloaded(music_id, path)
             return True
         except:
-            print("[RASP] error couldn't download " + self.database.get_music_info(music_id, 'title'))
+            print("[RASP] error couldn't download " + self.music_database.get_music_info(music_id, 'title'))
 
     def get_random_from_playlist(self, link):
         """choose a random song in a playlist add it in the database and download it"""
@@ -69,7 +69,7 @@ class SongChooser:
             self.flow = self.flow + [song['id'] for song in flow['data']]
 
             for song in flow["data"]:
-                self.database.add_song(song)
+                self.music_database.add_song(song)
 
     def get_next_in_flow(self):
         """return the next music in the flow"""
@@ -94,7 +94,7 @@ class SongChooser:
         results = requests_tools.get_request("https://api.deezer.com/search?q=" + research)
         try:
             song = results['data'][0]
-            self.database.add_song(song)
+            self.music_database.add_song(song)
             self.download_song(song['id'])
             self.put_first(song['id'])
 

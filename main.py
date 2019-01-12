@@ -6,22 +6,22 @@
 import Player
 import QueueManager
 import queue
-import Database
+from database import MusicDatabase
 from time import sleep
 import FeedbackReceiver
 
 print("[RASP] starting")
 
-database = Database.Database()
+music_database = MusicDatabase.MusicDatabase()
 # database.reset()
-database.create()
+music_database.create()
 
 song_queue = queue.Queue()  # the queue used for receiving information from the song_chooser thread
 
-player = Player.Player(song_queue, database)  # initialize the music player
+player = Player.Player(song_queue, music_database)  # initialize the music player
 sleep_time = 0.5
 
-queue_manager = QueueManager.QueueManager(song_queue, database, player)  # creating a thread that will work in parallel
+queue_manager = QueueManager.QueueManager(song_queue, music_database, player)  # creating a thread that will work in parallel
 queue_manager.daemon = True  # when the main is closed this thread will also close
 
 feedback_receiver = FeedbackReceiver.FeedbackReceiver(player, queue_manager.song_chooser)  # creating a thread that will work in parallel

@@ -1,15 +1,17 @@
 import requests_tools
-import Database
+from database import MusicDatabase
+from database import PlaylistDatabase
 from time import sleep
 from random import randint
 
 
 class Explorer:
     def __init__(self):
-        self.database = Database.Database()
+        self.music_database = MusicDatabase.MusicDatabase()
+        self.playlist_database = PlaylistDatabase.PlaylistDatabase()
 
     def explore_related(self, music_id):
-        artist_id = self.database.get_music_info(music_id, 'artist_id')
+        artist_id = self.music_database.get_music_info(music_id, 'artist_id')
 
         # first step
 
@@ -20,7 +22,7 @@ class Explorer:
             try:
                 data = requests_tools.get_request("playlist/" + str(identifier), True)
                 if len(data['tracks']['data']) != 0:
-                    self.database.add_raw_playlist(data)
+                    self.playlist_database.add_raw_playlist(data)
             except:
                 print('fail')
 
@@ -36,13 +38,13 @@ class Explorer:
             try:
                 data = requests_tools.get_request("playlist/" + str(identifier), True)
                 if len(data['tracks']['data']) != 0:
-                    self.database.add_raw_playlist(data)
+                    self.playlist_database.add_raw_playlist(data)
             except:
                 print('fail')
 
     def playlist_moderate_explore(self, identifier=0, step_size=50, sleep_time=10):
         if identifier == 0:
-            identifier = self.database.get_raw_playlist_max_id()
+            identifier = self.playlist_database.get_raw_playlist_max_id()
 
         while True:
             # self.playlist_brute_explore(identifier, identifier + step_size)

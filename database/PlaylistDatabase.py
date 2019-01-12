@@ -1,24 +1,10 @@
-import sqlite3
-import os
+from database import Database
 
 
-class Database:
-    def __init__(self, database_name='database'):
+class MusicDatabase(Database.Database):
+    def __init__(self):
         # self.connexion = sqlite3.connect(database_name + '.db')
-        self.dir_path = os.path.dirname(os.path.realpath(__file__))
-        self.database_name = self.dir_path + '/' + database_name + '.db'
-
-    def sql_request(self, request, values=None):
-        connexion = sqlite3.connect(self.database_name)
-        cursor = connexion.cursor()
-        if values:
-            cursor.execute(request, values)
-        else:
-            cursor.execute(request)
-        data = cursor.fetchall()
-        connexion.commit()
-        connexion.close()
-        return data
+        Database.Database.__init__(self, "music_database")
 
     def create(self):
         try:
