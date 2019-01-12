@@ -1,7 +1,6 @@
 import requests_tools
 from database import MusicDatabase
 from database import PlaylistDatabase
-from database import UserDatabase
 from time import sleep
 from random import randint
 
@@ -13,6 +12,9 @@ class Explorer:
         self.user_database = user_database
 
     def set_score(self, music_id, score):
+        if not score:
+            return
+
         artist_id = self.music_database.get_music_info(music_id, 'artist_id')
         self.user_database.update_score(music_id, score)
         song_updated = [music_id]
@@ -39,6 +41,8 @@ class Explorer:
 
         # third step
         # playlist search
+
+        print("[RASP] Scores updated")
 
     def playlist_brute_explore(self, n, m):
         """make requests to deezer about playlist between id = n and id = m"""
@@ -81,6 +85,7 @@ class Explorer:
             sleep(sleep_time)
 
 
+# from database import UserDatabase
 # m = MusicDatabase.MusicDatabase()
 # d = UserDatabase.UserDatabase('remi')
 # exp = Explorer(d)

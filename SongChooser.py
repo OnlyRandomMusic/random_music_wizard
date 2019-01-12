@@ -109,7 +109,7 @@ class SongChooser:
     def now_placed(self):
         self.need_to_put_first = 0
         if self.play_when_placed:
-            self.player.play_next_music()
+            self.player.play_next_music(0)
             self.play_when_placed = False
 
     def read_id(self):
