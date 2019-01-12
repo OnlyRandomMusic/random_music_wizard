@@ -2,9 +2,27 @@ import requests
 import json
 
 
-def songs_of_artist(self, artist_id, number_of_songs=25):
-    song_list = get_request('{}/top?limit={}'.format(artist_id, number_of_songs), True)
+def songs_of_artist(artist_id, number_of_songs=30):
+    """return the main songs of a given artist"""
+    song_list = get_request('artist/{}/top?limit={}'.format(artist_id, number_of_songs), True)
     return song_list
+
+
+def collaboration(artist_id, songs_list=None):
+    """return the artists which have made collaborations with a given artist
+    song_list is the dict returned by songs_of_artist"""
+    if not songs_list:
+        songs_list = songs_of_artist(artist_id)
+
+    artists_list = []
+
+    for song in songs_list['data']:
+        if "contributors" in song.keys():
+            for artist in song['contributors']:
+                if not artist['id'] in artists_list and artist['id'] != artist_id:
+                    artists_list.append(artist['id'])
+
+    return artists_list
 
 
 def get_request(address, short_format=False):
