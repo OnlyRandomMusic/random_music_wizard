@@ -50,9 +50,7 @@ class MusicDatabase(Database.Database):
             data = self.sql_request('SELECT path FROM music WHERE id=?', (music_id,))
 
         if data:
-            print(info_needed, data[0][0])
             return data[0][0]
-        print('error', info_needed)
 
     def song_downloaded(self, music_id, path):
         self.sql_request("""UPDATE music

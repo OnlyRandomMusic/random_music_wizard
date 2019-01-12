@@ -34,16 +34,16 @@ class SongChooser:
     def download_song(self, music_id):
         """download a song from a Deezer link in the musics directory
         and add the path to it in the database"""
-        # try:
-        path = self.downloader.download_track(music_id, self.music_database, output=self.musics_path,
-                                              quality=self.music_quality)
-        # check=False for not check if song already exist
-        # recursive=False for download the song if quality selected doesn't exist
-        # quality can be FLAC, MP3_320, MP3_256 or MP3_128
-        self.music_database.song_downloaded(music_id, path)
-        return True
-        # except:
-        #     print("[RASP] error couldn't download " + self.music_database.get_music_info(music_id, 'title'))
+        try:
+            path = self.downloader.download_track(music_id, self.music_database, output=self.musics_path,
+                                                  quality=self.music_quality)
+            # check=False for not check if song already exist
+            # recursive=False for download the song if quality selected doesn't exist
+            # quality can be FLAC, MP3_320, MP3_256 or MP3_128
+            self.music_database.song_downloaded(music_id, path)
+            return True
+        except:
+            print("[RASP] error couldn't download " + self.music_database.get_music_info(music_id, 'title'))
 
     def get_random_from_playlist(self, link):
         """choose a random song in a playlist add it in the database and download it"""
