@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-for file in Web/
+for file in ls Web/
 do
 
     echo "copied ${file}"
