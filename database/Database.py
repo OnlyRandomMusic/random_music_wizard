@@ -20,16 +20,6 @@ class Database:
         connexion.close()
         return data
 
-    def create_table(self, table_name, attributes):
-        """create a table with the given attributes (as a tuple)"""
-        try:
-            print('CREATE TABLE ? (' + '?,'*(len(attributes)) + '?)', (table_name) + attributes)
-            print(attributes)
-
-            self.sql_request('CREATE TABLE ? (' + '?,'*(len(attributes)) + '?)', (table_name) + attributes)
-        except:
-            print('[RASP] Table {} already created'.format(table_name))
-
     def print_data(self, table, attribute='*'):
         data = self.sql_request('SELECT ? FROM ?', (attribute, table))
 
