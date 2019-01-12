@@ -56,8 +56,8 @@ class MusicDatabase(Database.Database):
 
     def song_downloaded(self, music_id, path):
         self.sql_request("""UPDATE music
-SET downloaded = 1, path = "?"
-WHERE id = ?""", (path, music_id))
+SET downloaded = 1, path = "{}"
+WHERE id = ?""".format(path), (music_id,))
 
 
 m = MusicDatabase()
