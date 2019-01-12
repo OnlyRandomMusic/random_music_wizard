@@ -28,7 +28,7 @@ class Database:
             print(tuple(attributes))
 
             self.sql_request('''CREATE TABLE ?
-                           (''' + '?,'*(len(attributes)-1) + '?)', attributes)
+(''' + '?,'*(len(attributes)-1) + '?)', attributes)
         except:
             print('[RASP] Table {} already created'.format(table_name))
 
