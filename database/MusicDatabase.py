@@ -41,13 +41,13 @@ class MusicDatabase(Database.Database):
 
         if info_needed == 'artist':
             data = self.sql_request(
-                'SELECT name FROM music JOIN artist ON artist.id = artist_id WHERE music.id=?', (music_id))
+                'SELECT name FROM music JOIN artist ON artist.id = artist_id WHERE music.id=?', (music_id,))
         elif info_needed == 'artist_id':
-            data = self.sql_request('SELECT artist_id FROM music WHERE id=?', (music_id))
+            data = self.sql_request('SELECT artist_id FROM music WHERE id=?', (music_id,))
         elif info_needed == 'title':
-            data = self.sql_request('SELECT title_short FROM music WHERE id=?', (music_id))
+            data = self.sql_request('SELECT title_short FROM music WHERE id=?', (music_id,))
         elif info_needed == 'path':
-            data = self.sql_request('SELECT path FROM music WHERE id=?', (music_id))
+            data = self.sql_request('SELECT path FROM music WHERE id=?', (music_id,))
 
         if data:
             return data[0][0]
