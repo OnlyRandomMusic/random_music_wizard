@@ -56,7 +56,3 @@ class MusicDatabase(Database.Database):
         self.sql_request("""UPDATE music
 SET downloaded = 1, path = "{}"
 WHERE id = ?""".format(path), (music_id,))
-
-
-m = MusicDatabase()
-m.create()

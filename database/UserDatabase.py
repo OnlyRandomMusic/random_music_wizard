@@ -2,9 +2,11 @@ from database import Database
 
 
 class UserDatabase(Database.Database):
-    def __init__(self):
+    def __init__(self, user_name):
         # self.connexion = sqlite3.connect(database_name + '.db')
         Database.Database.__init__(self, "user_database")
+        self.current_user = user_name
+        self.create_user(user_name)
 
     def create_user(self, user_name):
         try:
@@ -13,4 +15,22 @@ class UserDatabase(Database.Database):
         except:
             print('[RASP] User already created')
 
+    def get_score(self, music_id):
+        """return the score of a given music or 'not found' if it isn't in the table"""
+        data = self.sql_request('SELECT score FROM {} WHERE music_id=?'.format(self.current_user), (music_id,))
 
+        if data:
+            return data
+        return 'not found'
+
+    def update_score(self, music_id, score_to_add):
+        """update the score of a song or add it to the user table"""
+        score = self.get_score(music_id)
+
+        if score == 'not found':
+            # attention injection SQL possible à ce niveau
+            self.sql_request("INSERT INTO {} VALUES (?,?)".format(self.current_user), (music_id, score))
+        else:
+            score += score_to_add
+            self.sql_request("""UPDATE {} SET score = {} WHERE music_id = ?""".format(self.current_user, score),
+                             (music_id,))
