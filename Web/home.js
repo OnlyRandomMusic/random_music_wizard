@@ -2,6 +2,8 @@
 //var socket = io.connect('http://10.57.167.107:8484');
 //socket.send('lalala');
 
+var socket = io.connect('http://10.57.167.107:8484');
+
 function connect(){
 	var socket = io.connect('http://10.57.167.107:8484');
 }
