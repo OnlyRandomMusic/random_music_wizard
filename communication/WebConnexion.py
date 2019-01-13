@@ -1,4 +1,5 @@
 import socket
+from time import sleep
 
 HOST = '10.57.167.107'
 PORT = 8484
@@ -19,3 +20,5 @@ while 1:
         print('error')
     if data:
         print(data.decode('utf-8'))
+
+    sleep(1)
