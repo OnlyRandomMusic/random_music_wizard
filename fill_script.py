@@ -1,4 +1,4 @@
-import playlist_database_filler
+from database import playlist_database_filler
 
 lowest_index = input('lowest_index ')
 highest_index = input('highest_index ')

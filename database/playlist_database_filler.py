@@ -1,4 +1,4 @@
-import PlaylistDatabase
+from database import PlaylistDatabase
 import requests_tools
 from random import randint
 from time import sleep
