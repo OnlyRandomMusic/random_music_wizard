@@ -1,4 +1,4 @@
-from database import PlaylistDatabase
+import PlaylistDatabase
 import requests_tools
 from random import randint
 from time import sleep
@@ -74,4 +74,4 @@ def measure_population(lowest_id, highest_id, step_size, write_result_in_file=Fa
 def write_in_file(data_list, file_name='result'):
     with open(file_name + '.txt', 'w') as file:
         for elem in data_list:
-            file.write(str(elem[0]) + ';' + str(elem[1]))
+            file.write(str(elem[0]) + ';' + str(elem[1]) + '\n')
