@@ -2,6 +2,7 @@ from database import PlaylistDatabase
 import requests_tools
 from random import randint
 from time import sleep
+import os
 
 playlist_database = PlaylistDatabase.PlaylistDatabase()
 playlist_database.create()
@@ -67,7 +68,8 @@ def measure_population(lowest_id, highest_id, step_size, write_result_in_file=Fa
 
     if write_result_in_file:
         write_in_file(population,
-                      'population from ' + str(lowest_id) + ' to ' + str(highest_id) + ' step = ' + str(step_size))
+                      'data' + os.sep + 'population from ' + str(lowest_id) + ' to ' + str(
+                          highest_id) + ' step = ' + str(step_size))
     return population
 
 
