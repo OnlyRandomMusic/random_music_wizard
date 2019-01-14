@@ -44,3 +44,7 @@ class PlaylistDatabase(Database.Database):
 
         if data:
             return data[0][0]
+
+
+# d = PlaylistDatabase()
+# d.print_data('raw_playlist')
