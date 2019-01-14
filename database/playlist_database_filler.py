@@ -55,7 +55,7 @@ def playlist_moderate_explore(identifier=0, step_size=50, sleep_time=10):
         sleep(sleep_time)
 
 
-def measure_population(lowest_id, highest_id, step_size):
+def measure_population(lowest_id, highest_id, step_size, write_result_in_file=False, file_name=None):
     current_id = lowest_id
     population = []
 
@@ -63,7 +63,15 @@ def measure_population(lowest_id, highest_id, step_size):
         nb_success = playlist_random_explore(current_id, current_id + step_size)
         population.append((current_id, nb_success))
         current_id += step_size
+        sleep(10)
 
+    if write_result_in_file:
+        write_in_file(population,
+                      'population from ' + str(lowest_id) + ' to ' + str(highest_id) + ' step = ' + str(step_size))
     return population
 
 
+def write_in_file(data_list, file_name='result'):
+    with open(file_name + '.txt', 'w') as file:
+        for elem in data_list:
+            file.write(str(elem[0]) + ';' + str(elem[1]))
