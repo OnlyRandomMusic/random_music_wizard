@@ -57,7 +57,7 @@ def playlist_moderate_explore(identifier=0, step_size=50, sleep_time=10):
         sleep(sleep_time)
 
 
-def measure_population(lowest_id, highest_id, n, step_size=0, write_result_in_file=False):
+def measure_population(lowest_id, highest_id, n, file_name, step_size=0, write_result_in_file=False):
     if step_size == 0:
         step_size = (highest_id - lowest_id) // 50
 
@@ -84,8 +84,7 @@ def measure_population(lowest_id, highest_id, n, step_size=0, write_result_in_fi
 
     if write_result_in_file:
         write_in_file(population,
-                      'data' + os.sep + 'population from ' + str(lowest_id) + ' to ' + str(
-                          highest_id) + ' step = ' + str(step_size))
+                      'data' + os.sep + file_name)
     return population
 
 
