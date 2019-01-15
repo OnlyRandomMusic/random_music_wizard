@@ -38,8 +38,8 @@ def playlist_random_explore(lowest_id, highest_id, n=50):
                 playlist_database.add_raw_playlist(data)
                 success_nb += 1
         except:
-            print('fail')
-
+            continue
+            # print('fail')
     return success_nb
 
 
@@ -72,13 +72,14 @@ def measure_population(lowest_id, highest_id, n, step_size=0, write_result_in_fi
     for step_id in step_ids:
         population[step_id] = 0
 
-    for _ in range(n):
+    for i in range(n):
         for _ in range(nb_iterations):
             shuffled_step_ids = sample(step_ids, len(step_ids))
 
             for step_id in shuffled_step_ids:
                 nb_success = playlist_random_explore(step_id, step_id + step_size, 1)
                 population[step_id] += nb_success
+        print(str(100*(i+1)/n) + "%")
         sleep(10)
 
     if write_result_in_file:
