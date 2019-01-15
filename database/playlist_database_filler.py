@@ -1,6 +1,7 @@
 from database import PlaylistDatabase
 import requests_tools
 from random import randint
+from random import sample
 from time import sleep
 import os
 
@@ -56,14 +57,28 @@ def playlist_moderate_explore(identifier=0, step_size=50, sleep_time=10):
         sleep(sleep_time)
 
 
-def measure_population(lowest_id, highest_id, step_size, write_result_in_file=False, file_name=None):
-    current_id = lowest_id
-    population = []
+def measure_population(lowest_id, highest_id, n, step_size=0, write_result_in_file=False):
+    if step_size == 0:
+        step_size = (highest_id - lowest_id) // 50
 
-    while current_id < highest_id:
-        nb_success = playlist_random_explore(current_id, current_id + step_size)
-        population.append((current_id, nb_success))
-        current_id += step_size
+    population = {}
+    step_ids = [lowest_id + k * step_size for k in range(int((highest_id - lowest_id) / step_size))]
+    nb_iterations = 50 // len(step_ids)
+
+    if nb_iterations == 0:
+        print('error')
+        return
+
+    for step_id in step_ids:
+        population[step_id] = 0
+
+    for _ in range(n):
+        for _ in range(nb_iterations):
+            shuffled_step_ids = sample(step_ids, len(step_ids))
+
+            for step_id in shuffled_step_ids:
+                nb_success = playlist_random_explore(step_id, step_id + step_size, 1)
+                population[step_id] += nb_success
         sleep(10)
 
     if write_result_in_file:
@@ -73,7 +88,7 @@ def measure_population(lowest_id, highest_id, step_size, write_result_in_file=Fa
     return population
 
 
-def write_in_file(data_list, file_name='result'):
+def write_in_file(data_dict, file_name='result'):
     with open(file_name + '.txt', 'w') as file:
-        for elem in data_list:
-            file.write(str(elem[0]) + ';' + str(elem[1]) + '\n')
+        for elem in data_dict.keys():
+            file.write(str(elem) + ';' + str(data_dict[elem]) + '\n')
