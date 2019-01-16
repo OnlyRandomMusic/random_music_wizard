@@ -9,7 +9,7 @@ class PlaylistDatabase(Database.Database):
     def create(self):
         try:
             self.sql_request('''CREATE TABLE raw_playlist
-                            (id, name)''')
+                            (address, id, name)''')
 
             self.sql_request('''CREATE TABLE playlist_link
                             (playlist_id, music_id)''')
@@ -23,11 +23,12 @@ class PlaylistDatabase(Database.Database):
             print("[RASP] Playlist {} already in database".format(playlist['title']))
             return
 
+        address = self.get_count('raw_playlist')
         self.sql_request("INSERT INTO raw_playlist VALUES (?,?)", (
-            playlist['id'], playlist['title']))
+            address, playlist['id'], playlist['title']))
 
         for music in playlist['tracks']['data']:
-            self.sql_request("INSERT INTO playlist_link VALUES (?,?)", (playlist['id'], music['id']))
+            self.sql_request("INSERT INTO playlist_link VALUES (?,?)", (address, music['id']))
 
         print("[RASP] Successfully added {} in database".format(playlist['title']))
 
@@ -44,6 +45,8 @@ class PlaylistDatabase(Database.Database):
 
         if data:
             return data[0][0]
+        else:
+            return 0
 
 
 # d = PlaylistDatabase()

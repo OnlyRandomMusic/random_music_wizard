@@ -9,5 +9,5 @@ def plot_file(file_name):
         plt.scatter(X, Y)
 
 
-plot_file('population from 0 to 2000000000 step = 40000000')
+plot_file('100 in 0 to 100 000 000')
 plt.show()
