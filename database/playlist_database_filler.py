@@ -39,7 +39,7 @@ def playlist_random_explore(lowest_id, highest_id, n=50):
                 success_nb += 1
         except:
             continue
-            # print('fail')
+
     return success_nb
 
 

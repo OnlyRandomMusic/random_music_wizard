@@ -24,7 +24,7 @@ class PlaylistDatabase(Database.Database):
             return
 
         address = self.get_count('raw_playlist')
-        self.sql_request("INSERT INTO raw_playlist VALUES (?,?)", (
+        self.sql_request("INSERT INTO raw_playlist VALUES (?,?,?)", (
             address, playlist['id'], playlist['title']))
 
         for music in playlist['tracks']['data']:
