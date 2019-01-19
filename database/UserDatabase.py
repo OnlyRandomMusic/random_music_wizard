@@ -1,4 +1,5 @@
 from database import Database
+from random import randint
 
 
 class UserDatabase(Database.Database):
@@ -42,6 +43,24 @@ class UserDatabase(Database.Database):
             return 0
         return data[0][0]
 
+    def get_random_song(self, score_min='no'):
+        """return a random song with a better score than score_min and return 'fail' if no songs fits"""
+        if score_min == 'no':
+            address_max = self.get_count(self.current_user)-1
+            address = randint(0, address_max)
+            data = self.sql_request('SELECT music_id FROM {} WHERE address = {}'.format(self.current_user, address))
+            music_id = data[0][0]
+        else:
+            data = self.sql_request('SELECT music_id FROM {} WHERE score >= {}'.format(self.current_user, str(score_min)))
+
+            if not data:
+                return 'fail'
+
+            index = randint(0, len(data)-1)
+            music_id = data[index][0]
+
+        return music_id
+
 # d = UserDatabase('remi')
 # d.update_score(12,1)
 # d.update_score(4,-1)
@@ -50,3 +69,6 @@ class UserDatabase(Database.Database):
 # d.update_score(11,-0.5)
 # d.print_data('remi')
 # print(d.get_average_score())
+# print(d.get_random_song(20))
+# print(d.get_random_song(0))
+# print(d.get_random_song())
