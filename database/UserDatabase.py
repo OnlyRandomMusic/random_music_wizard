@@ -11,7 +11,7 @@ class UserDatabase(Database.Database):
     def create_user(self, user_name):
         try:
             self.sql_request('''CREATE TABLE {}
-                           (music_id, score)'''.format(user_name))
+                           (address, music_id, score)'''.format(user_name))
         except:
             print('[RASP] User already created')
 
@@ -28,7 +28,8 @@ class UserDatabase(Database.Database):
 
         if score == 'not found':
             # attention injection SQL possible à ce niveau
-            self.sql_request("INSERT INTO {} VALUES (?,?)".format(self.current_user), (music_id, score_to_add))
+            address = self.get_count(self.current_user)
+            self.sql_request("INSERT INTO {} VALUES (?,?,?)".format(self.current_user), (address, music_id, score_to_add))
         else:
             score += score_to_add
             self.sql_request("""UPDATE {} SET score = {} WHERE music_id = ?""".format(self.current_user, score),

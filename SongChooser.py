@@ -3,6 +3,7 @@ import os
 import random
 import deezer_load
 from database import UserDatabase
+from database import PlaylistDatabase
 
 
 class SongChooser:
@@ -17,6 +18,7 @@ class SongChooser:
         mail, password = self.read_id()
         self.downloader = deezer_load.Login(mail, password)
         self.user_database = UserDatabase.UserDatabase(user_name)
+        self.playlist_database = PlaylistDatabase.PlaylistDatabase()
 
         # to avoid making a lot of requests during the tests
         # self.starting_playlist = requests_tools.get_request("https://api.deezer.com/playlist/5164440904")  # playlist raspi
@@ -30,7 +32,8 @@ class SongChooser:
         self.need_to_put_first = 0
         self.play_when_placed = False
 
-        self.score_list = []
+        self.mem_size = 4
+        self.score_list = [0] * self.mem_size
         self.score_threshold = 0
 
         # for song in self.starting_playlist["tracks"]["data"]:
@@ -90,19 +93,39 @@ class SongChooser:
 
     def get_next_song(self):
         """return the next song to play must be completed"""
-        queue_data = self.get_next_in_flow()
-        #
-        # if self.user_database.get_count(self.user_database.current_user) == 0:
-        #     queue_data = self.choose_original_song()
-        # else:
+        # queue_data = self.get_next_in_flow()
 
+        self.score_list.pop(0)
 
+        if self.user_database.get_count(self.user_database.current_user) == 0:
+            music_id = self.choose_original_song()
+            self.score_list.append(0)
+        else:
+            # in order that the average score is higher than the threshold
+            score_min = self.mem_size * self.score_threshold - sum(self.score_list)
+            music_id = self.user_database.get_random_song(score_min)
+
+            if music_id == 'fail':
+                # no song with this min score
+                if random.random() > 0.5:
+                    music_id = self.user_database.get_random_song()
+                else:
+                    music_id = self.choose_original_song()
+                self.score_list.append(0)
+            else:
+                # a song has been found
+                self.score_list.append(self.user_database.get_score(music_id))
+
+        queue_data = music_id
         return queue_data
 
-    # def choose_original_song(self):
-    #     """choose a song which is not in the user database"""
-    #
-    #     return queue_data
+    def choose_original_song(self):
+        """choose a really random song"""
+        max_address = self.playlist_database.get_count("raw_playlist") - 1
+        address = random.randint(0, max_address)
+        music_id = self.playlist_database.get_random_from_playlist(address)
+        queue_data = music_id
+        return queue_data
 
     def play_search(self, research, immediately):
         """play the researched song, immediately or after the current song"""
@@ -140,5 +163,3 @@ class SongChooser:
                 return mail, password
         except:
             print("[error] missing the file identifiers.txt or missing mail and password in this file")
-
-
