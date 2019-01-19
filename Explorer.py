@@ -10,6 +10,7 @@ class Explorer:
         self.music_database = MusicDatabase.MusicDatabase()
         self.playlist_database = PlaylistDatabase.PlaylistDatabase()
         self.user_database = UserDatabase.UserDatabase(user_name)
+        self.user_database.reset_music_played()
 
     def set_score(self, music_id, score):
         if not score:

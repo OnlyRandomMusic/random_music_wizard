@@ -12,9 +12,18 @@ class UserDatabase(Database.Database):
     def create_user(self, user_name):
         try:
             self.sql_request('''CREATE TABLE {}
-                           (address, music_id, score)'''.format(user_name))
+                           (address, music_id, score, has_been_played)'''.format(user_name))
         except:
             print('[RASP] User already created')
+
+    def reset_music_played(self):
+        self.open_fast_connexion()
+        for address in range(self.get_count(self.current_user)):
+            self.sql_request(
+                """UPDATE {} SET has_been_played = {} WHERE address = ?""".format(self.current_user, 'FALSE'),
+                (address,))
+
+        self.close_fast_connexion()
 
     def get_score(self, music_id):
         """return the score of a given music or 'not found' if it isn't in the table"""
@@ -30,7 +39,8 @@ class UserDatabase(Database.Database):
         if score == 'not found':
             # attention injection SQL possible à ce niveau
             address = self.get_count(self.current_user)
-            self.sql_request("INSERT INTO {} VALUES (?,?,?)".format(self.current_user), (address, music_id, score_to_add))
+            self.sql_request("INSERT INTO {} VALUES (?,?,?,?)".format(self.current_user),
+                             (address, music_id, score_to_add, 'FALSE'))
         else:
             score += score_to_add
             self.sql_request("""UPDATE {} SET score = {} WHERE music_id = ?""".format(self.current_user, score),
@@ -46,27 +56,33 @@ class UserDatabase(Database.Database):
     def get_random_song(self, score_min='no'):
         """return a random song with a better score than score_min and return 'fail' if no songs fits"""
         if score_min == 'no':
-            address_max = self.get_count(self.current_user)-1
+            address_max = self.get_count(self.current_user) - 1
             address = randint(0, address_max)
-            data = self.sql_request('SELECT music_id FROM {} WHERE address = {}'.format(self.current_user, address))
+            data = self.sql_request('SELECT music_id FROM {} WHERE address = {} AND has_been_played = FALSE'.format(self.current_user, address))
             music_id = data[0][0]
         else:
-            data = self.sql_request('SELECT music_id FROM {} WHERE score >= {}'.format(self.current_user, str(score_min)))
+            data = self.sql_request(
+                'SELECT music_id FROM {} WHERE score >= {} AND has_been_played = FALSE'.format(self.current_user, str(score_min)))
 
             if not data:
                 return 'fail'
 
-            index = randint(0, len(data)-1)
+            index = randint(0, len(data) - 1)
             music_id = data[index][0]
 
         return music_id
 
+    def has_been_played(self, music_id):
+        self.sql_request("""UPDATE {} SET has_been_played = {} WHERE music_id = ?""".format(self.current_user, 'TRUE'),
+                         (music_id,))
+
+
 # d = UserDatabase('remi')
-# d.update_score(12,1)
-# d.update_score(4,-1)
-# d.update_score(12,0.1)
-# d.update_score(11,0.5)
-# d.update_score(11,-0.5)
+# d.update_score(12, 1)
+# d.update_score(4, -1)
+# d.update_score(12, 0.1)
+# d.update_score(11, 0.5)
+# d.update_score(11, -0.5)
 # d.print_data('remi')
 # print(d.get_average_score())
 # print(d.get_random_song(20))

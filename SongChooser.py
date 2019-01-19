@@ -99,6 +99,7 @@ class SongChooser:
         while not success:
             next_music_id = self.choose_next_song()
             success = self.download_song(next_music_id)
+            self.user_database.has_been_played(next_music_id)
 
         queue_data = next_music_id
         return queue_data
