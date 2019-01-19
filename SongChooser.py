@@ -129,7 +129,10 @@ class SongChooser:
         return music_id
 
     def choose_original_song(self):
-        return self.playlist_database.get_really_random_song()
+        music_id = self.playlist_database.get_really_random_song()
+        song = requests_tools.get_request('track/' + str(music_id), True)
+        self.music_database.add_song(song)
+        return music_id
 
     def play_search(self, research, immediately):
         """play the researched song, immediately or after the current song"""
