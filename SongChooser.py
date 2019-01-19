@@ -117,7 +117,7 @@ class SongChooser:
 
             if music_id == 'fail':
                 # no song with this min score
-                if random() > 0.5:
+                if random() > 0.9:
                     music_id = self.user_database.get_random_song()
                 else:
                     music_id = self.choose_original_song()
