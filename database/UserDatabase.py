@@ -40,7 +40,7 @@ class UserDatabase(Database.Database):
             # attention injection SQL possible à ce niveau
             address = self.get_count(self.current_user)
             self.sql_request("INSERT INTO {} VALUES (?,?,?,?)".format(self.current_user),
-                             (address, music_id, score_to_add, 'FALSE'))
+                             (address, music_id, score_to_add, "'false'"))
         else:
             score += score_to_add
             self.sql_request("""UPDATE {} SET score = {} WHERE music_id = ?""".format(self.current_user, score),
@@ -58,11 +58,11 @@ class UserDatabase(Database.Database):
         if score_min == 'no':
             address_max = self.get_count(self.current_user) - 1
             address = randint(0, address_max)
-            data = self.sql_request('SELECT music_id FROM {} WHERE address = {} AND has_been_played = FALSE'.format(self.current_user, address))
+            data = self.sql_request("SELECT music_id FROM {} WHERE address = {} AND has_been_played = 'false'".format(self.current_user, address))
             music_id = data[0][0]
         else:
             data = self.sql_request(
-                'SELECT music_id FROM {} WHERE score >= {} AND has_been_played = FALSE'.format(self.current_user, str(score_min)))
+                "SELECT music_id FROM {} WHERE score >= {} AND has_been_played = 'false'".format(self.current_user, str(score_min)))
 
             if not data:
                 return 'fail'
@@ -73,7 +73,7 @@ class UserDatabase(Database.Database):
         return music_id
 
     def has_been_played(self, music_id):
-        self.sql_request("""UPDATE {} SET has_been_played = {} WHERE music_id = ?""".format(self.current_user, 'TRUE'),
+        self.sql_request("""UPDATE {} SET has_been_played = {} WHERE music_id = ?""".format(self.current_user, "'true'"),
                          (music_id,))
 
 

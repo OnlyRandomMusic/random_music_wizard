@@ -24,7 +24,7 @@ class Database:
             connexion.commit()
             connexion.close()
         else:
-            print('fast')
+            # print('fast')
 
             if values:
                 self.cursor.execute(request, values)
