@@ -20,7 +20,7 @@ class UserDatabase(Database.Database):
         self.open_fast_connexion()
         for address in range(self.get_count(self.current_user)):
             self.sql_request(
-                """UPDATE {} SET has_been_played = {} WHERE address = ?""".format(self.current_user, 'FALSE'),
+                """UPDATE {} SET has_been_played = {} WHERE address = ?""".format(self.current_user, "'false'"),
                 (address,))
 
         self.close_fast_connexion()
