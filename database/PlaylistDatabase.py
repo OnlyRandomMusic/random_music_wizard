@@ -40,14 +40,6 @@ class PlaylistDatabase(Database.Database):
                 return 0
             return data[0][0]
 
-    def get_count(self, table):
-        data = self.sql_request('SELECT COUNT(*) FROM {}'.format(table))
-
-        if data:
-            return data[0][0]
-        else:
-            return 0
-
 
 # d = PlaylistDatabase()
 # d.print_data('raw_playlist')

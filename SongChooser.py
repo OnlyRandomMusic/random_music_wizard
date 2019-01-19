@@ -30,6 +30,9 @@ class SongChooser:
         self.need_to_put_first = 0
         self.play_when_placed = False
 
+        self.score_list = []
+        self.score_threshold = 0
+
         # for song in self.starting_playlist["tracks"]["data"]:
         #     self.music_database.add_song(song)
 

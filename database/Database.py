@@ -40,6 +40,14 @@ class Database:
         for element in data:
             print(element)
 
+    def get_count(self, table):
+        data = self.sql_request('SELECT COUNT(*) FROM {}'.format(table))
+
+        if data:
+            return data[0][0]
+        else:
+            return 0
+
     def open_fast_connexion(self):
         """open a fast access connexion but needs to be close"""
         self.connexion = sqlite3.connect(self.database_name)
