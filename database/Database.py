@@ -12,25 +12,27 @@ class Database:
     def sql_request(self, request, values=None):
         """values is a tuple"""
         if not self.connexion:
-            self.connexion = sqlite3.connect(self.database_name)
-            self.cursor = self.connexion.cursor()
-            need_to_be_closed = True
-            # print('classic')
+            connexion = sqlite3.connect(self.database_name)
+            cursor = connexion.cursor()
+
+            if values:
+                cursor.execute(request, values)
+            else:
+                cursor.execute(request)
+
+            data = cursor.fetchall()
+            connexion.commit()
+            connexion.close()
         else:
-            need_to_be_closed = False
             print('fast')
 
-        if values:
-            self.cursor.execute(request, values)
-        else:
-            self.cursor.execute(request)
+            if values:
+                self.cursor.execute(request, values)
+            else:
+                self.cursor.execute(request)
 
-        data = self.cursor.fetchall()
-        self.connexion.commit()
-
-        if need_to_be_closed:
-            self.connexion.close()
-            self.connexion = False
+            data = self.cursor.fetchall()
+            self.connexion.commit()
 
         return data
 
