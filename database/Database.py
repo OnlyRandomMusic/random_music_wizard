@@ -18,7 +18,7 @@ class Database:
             # print('classic')
         else:
             need_to_be_closed = False
-            # print('fast')
+            print('fast')
 
         if values:
             self.cursor.execute(request, values)
