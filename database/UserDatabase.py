@@ -59,6 +59,10 @@ class UserDatabase(Database.Database):
             address_max = self.get_count(self.current_user) - 1
             address = randint(0, address_max)
             data = self.sql_request("SELECT music_id FROM {} WHERE address = {} AND has_been_played = 'false'".format(self.current_user, address))
+
+            if not data:
+                return 'fail'
+
             music_id = data[0][0]
         else:
             data = self.sql_request(
