@@ -6,18 +6,32 @@ class Database:
     def __init__(self, database_name='database'):
         self.dir_path = os.path.dirname(os.path.realpath(__file__))
         self.database_name = self.dir_path + '/' + database_name + '.db'
+        self.connexion = False
+        self.cursor = None
 
     def sql_request(self, request, values=None):
         """values is a tuple"""
-        connexion = sqlite3.connect(self.database_name)
-        cursor = connexion.cursor()
-        if values:
-            cursor.execute(request, values)
+        if not self.connexion:
+            self.connexion = sqlite3.connect(self.database_name)
+            self.cursor = self.connexion.cursor()
+            need_to_be_closed = True
+            # print('classic')
         else:
-            cursor.execute(request)
-        data = cursor.fetchall()
-        connexion.commit()
-        connexion.close()
+            need_to_be_closed = False
+            # print('fast')
+
+        if values:
+            self.cursor.execute(request, values)
+        else:
+            self.cursor.execute(request)
+
+        data = self.cursor.fetchall()
+        self.connexion.commit()
+
+        if need_to_be_closed:
+            self.connexion.close()
+            self.connexion = False
+
         return data
 
     def print_data(self, table, attribute='*'):
@@ -25,3 +39,15 @@ class Database:
 
         for element in data:
             print(element)
+
+    def open_fast_connexion(self):
+        """open a fast access connexion but needs to be close"""
+        self.connexion = sqlite3.connect(self.database_name)
+        self.cursor = self.connexion.cursor()
+
+    def close_fast_connexion(self):
+        try:
+            self.connexion.close()
+        except:
+            print("error no connexion currently open")
+        self.connexion = False

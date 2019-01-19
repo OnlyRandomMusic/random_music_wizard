@@ -7,6 +7,7 @@ import os
 
 playlist_database = PlaylistDatabase.PlaylistDatabase()
 playlist_database.create()
+playlist_database.open_fast_connexion()
 
 
 def playlist_brute_explore(n, m):
@@ -85,6 +86,8 @@ def measure_population(lowest_id, highest_id, n, file_name, step_size=0, write_r
     if write_result_in_file:
         write_in_file(population,
                       'data' + os.sep + file_name)
+
+    playlist_database.close_fast_connexion()
     return population
 
 
