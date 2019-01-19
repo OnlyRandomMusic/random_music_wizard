@@ -95,6 +95,15 @@ class SongChooser:
         """return the next song to play must be completed"""
         # queue_data = self.get_next_in_flow()
 
+        success = False
+        while not success:
+            next_music_id = self.choose_next_song()
+            success = self.download_song(next_music_id)
+
+        queue_data = next_music_id
+        return queue_data
+
+    def choose_next_song(self):
         self.score_list.pop(0)
 
         if self.user_database.get_count(self.user_database.current_user) == 0:
@@ -116,8 +125,7 @@ class SongChooser:
                 # a song has been found
                 self.score_list.append(self.user_database.get_score(music_id))
 
-        queue_data = music_id
-        return queue_data
+        return music_id
 
     def choose_original_song(self):
         return self.playlist_database.get_really_random_song()
