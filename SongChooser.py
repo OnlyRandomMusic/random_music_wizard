@@ -90,8 +90,18 @@ class SongChooser:
 
     def get_next_song(self):
         """return the next song to play must be completed"""
-        # queue_data = self.get_random_from_playlist(-1)
-        queue_data = self.get_next_in_flow()
+        # queue_data = self.get_next_in_flow()
+
+        if self.user_database.get_count(self.user_database.current_user) == 0:
+            queue_data = self.choose_original_song()
+        else:
+
+
+        return queue_data
+
+    def choose_original_song(self):
+        """choose a song which is not in the user database"""
+
         return queue_data
 
     def play_search(self, research, immediately):

@@ -85,6 +85,7 @@ class Login:
 
     def download(self, ids, name, location, quality, check):
         song = {}
+        print('trying')
 
         def login():
             try:
@@ -139,6 +140,7 @@ class Login:
                 i += 1
 
         infos = login()
+        print('logged')
         while not "MD5_ORIGIN" in str(infos):
             infos = login()
         song['md5'] = infos['results']['MD5_ORIGIN']
@@ -158,17 +160,18 @@ class Login:
                 quality = "1"
         except KeyError:
             raise QualityNotFound("The quality chose can't be downloaded")
+        print('token')
         try:
             fh = requests.get(genurl(quality))
         except:
             fh = requests.get(genurl(quality))
         if len(fh.content) == 0:
             raise TrackNotFound("")
-        # print(location + name)
+        print(location + name)
         open(location + name, "wb").write(fh.content)
-        # print('found')
+        print('found')
         fo = open(location + name, "wb")
-        # print('written')
+        print('written')
         decryptfile(fh.iter_content(2048), calcbfkey(ids), fo)
 
     # the custom function to download a track

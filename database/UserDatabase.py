@@ -34,6 +34,13 @@ class UserDatabase(Database.Database):
             self.sql_request("""UPDATE {} SET score = {} WHERE music_id = ?""".format(self.current_user, score),
                              (music_id,))
 
+    def get_average_score(self):
+        """return the average score of all musics in the user table"""
+        data = self.sql_request('SELECT AVG(score) FROM {}'.format(self.current_user))
+        if not data:
+            return 0
+        return data[0][0]
+
 # d = UserDatabase('remi')
 # d.update_score(12,1)
 # d.update_score(4,-1)
@@ -41,3 +48,4 @@ class UserDatabase(Database.Database):
 # d.update_score(11,0.5)
 # d.update_score(11,-0.5)
 # d.print_data('remi')
+# print(d.get_average_score())
