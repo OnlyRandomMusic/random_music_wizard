@@ -165,7 +165,9 @@ class Login:
             fh = requests.get(genurl(quality))
         except:
             fh = requests.get(genurl(quality))
+        print(genurl(quality))
         if len(fh.content) == 0:
+            print("not found")
             raise TrackNotFound("")
         print(location + name)
         open(location + name, "wb").write(fh.content)
