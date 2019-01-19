@@ -164,8 +164,11 @@ class Login:
             fh = requests.get(genurl(quality))
         if len(fh.content) == 0:
             raise TrackNotFound("")
+        print(location + name)
         open(location + name, "wb").write(fh.content)
+        print('found')
         fo = open(location + name, "wb")
+        print('written')
         decryptfile(fh.iter_content(2048), calcbfkey(ids), fo)
 
     # the custom function to download a track
