@@ -1,6 +1,6 @@
 import requests_tools
 import os
-import random
+from random import random
 import deezer_load
 from database import UserDatabase
 from database import PlaylistDatabase
@@ -107,7 +107,7 @@ class SongChooser:
 
             if music_id == 'fail':
                 # no song with this min score
-                if random.random() > 0.5:
+                if random() > 0.5:
                     music_id = self.user_database.get_random_song()
                 else:
                     music_id = self.choose_original_song()
@@ -120,12 +120,7 @@ class SongChooser:
         return queue_data
 
     def choose_original_song(self):
-        """choose a really random song"""
-        max_address = self.playlist_database.get_count("raw_playlist") - 1
-        address = random.randint(0, max_address)
-        music_id = self.playlist_database.get_random_from_playlist(address)
-        queue_data = music_id
-        return queue_data
+        return self.playlist_database.get_really_random_song()
 
     def play_search(self, research, immediately):
         """play the researched song, immediately or after the current song"""

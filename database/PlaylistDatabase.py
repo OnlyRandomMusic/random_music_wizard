@@ -1,4 +1,5 @@
 from database import Database
+from random import randint
 
 
 class PlaylistDatabase(Database.Database):
@@ -11,6 +12,7 @@ class PlaylistDatabase(Database.Database):
             self.sql_request('''CREATE TABLE raw_playlist
                             (address, id, name)''')
 
+            # WARNING playlist_id is address and not the real playlist_id
             self.sql_request('''CREATE TABLE playlist_link
                             (playlist_id, music_id)''')
         except:
@@ -40,6 +42,17 @@ class PlaylistDatabase(Database.Database):
                 return 0
             return data[0][0]
 
+    def get_really_random_song(self):
+        address_max = self.get_count("raw_playlist")-1
+        address = randint(0, address_max)
+        data = self.sql_request(
+            'SELECT music_id FROM playlist_link WHERE playlist_id = {}'.format(str(address)))
+
+        # print(data)
+        index = randint(0, len(data) - 1)
+        return data[index][0]
+
 
 # d = PlaylistDatabase()
 # d.print_data('raw_playlist')
+# print(d.get_really_random_song())
