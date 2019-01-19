@@ -85,7 +85,7 @@ class Login:
 
     def download(self, ids, name, location, quality, check):
         song = {}
-        print('trying')
+        print('trying',ids, name, location, quality, check)
 
         def login():
             try:
