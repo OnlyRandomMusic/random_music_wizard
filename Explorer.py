@@ -1,15 +1,16 @@
 import requests_tools
 from database import MusicDatabase
 from database import PlaylistDatabase
-from time import sleep
-from random import randint
+from database import UserDatabase
+# from time import sleep
 
 
 class Explorer:
-    def __init__(self, user_database):
+    def __init__(self, user_name):
         self.music_database = MusicDatabase.MusicDatabase()
         self.playlist_database = PlaylistDatabase.PlaylistDatabase()
-        self.user_database = user_database
+        self.user_database = UserDatabase.UserDatabase(user_name)
+        self.user_database.open_fast_connexion()
 
     def set_score(self, music_id, score):
         if not score:

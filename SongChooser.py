@@ -2,10 +2,11 @@ import requests_tools
 import os
 import random
 import deezer_load
+from database import UserDatabase
 
 
 class SongChooser:
-    def __init__(self, music_database, player, song_quality="MP3_128"):
+    def __init__(self, music_database, player, user_name, song_quality="MP3_128"):
         """music_quality can be FLAC, MP3_320, MP3_256 or MP3_128"""
         # name of the current directory in order to save musics in the right place
         self.dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -15,21 +16,22 @@ class SongChooser:
         self.player = player
         mail, password = self.read_id()
         self.downloader = deezer_load.Login(mail, password)
+        self.user_database = UserDatabase.UserDatabase(user_name)
 
         # to avoid making a lot of requests during the tests
         # self.starting_playlist = requests_tools.get_request("https://api.deezer.com/playlist/5164440904")  # playlist raspi
         self.starting_playlist = requests_tools.get_request(
             "https://api.deezer.com/playlist/1083721131")  # playlist au coin du feu
 
-        self.user_id = 430225295
-        self.user_data = requests_tools.get_request("https://api.deezer.com/user/" + str(self.user_id))
-        self.flow = []
+        self.deezer_user_id = 430225295
+        self.deezer_user_data = requests_tools.get_request("https://api.deezer.com/user/" + str(self.deezer_user_id))
+        self.deezer_flow = []
 
         self.need_to_put_first = 0
         self.play_when_placed = False
 
-        for song in self.starting_playlist["tracks"]["data"]:
-            self.music_database.add_song(song)
+        # for song in self.starting_playlist["tracks"]["data"]:
+        #     self.music_database.add_song(song)
 
     def download_song(self, music_id):
         """download a song from a Deezer link in the musics directory
@@ -64,9 +66,9 @@ class SongChooser:
 
     def increase_flow_buffer(self):
         """increase the size of the self.flow list"""
-        while not self.flow:
-            flow = requests_tools.get_request(self.user_data['tracklist'])
-            self.flow = self.flow + [song['id'] for song in flow['data']]
+        while not self.deezer_flow:
+            flow = requests_tools.get_request(self.deezer_user_data['tracklist'])
+            self.deezer_flow = self.deezer_flow + [song['id'] for song in flow['data']]
 
             for song in flow["data"]:
                 self.music_database.add_song(song)
@@ -75,10 +77,10 @@ class SongChooser:
         """return the next music in the flow"""
         success = False
         while not success:
-            if not self.flow:
+            if not self.deezer_flow:
                 self.increase_flow_buffer()
 
-            next_music_id = self.flow.pop(0)
+            next_music_id = self.deezer_flow.pop(0)
             success = self.download_song(next_music_id)
 
         return next_music_id

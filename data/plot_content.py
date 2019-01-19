@@ -9,5 +9,5 @@ def plot_file(file_name):
         plt.scatter(X, Y)
 
 
-plot_file('100 in 0 to 100 000 000')
+plot_file('10')
 plt.show()
