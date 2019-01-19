@@ -107,7 +107,7 @@ class SongChooser:
     def choose_next_song(self):
         self.score_list.pop(0)
 
-        if self.user_database.get_count(self.user_database.current_user) == 0:
+        if self.user_database.get_count(self.user_database.current_user) == 0 or random() > 0.9:
             music_id = self.choose_original_song()
             self.score_list.append(0)
         else:
