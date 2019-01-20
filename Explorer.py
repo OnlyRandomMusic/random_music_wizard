@@ -16,31 +16,31 @@ class Explorer:
         if not score:
             return
 
-        artist_id = self.music_database.get_music_info(music_id, 'artist_id')
-        self.user_database.update_score(music_id, score)
-        song_updated = [music_id]
-
-        # first step
-        songs_of_artist = requests_tools.songs_of_artist(artist_id)
-
-        if songs_of_artist:
-            for song in songs_of_artist:
-                if not song['id'] in song_updated:
-                    self.user_database.update_score(song['id'], score*0.5)
-                    song_updated.append(song['id'])
-                    self.music_database.add_song(song)
-
-            # second step
-            collaborators = requests_tools.collaboration(artist_id, songs_of_artist)
-
-            if collaborators:
-                for collaborator in collaborators:
-                    songs_of_collaborator = requests_tools.songs_of_artist(collaborator, 10)
-                    for song in songs_of_collaborator:
-                        if not song['id'] in song_updated:
-                            self.user_database.update_score(song['id'], score*0.1)
-                            song_updated.append(song['id'])
-                            self.music_database.add_song(song)
+        # artist_id = self.music_database.get_music_info(music_id, 'artist_id')
+        # self.user_database.update_score(music_id, score)
+        # song_updated = [music_id]
+        #
+        # # first step
+        # songs_of_artist = requests_tools.songs_of_artist(artist_id)
+        #
+        # if songs_of_artist:
+        #     for song in songs_of_artist:
+        #         if not song['id'] in song_updated:
+        #             self.user_database.update_score(song['id'], score*0.5)
+        #             song_updated.append(song['id'])
+        #             self.music_database.add_song(song)
+        #
+        #     # second step
+        #     collaborators = requests_tools.collaboration(artist_id, songs_of_artist)
+        #
+        #     if collaborators:
+        #         for collaborator in collaborators:
+        #             songs_of_collaborator = requests_tools.songs_of_artist(collaborator, 10)
+        #             for song in songs_of_collaborator:
+        #                 if not song['id'] in song_updated:
+        #                     self.user_database.update_score(song['id'], score*0.1)
+        #                     song_updated.append(song['id'])
+        #                     self.music_database.add_song(song)
 
         # third step
         # playlist search

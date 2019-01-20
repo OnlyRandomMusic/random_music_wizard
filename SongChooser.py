@@ -53,6 +53,7 @@ class SongChooser:
             # recursive=False for download the song if quality selected doesn't exist
             # quality can be FLAC, MP3_320, MP3_256 or MP3_128
             self.music_database.song_downloaded(music_id, path)
+            print('succesfully downloaded ' + path)
             return True
         except:
             print("[RASP] error couldn't download " + self.music_database.get_music_info(music_id, 'title'))
