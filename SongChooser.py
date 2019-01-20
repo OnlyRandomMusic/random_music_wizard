@@ -1,7 +1,8 @@
 import requests_tools
 import os
 from random import random
-import deezer_load
+# import deezer_load
+import deezloader
 from database import UserDatabase
 from database import PlaylistDatabase
 
@@ -16,7 +17,8 @@ class SongChooser:
         self.music_database = music_database
         self.player = player
         mail, password = self.read_id()
-        self.downloader = deezer_load.Login(mail, password)
+        # self.downloader = deezer_load.Login(mail, password)
+        self.downloader = deezloader.Login(mail, password)
         self.user_database = UserDatabase.UserDatabase(user_name)
         self.playlist_database = PlaylistDatabase.PlaylistDatabase()
 
@@ -43,8 +45,10 @@ class SongChooser:
         """download a song from a Deezer link in the musics directory
         and add the path to it in the database"""
         try:
-            path = self.downloader.download_track(music_id, self.music_database, output=self.musics_path,
-                                                  quality=self.music_quality)
+            path = self.downloader.download_trackdee("https://www.deezer.com/fr/track/" + str(music_id),
+                                                     output=self.musics_path, quality="MP3_320")
+            # path = self.downloader.download_track(music_id, self.music_database, output=self.musics_path,
+            #                                       quality=self.music_quality)
             # check=False for not check if song already exist
             # recursive=False for download the song if quality selected doesn't exist
             # quality can be FLAC, MP3_320, MP3_256 or MP3_128
