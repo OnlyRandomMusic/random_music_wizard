@@ -35,7 +35,7 @@ def play_song(path):
         print("[RASP] play " + path)
 
 
-def download_song(link, path, mail, password, quality="MP3_256"):
+def download_song(link, path, mail, password, quality="MP3_128"):
     """download a song from a Deezer link in a selected directory
     quality can be FLAC, MP3_320, MP3_256 or MP3_128"""
     if platform.uname()[1] == OS_RASPBERRY:
