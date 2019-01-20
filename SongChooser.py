@@ -46,7 +46,7 @@ class SongChooser:
         and add the path to it in the database"""
         try:
             path = self.downloader.download_trackdee("https://www.deezer.com/fr/track/" + str(music_id),
-                                                     output=self.musics_path, quality="MP3_320")
+                                                     output=self.musics_path, quality=self.music_quality)
             # path = self.downloader.download_track(music_id, self.music_database, output=self.musics_path,
             #                                       quality=self.music_quality)
             # check=False for not check if song already exist
