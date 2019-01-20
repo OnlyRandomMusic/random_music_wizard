@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import os
-import json
 import mutagen
 import spotipy
 import requests
@@ -9,13 +8,11 @@ from Crypto.Hash import MD5
 from bs4 import BeautifulSoup
 import spotipy.oauth2 as oauth2
 from mutagen.id3 import ID3, APIC
-from mutagen.easyid3 import EasyID3
 from collections import OrderedDict
 from binascii import a2b_hex, b2a_hex
 from mutagen.flac import FLAC, Picture
 from Crypto.Cipher import AES, Blowfish
 
-req = requests.Session()
 localdir = os.getcwd()
 
 
@@ -70,55 +67,58 @@ class QualityNotFound(Exception):
 
 class Login:
     def __init__(self, mail, password):
-        check = json.loads(req.post("http://www.deezer.com/ajax/gw-light.php", params).text)['results'][
-            'checkFormLogin']
+        self.req = requests.Session()
+        check = self.req.post("http://www.deezer.com/ajax/gw-light.php", params).json()['results']['checkFormLogin']
         post_data = {
             "type": "login",
             "mail": mail,
             "password": password,
             "checkFormLogin": check
         }
-        if "success" == req.post("https://www.deezer.com/ajax/action.php", post_data).text:
-            print("[RASP] Success, you are logged in")
+        if "success" == self.req.post("https://www.deezer.com/ajax/action.php", post_data).text:
+            print("Success, you are in")
         else:
-            raise BadCredentials("[RASP] Invalid password or username")
+            raise BadCredentials("Invalid password or username")
 
-    def download(self, ids, name, location, quality, check):
-        song = {}
-        # print('trying', ids, name, location, quality, check)
+    def request(self, url):
+        try:
+            thing = requests.get(url, headers=header)
+        except:
+            thing = requests.get(url, headers=header)
+        return thing
+
+    def download(self, ids, location, name, quality, check):
 
         def login():
             try:
-                token = json.loads(req.post("http://www.deezer.com/ajax/gw-light.php", params).text)['results'][
-                    'checkForm']
+                token = self.req.post("http://www.deezer.com/ajax/gw-light.php", params).json()['results']['checkForm']
             except:
-                token = json.loads(req.post("http://www.deezer.com/ajax/gw-light.php", params).text)['results'][
-                    'checkForm']
+                token = self.req.post("http://www.deezer.com/ajax/gw-light.php", params).json()['results']['checkForm']
             data = {
                 "api_version": "1.0",
                 "input": "3",
                 "api_token": token,
                 "method": "song.getData"
             }
-            param = json.dumps({"sng_id": ids})
+            param = {"sng_id": ids}
             try:
-                return json.loads(req.post("http://www.deezer.com/ajax/gw-light.php", param, params=data).text)
+                return self.req.post("http://www.deezer.com/ajax/gw-light.php", json=param, params=data).json()
             except:
-                return json.loads(req.post("http://www.deezer.com/ajax/gw-light.php", param, params=data).text)
+                return self.req.post("http://www.deezer.com/ajax/gw-light.php", json=param, params=data).json()
 
         def md5hex(data):
             h = MD5.new()
             h.update(data)
             return b2a_hex(h.digest())
 
-        def genurl(quality):
-            data = b"\xa4".join(a.encode() for a in [song['md5'], quality, str(ids), str(song['media_version'])])
+        def genurl(md5, quality, media):
+            data = b"\xa4".join(a.encode() for a in [md5, quality, str(ids), str(media)])
             data = b"\xa4".join([md5hex(data), data]) + b"\xa4"
             if len(data) % 16:
                 data += b"\x00" * (16 - len(data) % 16)
             c = AES.new("jo6aey6haid2Teih", AES.MODE_ECB)
             c = b2a_hex(c.encrypt(data)).decode()
-            return "https://e-cdns-proxy-8.dzcdn.net/mobile/1/" + c
+            return "https://e-cdns-proxy-%s.dzcdn.net/mobile/1/%s" % (md5[0], c)
 
         def calcbfkey(songid):
             h = md5hex(b"%d" % int(songid))
@@ -140,41 +140,40 @@ class Login:
                 i += 1
 
         infos = login()
-        # print('logged')
         while not "MD5_ORIGIN" in str(infos):
             infos = login()
-        song['md5'] = infos['results']['MD5_ORIGIN']
-        song['media_version'] = infos['results']['MEDIA_VERSION']
+        extension = ".mp3"
         try:
             if int(infos['results']['FILESIZE_' + quality]) > 0 and quality == "FLAC":
                 quality = "9"
+                extension = ".flac"
+                qualit = "FLAC"
             elif int(infos['results']['FILESIZE_' + quality]) > 0 and quality == "MP3_320":
                 quality = "3"
+                qualit = "320"
             elif int(infos['results']['FILESIZE_' + quality]) > 0 and quality == "MP3_256":
                 quality = "5"
+                qualit = "256"
             elif int(infos['results']['FILESIZE_' + quality]) > 0 and quality == "MP3_128":
                 quality = "1"
+                qualit = "128"
             else:
-                if check:
+                if check == True:
                     raise QualityNotFound("The quality chose can't be downloaded")
                 quality = "1"
+                qualit = "MP3_128"
         except KeyError:
-            raise QualityNotFound("The quality chose can't be downloaded")
-        # print('token')
-        try:
-            fh = requests.get(genurl(quality))
-        except:
-            fh = requests.get(genurl(quality))
-        # print(genurl(quality))
-        if len(fh.content) == 0:
-            # print("not found")
+            if check == True:
+                raise QualityNotFound("The quality chose can't be downloaded")
+            quality = "1"
+            qualit = "MP3_128"
+        crypt = self.request(genurl(infos['results']['MD5_ORIGIN'], quality, infos['results']['MEDIA_VERSION']))
+        if len(crypt.content) == 0:
             raise TrackNotFound("")
-        # print(location + name)
-        open(location + name, "wb").write(fh.content)
-        # print('found')
-        fo = open(location + name, "wb")
-        # print('written')
-        decryptfile(fh.iter_content(2048), calcbfkey(ids), fo)
+        open(location + name, "wb").write(crypt.content)
+        decry = open(location + name, "wb")
+        decryptfile(crypt.iter_content(2048), calcbfkey(ids), decry)
+        return extension, qualit
 
     # the custom function to download a track
     def download_track(self, music_id, database, output=localdir + "/musics/", check=False, quality="MP3_128",
