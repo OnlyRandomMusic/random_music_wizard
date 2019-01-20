@@ -98,15 +98,15 @@ class SongChooser:
 
     def get_next_song(self):
         """return the next song to play must be completed"""
-        queue_data = self.get_next_in_flow()
+        # queue_data = self.get_next_in_flow()
 
-        # success = False
-        # while not success:
-        #     next_music_id = self.choose_next_song()
-        #     success = self.download_song(next_music_id)
-        #     self.user_database.has_been_played(next_music_id)
-        #
-        # queue_data = next_music_id
+        success = False
+        while not success:
+            next_music_id = self.choose_next_song()
+            success = self.download_song(next_music_id)
+            self.user_database.has_been_played(next_music_id)
+
+        queue_data = next_music_id
         return queue_data
 
     def choose_next_song(self):
@@ -134,9 +134,16 @@ class SongChooser:
         return music_id
 
     def choose_original_song(self):
-        music_id = self.playlist_database.get_really_random_song()
-        song = requests_tools.get_request('track/' + str(music_id), True)
-        self.music_database.add_song(song)
+        success = False
+        while not success:
+            music_id = self.playlist_database.get_really_random_song()
+            song = requests_tools.get_request('track/' + str(music_id), True)
+            try:
+                self.music_database.add_song(song)
+                success = True
+            except:
+                continue
+
         return music_id
 
     def play_search(self, research, immediately):

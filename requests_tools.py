@@ -2,6 +2,7 @@ import requests
 import json
 
 
+
 def songs_of_artist(artist_id, number_of_songs=30):
     """return the main songs of a given artist"""
     song_list = get_request('artist/{}/top?limit={}'.format(artist_id, number_of_songs), True)
