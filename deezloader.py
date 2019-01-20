@@ -177,7 +177,7 @@ class Login:
         decryptfile(crypt.iter_content(2048), calcbfkey(ids), decry)
         return extension, qualit
 
-    def download_trackdee(self, URL, output=localdir + "/Songs/", check=True, quality="MP3_320", recursive=True):
+    def download_trackdee(self, URL, output=localdir + "/Songs/", check=False, quality="MP3_320", recursive=False):
         array = []
         music = []
         artist = []
