@@ -45,8 +45,20 @@ class SongChooser:
         """download a song from a Deezer link in the musics directory
         and add the path to it in the database"""
         try:
-            path = self.downloader.download_trackdee("https://www.deezer.com/fr/track/" + str(music_id),
-                                                     output=self.musics_path, quality=self.music_quality)
+            artist = self.music_database.get_music_info(music_id, 'artist')
+            title = self.music_database.get_music_info(music_id, 'title')
+
+            dir_path = self.musics_path + os.sep + artist.replace("/", "").replace("$", "S").replace(":", "").replace('"', "") + os.sep
+            file_name = artist.replace("/", "").replace("$", "S").replace(":", "").replace('"', "") + " " + title.replace("/", "").replace("$", "S").replace(":", "").replace('"', "") + ".mp3"
+
+            url = "http://www.deezer.com/track/" + str(music_id)
+
+            self.downloader.download(url, dir_path, self.music_quality, False)
+
+            os.rename(dir_path + music_id, dir_path + file_name)
+
+            # path = self.downloader.download_trackdee("https://www.deezer.com/fr/track/" + str(music_id),
+            #                                          output=self.musics_path, quality=self.music_quality)
             # path = self.downloader.download_track(music_id, self.music_database, output=self.musics_path,
             #                                       quality=self.music_quality)
             # check=False for not check if song already exist
