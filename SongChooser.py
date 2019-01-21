@@ -53,19 +53,21 @@ class SongChooser:
 
             url = "http://www.deezer.com/track/" + str(music_id)
 
+            try:
+                os.makedirs(dir_path)
+            except:
+                None
+
             self.downloader.download(url, dir_path, self.music_quality, False)
 
-            os.rename(dir_path + music_id, dir_path + file_name)
+            os.rename(dir_path + str(music_id), dir_path + file_name)
 
-            # path = self.downloader.download_trackdee("https://www.deezer.com/fr/track/" + str(music_id),
-            #                                          output=self.musics_path, quality=self.music_quality)
-            # path = self.downloader.download_track(music_id, self.music_database, output=self.musics_path,
-            #                                       quality=self.music_quality)
+            path = dir_path + file_name
+
             # check=False for not check if song already exist
-            # recursive=False for download the song if quality selected doesn't exist
             # quality can be FLAC, MP3_320, MP3_256 or MP3_128
             self.music_database.song_downloaded(music_id, path)
-            print('succesfully downloaded ' + path)
+            print('[RASP] Succesfully downloaded ' + file_name)
             return True
         except:
             print("[RASP] error couldn't download " + self.music_database.get_music_info(music_id, 'title'))
