@@ -48,8 +48,17 @@ class SongChooser:
             artist = self.music_database.get_music_info(music_id, 'artist')
             title = self.music_database.get_music_info(music_id, 'title')
 
-            dir_path = self.musics_path + os.sep + artist.replace("/", "").replace("$", "S").replace(":", "").replace('"', "") + os.sep
-            file_name = artist.replace("/", "").replace("$", "S").replace(":", "").replace('"', "") + " " + title.replace("/", "").replace("$", "S").replace(":", "").replace('"', "") + ".mp3"
+            dir_path = self.musics_path + os.sep + artist.replace("/", "").replace("$", "S").replace(":", "").replace(
+                '"', "") + os.sep
+
+            if self.music_quality == 'FLAC':
+                extension = '.flac'
+            else:
+                extension = '.mp3'
+
+            file_name = artist.replace("/", "").replace("$", "S").replace(":", "").replace('"',
+                                                                                           "") + " " + title.replace(
+                "/", "").replace("$", "S").replace(":", "").replace('"', "") + extension
 
             url = "http://www.deezer.com/track/" + str(music_id)
 
@@ -69,6 +78,7 @@ class SongChooser:
             self.music_database.song_downloaded(music_id, path)
             print('[RASP] Succesfully downloaded ' + file_name)
             return True
+        # except TrackNotFound:  # incomming
         except:
             print("[RASP] error couldn't download " + self.music_database.get_music_info(music_id, 'title'))
 
