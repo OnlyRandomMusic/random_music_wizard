@@ -54,5 +54,9 @@ class PlaylistDatabase(Database.Database):
 
 
 # d = PlaylistDatabase()
+# print(d.get_count('playlist_link'))
+# data = d.sql_request("SELECT music_id FROM playlist_link")
+# music_ids = [elem[0] for elem in data]
+# print(len(list(set(music_ids))))
 # d.print_data('raw_playlist')
 # print(d.get_really_random_song())

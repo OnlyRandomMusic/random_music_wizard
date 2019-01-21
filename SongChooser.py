@@ -1,7 +1,8 @@
 import requests_tools
 import os
 from random import random
-import deezer_load
+# import deezer_load
+import deezloader
 from database import UserDatabase
 from database import PlaylistDatabase
 
@@ -16,7 +17,8 @@ class SongChooser:
         self.music_database = music_database
         self.player = player
         mail, password = self.read_id()
-        self.downloader = deezer_load.Login(mail, password)
+        # self.downloader = deezer_load.Login(mail, password)
+        self.downloader = deezloader.Login(mail, password)
         self.user_database = UserDatabase.UserDatabase(user_name)
         self.playlist_database = PlaylistDatabase.PlaylistDatabase()
 
@@ -43,13 +45,40 @@ class SongChooser:
         """download a song from a Deezer link in the musics directory
         and add the path to it in the database"""
         try:
-            path = self.downloader.download_track(music_id, self.music_database, output=self.musics_path,
-                                                  quality=self.music_quality)
+            artist = self.music_database.get_music_info(music_id, 'artist')
+            title = self.music_database.get_music_info(music_id, 'title')
+
+            dir_path = self.musics_path + os.sep + artist.replace("/", "").replace("$", "S").replace(":", "").replace(
+                '"', "") + os.sep
+
+            if self.music_quality == 'FLAC':
+                extension = '.flac'
+            else:
+                extension = '.mp3'
+
+            file_name = artist.replace("/", "").replace("$", "S").replace(":", "").replace('"',
+                                                                                           "") + " " + title.replace(
+                "/", "").replace("$", "S").replace(":", "").replace('"', "") + extension
+
+            url = "http://www.deezer.com/track/" + str(music_id)
+
+            try:
+                os.makedirs(dir_path)
+            except:
+                None
+
+            self.downloader.download(url, dir_path, self.music_quality, False)
+
+            os.rename(dir_path + str(music_id), dir_path + file_name)
+
+            path = dir_path + file_name
+
             # check=False for not check if song already exist
-            # recursive=False for download the song if quality selected doesn't exist
             # quality can be FLAC, MP3_320, MP3_256 or MP3_128
             self.music_database.song_downloaded(music_id, path)
+            print('[RASP] Succesfully downloaded ' + file_name)
             return True
+        # except TrackNotFound:  # incomming
         except:
             print("[RASP] error couldn't download " + self.music_database.get_music_info(music_id, 'title'))
 
@@ -129,9 +158,16 @@ class SongChooser:
         return music_id
 
     def choose_original_song(self):
-        music_id = self.playlist_database.get_really_random_song()
-        song = requests_tools.get_request('track/' + str(music_id), True)
-        self.music_database.add_song(song)
+        success = False
+        while not success:
+            music_id = self.playlist_database.get_really_random_song()
+            song = requests_tools.get_request('track/' + str(music_id), True)
+            try:
+                self.music_database.add_song(song)
+                success = True
+            except:
+                continue
+
         return music_id
 
     def play_search(self, research, immediately):
