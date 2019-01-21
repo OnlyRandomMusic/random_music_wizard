@@ -51,6 +51,9 @@ class MusicDatabase(Database.Database):
 
         if data:
             return data[0][0]
+        else:
+            print("[RASP] DATABASE CRITICAL ERROR")
+            return 0
 
     def song_downloaded(self, music_id, path):
         self.sql_request("""UPDATE music
