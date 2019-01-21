@@ -43,7 +43,7 @@ class PlaylistDatabase(Database.Database):
             return data[0][0]
 
     def get_really_random_song(self):
-        address_max = self.get_count("raw_playlist")-1
+        address_max = self.get_count("raw_playlist") - 1
         address = randint(0, address_max)
         data = self.sql_request(
             'SELECT music_id FROM playlist_link WHERE playlist_id = {}'.format(str(address)))
@@ -52,11 +52,26 @@ class PlaylistDatabase(Database.Database):
         index = randint(0, len(data) - 1)
         return data[index][0]
 
+    def get_related_playlists(self, music_id, n):
+        """return the id of approximately n playlist in which the given music is"""
+        data = self.sql_request(
+            "SELECT id FROM raw_playlist JOIN playlist_link ON address = playlist_id WHERE music_id = {}".format(
+                str(music_id)))
+
+        if data:
+            selection_index = [randint(0, len(data) - 1) for _ in range(n)]
+            selection_index = list(set(selection_index))
+            return [data[index][0] for index in selection_index]
+        return []
+
 
 # d = PlaylistDatabase()
 # print(d.get_count('playlist_link'))
 # data = d.sql_request("SELECT music_id FROM playlist_link")
 # music_ids = [elem[0] for elem in data]
 # print(len(list(set(music_ids))))
-# d.print_data('raw_playlist')
-# print(d.get_really_random_song())
+# # d.print_data('raw_playlist')
+# music_id = d.get_really_random_song()
+# print(music_id)
+# group = d.get_related_playlists(music_id, 10)
+# print(group)

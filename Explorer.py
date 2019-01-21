@@ -11,6 +11,7 @@ class Explorer:
         self.playlist_database = PlaylistDatabase.PlaylistDatabase()
         self.user_database = UserDatabase.UserDatabase(user_name)
         self.user_database.reset_music_played()
+        self.nb_playlist_explore = 5
 
     def set_score(self, music_id, score):
         if not score:
@@ -44,6 +45,13 @@ class Explorer:
 
         # third step
         # playlist search
+        playlist_ids = self.playlist_database.get_related_playlists(music_id, self.nb_playlist_explore)
+
+        for playlist_id in playlist_ids:
+            playlist = requests_tools.get_request('playlist/' + str(playlist_id), True)
+            for song in playlist['tracks']['data']:
+                self.music_database.add_song(song)
+                self.user_database.update_score(song['id'], score * 0.05)
 
         print("[RASP] Scores updated")
 
