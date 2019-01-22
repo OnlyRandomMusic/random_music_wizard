@@ -55,3 +55,5 @@ while True:
 
     sleep(sleep_time)
     continue
+
+print("[RASP] bye bye")
