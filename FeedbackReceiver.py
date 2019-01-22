@@ -1,34 +1,49 @@
 import threading
 import communication.Receiver
 import queue
+from time import sleep
 
 volume_step = 4  # the volume step in percentage
 
 
 class FeedbackReceiver(threading.Thread):
-    def __init__(self, player, song_chooser):
+    def __init__(self):
         """instructions_queue is a list of instructions in order to communicate with the main"""
         threading.Thread.__init__(self)
-        self.player = player
-        self.song_chooser = song_chooser
+
+        self.player = None
+        self.song_chooser = None
+
+        self.user_name = None
         self.stop = False
 
         self.instructions_queue = queue.Queue()
         self.receiver = communication.Receiver.Receiver(self.instructions_queue)
-        self.receiver.daemon = True
+
+    def initialize(self, player, song_chooser):
+        self.player = player
+        self.song_chooser = song_chooser
 
     def run(self):
-        print("[RASP] waiting for instructions")
-        while True:
-            self.receiver.receive()
+        if not self.player or not self.song_chooser:
+            print("[RASP] CRITICAL ERROR FEEDBACK RECEIVER ISN'T INTIALIZED")
+        else:
+            print("[RASP] waiting for instructions")
+            while True:
+                self.receiver.receive()
 
-            if self.instructions_queue.qsize() > 0:
-                instruction = self.instructions_queue.get()
-                self.decode_instruction(instruction)
+                if self.instructions_queue.qsize() > 0:
+                    instruction = self.instructions_queue.get()
+                    self.decode_instruction(instruction)
 
-            # print("[RASP] received instruction " + instruction)
+                sleep(0.5)
+                # print("[RASP] received instruction " + instruction)
 
     def decode_instruction(self, instruction):
+        if "start" in instruction:
+            self.user_name = instruction.split(':')[-1]
+            print("[RASP] loading {} profile".format(self.user_name))
+
         if "+" in instruction:
             step_number = instruction.count("+")
             volume = self.player.increase_volume(step_number * volume_step)

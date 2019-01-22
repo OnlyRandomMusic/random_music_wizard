@@ -13,10 +13,16 @@ import FeedbackReceiver
 
 print("[RASP] starting")
 
+feedback_receiver = FeedbackReceiver.FeedbackReceiver()  # creating a thread that will work in parallel
+feedback_receiver.daemon = True  # when the main is closed this thread will also close
+
+while not feedback_receiver.user_name:
+    sleep(1)
+
+user_name = feedback_receiver.user_name
+
 music_database = MusicDatabase.MusicDatabase()
 music_database.create()
-
-user_name = 'remi'
 
 explorer = Explorer.Explorer(user_name)
 
@@ -28,13 +34,12 @@ sleep_time = 0.5
 queue_manager = QueueManager.QueueManager(song_queue, music_database, player, user_name)  # creating a thread that will work in parallel
 queue_manager.daemon = True  # when the main is closed this thread will also close
 
-feedback_receiver = FeedbackReceiver.FeedbackReceiver(player, queue_manager.song_chooser)  # creating a thread that will work in parallel
-feedback_receiver.daemon = True  # when the main is closed this thread will also close
-
 print("[RASP] vlc player initialized")
 
 player.play_next_music(0)
 # player.pause()
+
+feedback_receiver.initialize(player, queue_manager.song_chooser)
 
 print("[RASP] starting to play")
 
