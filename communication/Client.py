@@ -24,6 +24,7 @@ search  search for a music""")
         user_name = input("Please enter the profile you want to load\n")
         if not user_name:
             user_name = 'remi'
+        print("program starting ...")
         message = "start:" + user_name
 
     if "search" in message:
