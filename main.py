@@ -15,6 +15,7 @@ print("[RASP] starting")
 
 feedback_receiver = FeedbackReceiver.FeedbackReceiver()  # creating a thread that will work in parallel
 feedback_receiver.daemon = True  # when the main is closed this thread will also close
+feedback_receiver.start()
 
 while not feedback_receiver.user_name:
     sleep(1)
@@ -44,7 +45,6 @@ feedback_receiver.initialize(player, queue_manager.song_chooser)
 print("[RASP] starting to play")
 
 queue_manager.start()
-feedback_receiver.start()
 
 while True:
     if player.music_ended():

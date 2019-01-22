@@ -25,56 +25,54 @@ class FeedbackReceiver(threading.Thread):
         self.song_chooser = song_chooser
 
     def run(self):
-        if not self.player or not self.song_chooser:
-            print("[RASP] CRITICAL ERROR FEEDBACK RECEIVER ISN'T INTIALIZED")
-        else:
-            print("[RASP] waiting for instructions")
-            while True:
-                self.receiver.receive()
+        print("[RASP] waiting for instructions")
+        while True:
+            self.receiver.receive()
 
-                if self.instructions_queue.qsize() > 0:
-                    instruction = self.instructions_queue.get()
-                    self.decode_instruction(instruction)
+            if self.instructions_queue.qsize() > 0:
+                instruction = self.instructions_queue.get()
+                self.decode_instruction(instruction)
 
-                sleep(0.5)
-                # print("[RASP] received instruction " + instruction)
+            sleep(0.5)
+            # print("[RASP] received instruction " + instruction)
 
     def decode_instruction(self, instruction):
         if "start" in instruction:
             self.user_name = instruction.split(':')[-1]
             print("[RASP] loading {} profile".format(self.user_name))
 
-        if "+" in instruction:
-            step_number = instruction.count("+")
-            volume = self.player.increase_volume(step_number * volume_step)
-            print("[RASP] volume is now {}%".format(volume))
+        if self.song_chooser and self.player:
+            if "+" in instruction:
+                step_number = instruction.count("+")
+                volume = self.player.increase_volume(step_number * volume_step)
+                print("[RASP] volume is now {}%".format(volume))
 
-        if "-" in instruction:
-            step_number = instruction.count("-")
-            volume = self.player.increase_volume(- step_number * volume_step)
-            print("[RASP] volume is now {}%".format(volume))
+            if "-" in instruction:
+                step_number = instruction.count("-")
+                volume = self.player.increase_volume(- step_number * volume_step)
+                print("[RASP] volume is now {}%".format(volume))
 
-        if "next" in instruction:
-            done = self.player.play_next_music(-0.5)
-            if done:
-                print("[RASP] the music has been changed")
-            else:
-                print("[RASP] the music can't be changed now")
+            if "next" in instruction:
+                done = self.player.play_next_music(-0.5)
+                if done:
+                    print("[RASP] the music has been changed")
+                else:
+                    print("[RASP] the music can't be changed now")
 
-        if "close" in instruction:
-            self.stop = True
-            print("[RASP] program ended")
+            if "close" in instruction:
+                self.stop = True
+                print("[RASP] program ended")
 
-        if "search" in instruction:
-            research = instruction.split(':')
-            # instruction structure : "search:research_text:(1 or 0)" last boolean to indicate if the music should be play immediatly or not
-            self.song_chooser.play_search(research[1], int(research[2]))
+            if "search" in instruction:
+                research = instruction.split(':')
+                # instruction structure : "search:research_text:(1 or 0)" last boolean to indicate if the music should be play immediatly or not
+                self.song_chooser.play_search(research[1], int(research[2]))
 
-        if "play" in instruction:
-            self.player.play()
+            if "play" in instruction:
+                self.player.play()
 
-        if "pause" in instruction:
-            self.player.pause()
+            if "pause" in instruction:
+                self.player.pause()
 
-        if "like" in instruction:
-            self.player.explorer.set_score(self.player.current_music_id, 1)
+            if "like" in instruction:
+                self.player.explorer.set_score(self.player.current_music_id, 1)
