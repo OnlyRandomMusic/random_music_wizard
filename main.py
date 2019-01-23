@@ -53,7 +53,6 @@ while True:
     if feedback_receiver.stop:
         break
 
-    print(feedback_receiver.stop)
     sleep(sleep_time)
     continue
 
