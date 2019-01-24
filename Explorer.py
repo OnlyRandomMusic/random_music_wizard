@@ -29,7 +29,7 @@ class Explorer:
                 if not song['id'] in song_updated:
                     self.user_database.update_score(song['id'], score*0.5)
                     song_updated.append(song['id'])
-                    self.music_database.add_song(song)
+                    self.music_database.add_song(song, verbose=False)
 
             # second step
             collaborators = requests_tools.collaboration(artist_id, songs_of_artist)
@@ -41,7 +41,7 @@ class Explorer:
                         if not song['id'] in song_updated:
                             self.user_database.update_score(song['id'], score*0.1)
                             song_updated.append(song['id'])
-                            self.music_database.add_song(song)
+                            self.music_database.add_song(song, verbose=False)
 
         # third step
         # playlist search

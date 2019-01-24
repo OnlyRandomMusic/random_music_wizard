@@ -17,7 +17,7 @@ class MusicDatabase(Database.Database):
         except:
             print('[RASP] Music Database already created')
 
-    def add_song(self, song, path=None, downloaded=0):
+    def add_song(self, song, path=None, downloaded=0, verbose=True):
         data = self.sql_request('SELECT * FROM music WHERE id=?', (song['id'],))
 
         if data:
@@ -33,7 +33,8 @@ class MusicDatabase(Database.Database):
         if not data:
             self.sql_request("INSERT INTO artist VALUES (?,?)", (song['artist']['id'], song['artist']['name']))
 
-        print("[RASP] Successfully added {} in database".format(song['title_short']))
+        if verbose:
+            print("[RASP] Successfully added {} in database".format(song['title_short']))
 
     def get_music_info(self, music_id, info_needed):
         # on utilise pas la connexion globale pour des problèmes de Thread

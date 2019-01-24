@@ -75,4 +75,4 @@ class FeedbackReceiver(threading.Thread):
                 self.player.pause()
 
             if "like" in instruction:
-                self.player.explorer.set_score(self.player.current_music_id, 1)
+                self.instructions_queue.put((self.player.current_music_id, 1))
