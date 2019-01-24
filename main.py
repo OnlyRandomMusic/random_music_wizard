@@ -27,6 +27,7 @@ music_database.create()
 
 score_update_queue = queue.Queue()
 exploration_manager = ExplorationManager.ExplorationManager(user_name, score_update_queue)
+exploration_manager.daemon = True
 
 song_queue = queue.Queue()  # the queue used for receiving information from the song_chooser thread
 
