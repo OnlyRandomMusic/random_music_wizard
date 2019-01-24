@@ -8,7 +8,7 @@ from database import PlaylistDatabase
 
 
 class SongChooser:
-    def __init__(self, music_database, player, user_name, song_quality="MP3_128"):
+    def __init__(self, music_database, player, user_name, score_update_queue,song_quality="MP3_128"):
         """music_quality can be FLAC, MP3_320, MP3_256 or MP3_128"""
         # name of the current directory in order to save musics in the right place
         self.dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -37,6 +37,8 @@ class SongChooser:
         self.mem_size = 4
         self.score_list = [0] * self.mem_size
         self.score_threshold = 0
+
+        self.score_update_queue = score_update_queue
 
         # for song in self.starting_playlist["tracks"]["data"]:
         #     self.music_database.add_song(song)
@@ -170,7 +172,7 @@ class SongChooser:
 
         return music_id
 
-    def play_search(self, research, immediately):
+    def play_search(self, research, immediately, from_feedback=False):
         """play the researched song, immediately or after the current song"""
         results = requests_tools.get_request("https://api.deezer.com/search?q=" + research)
         try:
@@ -181,6 +183,9 @@ class SongChooser:
 
             if immediately:
                 self.play_when_placed = True
+
+            if from_feedback:
+                self.score_update_queue.put((song['id'], 0.5))
         except:
             print('No results found')
 

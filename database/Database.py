@@ -36,6 +36,12 @@ class Database:
 
         return data
 
+    # def safe_sql_request(self, request, values=None):
+    #         try:
+    #             self.sql_request(request, values)
+    #         except:
+    #             self.sql_request(request, values)
+
     def print_data(self, table, attribute='*'):
         data = self.sql_request('SELECT {} FROM {}'.format(attribute, table))
 

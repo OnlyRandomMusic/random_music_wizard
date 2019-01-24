@@ -2,7 +2,7 @@ import vlc
 
 
 class Player:
-    def __init__(self, queue, music_database, explorer):
+    def __init__(self, queue, music_database, score_update_queue):
         """initialize a player and set a path for the file it will read"""
         self.instance = vlc.Instance()
         self.music_player = self.instance.media_player_new()  # the class used to play the tracks
@@ -10,7 +10,7 @@ class Player:
         self.current_music_id = 0  # the id of the music played
         self.music_queue = queue
         self.music_database = music_database
-        self.explorer = explorer
+        self.score_update_queue = score_update_queue
 
     def play_next_music(self, score):
         """play the selected music"""
@@ -22,7 +22,7 @@ class Player:
             self.music_player.set_media(song)
             self.music_player.play()
 
-            self.explorer.set_score(old_id, score)
+            self.score_update_queue.put((old_id, score))
 
             return True
         else:

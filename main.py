@@ -7,7 +7,7 @@ import Player
 import QueueManager
 import queue
 from database import MusicDatabase
-import Explorer
+import ExplorationManager
 from time import sleep
 import FeedbackReceiver
 
@@ -25,14 +25,15 @@ user_name = feedback_receiver.user_name
 music_database = MusicDatabase.MusicDatabase()
 music_database.create()
 
-explorer = Explorer.Explorer(user_name)
+score_update_queue = queue.Queue()
+exploration_manager = ExplorationManager.ExplorationManager(user_name, score_update_queue)
 
 song_queue = queue.Queue()  # the queue used for receiving information from the song_chooser thread
 
-player = Player.Player(song_queue, music_database, explorer)  # initialize the music player
+player = Player.Player(song_queue, music_database, score_update_queue)  # initialize the music player
 sleep_time = 0.5
 
-queue_manager = QueueManager.QueueManager(song_queue, music_database, player, user_name)  # creating a thread that will work in parallel
+queue_manager = QueueManager.QueueManager(song_queue, music_database, player, user_name, score_update_queue)  # creating a thread that will work in parallel
 queue_manager.daemon = True  # when the main is closed this thread will also close
 
 print("[RASP] vlc player initialized")

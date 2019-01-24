@@ -66,7 +66,7 @@ class FeedbackReceiver(threading.Thread):
             if "search" in instruction:
                 research = instruction.split(':')
                 # instruction structure : "search:research_text:(1 or 0)" last boolean to indicate if the music should be play immediatly or not
-                self.song_chooser.play_search(research[1], int(research[2]))
+                self.song_chooser.play_search(research[1], int(research[2]), from_feedback=True)
 
             if "play" in instruction:
                 self.player.play()
