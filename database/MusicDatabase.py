@@ -21,7 +21,8 @@ class MusicDatabase(Database.Database):
         data = self.sql_request('SELECT * FROM music WHERE id=?', (song['id'],))
 
         if data:
-            print("[RASP] Song {} already in database".format(song['title_short']))
+            if verbose:
+                print("[RASP] Song {} already in database".format(song['title_short']))
             return
 
         self.sql_request("INSERT INTO music VALUES (?,?,?,?,?,?,?,?)", (
