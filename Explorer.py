@@ -65,12 +65,12 @@ class Explorer:
 
         self.user_database.open_fast_connexion()
         for elem in database_buffer:
-            self.user_database.update_score(elem[0], score*elem[1])
+            self.user_database.update_score(elem[0]['id'], score*elem[1])
         self.user_database.close_fast_connexion()
 
         self.music_database.open_fast_connexion()
         for elem in database_buffer:
-            self.user_database.update_score(elem[0], score * elem[1])
+            self.music_database.add_song(elem[0])
         self.music_database.close_fast_connexion()
 
         print("[RASP] Scores updated")
