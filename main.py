@@ -47,6 +47,7 @@ feedback_receiver.initialize(player, queue_manager.song_chooser)
 print("[RASP] starting to play")
 
 queue_manager.start()
+exploration_manager.start()
 
 while True:
     if player.music_ended():
