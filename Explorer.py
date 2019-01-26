@@ -70,7 +70,7 @@ class Explorer:
 
         self.music_database.open_fast_connexion()
         for elem in database_buffer:
-            self.music_database.add_song(elem[0])
+            self.music_database.add_song(elem[0], verbose=False)
         self.music_database.close_fast_connexion()
 
         print("[RASP] Scores updated")
