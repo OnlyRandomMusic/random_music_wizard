@@ -42,7 +42,7 @@ print("[RASP] vlc player initialized")
 player.play_next_music(0)
 # player.pause()
 
-feedback_receiver.initialize(player, queue_manager.song_chooser)
+feedback_receiver.initialize(player, queue_manager.song_chooser, score_update_queue)
 
 print("[RASP] starting to play")
 

@@ -20,9 +20,10 @@ class FeedbackReceiver(threading.Thread):
         self.instructions_queue = queue.Queue()
         self.receiver = communication.Receiver.Receiver(self.instructions_queue)
 
-    def initialize(self, player, song_chooser):
+    def initialize(self, player, song_chooser, score_update_queue):
         self.player = player
         self.song_chooser = song_chooser
+        self.score_update_queue = score_update_queue
 
     def run(self):
         print("[RASP] waiting for instructions")
@@ -75,4 +76,4 @@ class FeedbackReceiver(threading.Thread):
                 self.player.pause()
 
             if "like" in instruction:
-                self.instructions_queue.put((self.player.current_music_id, 1))
+                self.score_update_queue.put((self.player.current_music_id, 1))
