@@ -1,6 +1,6 @@
 from multiprocessing.connection import Client
 
-address = ('localhost', 6000)
+address = ('localhost', 6001)
 conn = Client(address, authkey=b'secret password')
 
 print("""Welcome

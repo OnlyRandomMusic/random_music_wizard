@@ -18,15 +18,19 @@ class Player:
             old_id = self.current_music_id
             self.current_music_id = self.music_queue.get()
             music_path = self.music_database.get_music_info(self.current_music_id, 'path')
-            song = self.instance.media_new(music_path)
-            self.music_player.set_media(song)
-            self.music_player.play()
 
-            self.score_update_queue.put((old_id, score))
+            if music_path:
+                song = self.instance.media_new(music_path)
+                self.music_player.set_media(song)
+                self.music_player.play()
 
-            return True
-        else:
-            return False
+                self.score_update_queue.put((old_id, score))
+
+                return True
+            else:
+                self.current_music_id = old_id
+                print("[RASP] music could not be found")
+        return False
 
     def set_volume(self, percentage):
         """set the player volume between 0 and 100"""

@@ -7,7 +7,7 @@ import queue
 class ConnexionManager(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
-        self.address = ('localhost', 6000)  # family is deduced to be 'AF_INET'
+        self.address = ('localhost', 6001)  # family is deduced to be 'AF_INET'
         self.listener = Listener(self.address, authkey=b'secret password')
         self.connexions_list = []
 
