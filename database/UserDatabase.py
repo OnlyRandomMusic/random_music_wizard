@@ -17,13 +17,7 @@ class UserDatabase(Database.Database):
             print('[RASP] User already created')
 
     def reset_music_played(self):
-        self.open_fast_connexion()
-        for address in range(self.get_count(self.current_user)):
-            self.sql_request(
-                """UPDATE {} SET has_been_played = {} WHERE address = ?""".format(self.current_user, "'false'"),
-                (address,))
-
-        self.close_fast_connexion()
+        self.sql_request("UPDATE {} SET has_been_played = 'false'".format(self.current_user))
 
     def get_score(self, music_id):
         """return the score of a given music or 'not found' if it isn't in the table"""

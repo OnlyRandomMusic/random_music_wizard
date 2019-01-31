@@ -1,5 +1,6 @@
 import SongChooser
 import threading
+from time import sleep
 
 
 class QueueManager(threading.Thread):
@@ -18,6 +19,8 @@ class QueueManager(threading.Thread):
             if self.queue.qsize() < 10:
                 new_id = self.song_chooser.get_next_song()
                 self.queue.put(new_id)
+            else:
+                sleep(0.5)
 
             if self.song_chooser.need_to_put_first != 0:
                 self.put_first(self.song_chooser.need_to_put_first)

@@ -32,15 +32,17 @@ def download_song(link, path, mail, password, quality="MP3_128"):
     """download a song from a Deezer link in a selected directory
     quality can be FLAC, MP3_320, MP3_256 or MP3_128"""
     downloader = deezloader.Login(mail, password)
-    downloader.download_trackdee(link, output=path, check=False, quality=quality, recursive=True)
+    output = downloader.download_trackdee(link, output=path, check=False, quality=quality, recursive=True)
+    print(output)
+    return output
     # check=False for not check if song already exist
     # recursive=False for download the song if quality selected chose doesn't exist
 
 
 def test_download_and_play(mail, password):
     """test if the download and the play function works"""
-    download_song('https://www.deezer.com/us/track/3135553', dir_path + os.sep + 'musics', mail, password)
-    play_song('musics' + os.sep + 'Daft Punk' + os.sep + 'Daft Punk One More Time.mp3')
+    path = download_song('https://www.deezer.com/us/track/3135553', dir_path + os.sep + 'musics', mail, password)
+    play_song(path)
     input("Press Enter to stop")
 
 

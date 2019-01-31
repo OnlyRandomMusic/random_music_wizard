@@ -11,16 +11,22 @@ import ExplorationManager
 from time import sleep
 import FeedbackReceiver
 
+auto_start = True
+default_user = 'remi'
+
 print("[RASP] starting")
 
 feedback_receiver = FeedbackReceiver.FeedbackReceiver()  # creating a thread that will work in parallel
 feedback_receiver.daemon = True  # when the main is closed this thread will also close
 feedback_receiver.start()
 
-while not feedback_receiver.user_name:
-    sleep(1)
-
-user_name = feedback_receiver.user_name
+if auto_start:
+    user_name = default_user
+    feedback_receiver.user_name = default_user
+else:
+    while not feedback_receiver.user_name:
+        sleep(1)
+    user_name = feedback_receiver.user_name
 
 music_database = MusicDatabase.MusicDatabase()
 music_database.create()
@@ -28,6 +34,8 @@ music_database.create()
 score_update_queue = queue.Queue()
 exploration_manager = ExplorationManager.ExplorationManager(user_name, score_update_queue)
 exploration_manager.daemon = True
+
+print("[RASP] explorer initialized")
 
 song_queue = queue.Queue()  # the queue used for receiving information from the song_chooser thread
 
