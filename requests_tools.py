@@ -2,7 +2,6 @@ import requests
 import json
 
 
-
 def songs_of_artist(artist_id, number_of_songs=30):
     """return the main songs of a given artist"""
     song_list = get_request('artist/{}/top?limit={}'.format(artist_id, number_of_songs), True)
@@ -26,6 +25,15 @@ def collaboration(artist_id, songs_list=None):
                     artists_list.append(artist['id'])
 
     return artists_list
+
+
+def safe_request(address, short_format=False):
+    """return the content of a selected request in a json format
+    and if the request failed return None"""
+    try:
+        return get_request(address, short_format)
+    except:
+        return
 
 
 def get_request(address, short_format=False):
