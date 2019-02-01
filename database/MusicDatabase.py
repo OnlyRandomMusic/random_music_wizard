@@ -15,14 +15,14 @@ class MusicDatabase(Database.Database):
             self.sql_request('''CREATE TABLE artist
                                 (id, name)''')
         except:
-            print('[RASP] Music Database already created')
+            print('[DATABASE_M] Music Database already created')
 
     def add_song(self, song, path=None, downloaded=0, verbose=True):
         data = self.safe_sql_request('SELECT * FROM music WHERE id=?', (song['id'],))
 
         if data:
             if verbose:
-                print("[RASP] Song {} already in database".format(song['title_short']))
+                print("[DATABASE_M] Song {} already in database".format(song['title_short']))
             return
 
         self.safe_sql_request("INSERT INTO music VALUES (?,?,?,?,?,?,?,?)", (
@@ -35,7 +35,7 @@ class MusicDatabase(Database.Database):
             self.safe_sql_request("INSERT INTO artist VALUES (?,?)", (song['artist']['id'], song['artist']['name']))
 
         if verbose:
-            print("[RASP] Successfully added {} in database".format(song['title_short']))
+            print("[DATABASE_M] Successfully added {} in database".format(song['title_short']))
 
     def get_music_info(self, music_id, info_needed):
         # on utilise pas la connexion globale pour des problèmes de Thread
@@ -54,7 +54,7 @@ class MusicDatabase(Database.Database):
         if data:
             return data[0][0]
         else:
-            print("[RASP] DATABASE CRITICAL ERROR")
+            print("[DATABASE_M] DATABASE CRITICAL ERROR")
             return ""
 
     def song_downloaded(self, music_id, path):

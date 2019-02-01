@@ -26,7 +26,7 @@ class FeedbackReceiver(threading.Thread):
         self.score_update_queue = score_update_queue
 
     def run(self):
-        print("[RASP] waiting for instructions")
+        print("[FEEDBACK] waiting for instructions")
         while True:
             self.receiver.receive()
 
@@ -40,29 +40,29 @@ class FeedbackReceiver(threading.Thread):
     def decode_instruction(self, instruction):
         if "start" in instruction:
             self.user_name = instruction.split(':')[-1]
-            print("[RASP] loading {} profile".format(self.user_name))
+            print("[FEEDBACK] loading {} profile".format(self.user_name))
 
         if self.song_chooser and self.player:
             if "+" in instruction:
                 step_number = instruction.count("+")
                 volume = self.player.increase_volume(step_number * volume_step)
-                print("[RASP] volume is now {}%".format(volume))
+                print("[FEEDBACK] volume is now {}%".format(volume))
 
             if "-" in instruction:
                 step_number = instruction.count("-")
                 volume = self.player.increase_volume(- step_number * volume_step)
-                print("[RASP] volume is now {}%".format(volume))
+                print("[FEEDBACK] volume is now {}%".format(volume))
 
             if "next" in instruction:
                 done = self.player.play_next_music(-0.5)
                 if done:
-                    print("[RASP] the music has been changed")
+                    print("[FEEDBACK] the music has been changed")
                 else:
-                    print("[RASP] the music can't be changed now")
+                    print("[FEEDBACK] the music can't be changed now")
 
             if "close" in instruction:
                 self.stop = True
-                print("[RASP] program ended")
+                print("[FEEDBACK] program ended")
 
             if "search" in instruction:
                 research = instruction.split(':')

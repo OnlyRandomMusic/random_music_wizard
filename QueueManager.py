@@ -14,7 +14,7 @@ class QueueManager(threading.Thread):
 
     def run(self):
         """an infinite loop which add songs to the queue"""
-        print("[RASP] start downloading")
+        print("[MUSIC QUEUE] start downloading")
         while True:
             if self.queue.qsize() < 10:
                 new_id = self.song_chooser.get_next_song()

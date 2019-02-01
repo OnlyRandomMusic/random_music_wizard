@@ -78,11 +78,11 @@ class SongChooser:
             # check=False for not check if song already exist
             # quality can be FLAC, MP3_320, MP3_256 or MP3_128
             self.music_database.song_downloaded(music_id, path)
-            print('[RASP] Succesfully downloaded ' + file_name)
+            print('[SONGCHOOSER] Succesfully downloaded ' + file_name)
             return True
         # except TrackNotFound:  # incomming
         except:
-            print("[RASP] error couldn't download " + self.music_database.get_music_info(music_id, 'title'))
+            print("[SONGCHOOSER] error couldn't download " + self.music_database.get_music_info(music_id, 'title'))
 
     def get_random_from_playlist(self, link):
         """choose a random song in a playlist add it in the database and download it"""
@@ -187,7 +187,7 @@ class SongChooser:
             if from_feedback:
                 self.score_update_queue.put((song['id'], 0.5))
         except:
-            print('No results found')
+            print('[SONGCHOOSER] No results found')
 
     def put_first(self, music_id):
         self.need_to_put_first = music_id
@@ -210,4 +210,4 @@ class SongChooser:
                 password = ids[1]
                 return mail, password
         except:
-            print("[error] missing the file identifiers.txt or missing mail and password in this file")
+            print("[SONGCHOOSER] missing the file identifiers.txt or missing mail and password in this file")

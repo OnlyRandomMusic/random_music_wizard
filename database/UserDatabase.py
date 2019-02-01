@@ -14,7 +14,7 @@ class UserDatabase(Database.Database):
             self.sql_request('''CREATE TABLE {}
                            (address, music_id, score, has_been_played)'''.format(user_name))
         except:
-            print('[RASP] User already created')
+            print('[DATABASE_U] User already created')
 
     def reset_music_played(self):
         self.safe_sql_request("UPDATE {} SET has_been_played = 'false'".format(self.current_user))

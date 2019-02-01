@@ -17,7 +17,7 @@ class ConnexionManager(threading.Thread):
 
     def run(self):
         """an infinite loop which wait for new connections"""
-        print("[RASP] start connecting")
+        print("[CONNEXION_MANAGER] start connecting")
         while True:
             self.connexion_init()
 
@@ -30,4 +30,4 @@ class ConnexionManager(threading.Thread):
 
         new_connexion_thread.start()
         self.connexions_list.append(new_connexion_queue)
-        print('[RASP] connexion accepted from', self.listener.last_accepted)
+        print('[CONNEXION_MANAGER] connexion accepted from', self.listener.last_accepted)

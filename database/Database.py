@@ -44,7 +44,7 @@ class Database:
                 return data
             except:
                 sleep(0.2)
-                print('[RASP] SQL request error')
+                print('[DATABASE] SQL request error')
 
     def print_data(self, table, attribute='*'):
         data = self.safe_sql_request('SELECT {} FROM {}'.format(attribute, table))
@@ -69,5 +69,5 @@ class Database:
         try:
             self.connexion.close()
         except:
-            print("error no connexion currently open")
+            print("[DATABASE] error no fast connexion currently open")
         self.connexion = False

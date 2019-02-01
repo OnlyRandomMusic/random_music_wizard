@@ -14,7 +14,7 @@ class Explorer:
         self.nb_playlist_explore = 5
 
     def set_score(self, music_id, score):
-        print("updating scores")
+        print("[EXPLORER] updating scores")
 
         if not score:
             return
@@ -35,7 +35,7 @@ class Explorer:
                     # self.music_database.add_song(song, verbose=False)
                     database_buffer.append((song, 0.5))
 
-            print("first step done")
+            print("[EXPLORER] first step done")
 
             # second step
             collaborators = requests_tools.collaboration(artist_id, songs_of_artist)
@@ -50,7 +50,7 @@ class Explorer:
                             # self.music_database.add_song(song, verbose=False)
                             database_buffer.append((song, 0.1))
 
-        print("second step done")
+        print("[EXPLORER] second step done")
 
         # third step
         # playlist search
@@ -73,7 +73,7 @@ class Explorer:
             self.music_database.add_song(elem[0], verbose=False)
         self.music_database.close_fast_connexion()
 
-        print("[RASP] Scores updated")
+        print("[EXPLORER] Scores updated")
 
 
 # from database import UserDatabase

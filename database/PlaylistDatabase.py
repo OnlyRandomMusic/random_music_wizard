@@ -16,13 +16,13 @@ class PlaylistDatabase(Database.Database):
             self.sql_request('''CREATE TABLE playlist_link
                             (playlist_id, music_id)''')
         except:
-            print('[RASP] Playlist Database already created')
+            print('[DATABASE_P] Playlist Database already created')
 
     def add_raw_playlist(self, playlist):
         data = self.safe_sql_request('SELECT * FROM raw_playlist WHERE id=?', (playlist['id'],))
 
         if data:
-            print("[RASP] Playlist {} already in database".format(playlist['title']))
+            print("[DATABASE_P] Playlist {} already in database".format(playlist['title']))
             return
 
         address = self.get_count('raw_playlist')
@@ -32,7 +32,7 @@ class PlaylistDatabase(Database.Database):
         for music in playlist['tracks']['data']:
             self.safe_sql_request("INSERT INTO playlist_link VALUES (?,?)", (address, music['id']))
 
-        print("[RASP] Successfully added {} in database".format(playlist['title']))
+        print("[DATABASE_P] Successfully added {} in database".format(playlist['title']))
 
     def get_raw_playlist_max_id(self):
         data = self.safe_sql_request('SELECT MAX(id) FROM raw_playlist')

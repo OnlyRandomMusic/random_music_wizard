@@ -14,7 +14,7 @@ import FeedbackReceiver
 auto_start = True
 default_user = 'remi'
 
-print("[RASP] starting")
+print("[MAIN] starting")
 
 feedback_receiver = FeedbackReceiver.FeedbackReceiver()  # creating a thread that will work in parallel
 feedback_receiver.daemon = True  # when the main is closed this thread will also close
@@ -35,7 +35,7 @@ score_update_queue = queue.Queue()
 exploration_manager = ExplorationManager.ExplorationManager(user_name, score_update_queue)
 exploration_manager.daemon = True
 
-print("[RASP] explorer initialized")
+print("[MAIN] explorer initialized")
 
 song_queue = queue.Queue()  # the queue used for receiving information from the song_chooser thread
 
@@ -45,14 +45,14 @@ sleep_time = 0.5
 queue_manager = QueueManager.QueueManager(song_queue, music_database, player, user_name, score_update_queue)  # creating a thread that will work in parallel
 queue_manager.daemon = True  # when the main is closed this thread will also close
 
-print("[RASP] vlc player initialized")
+print("[MAIN] vlc player initialized")
 
 player.play_next_music(0)
 # player.pause()
 
 feedback_receiver.initialize(player, queue_manager.song_chooser, score_update_queue)
 
-print("[RASP] starting to play")
+print("[MAIN] starting to play")
 
 queue_manager.start()
 exploration_manager.start()
@@ -67,4 +67,4 @@ while True:
     sleep(sleep_time)
     continue
 
-print("[RASP] bye bye")
+print("[MAIN] bye bye")

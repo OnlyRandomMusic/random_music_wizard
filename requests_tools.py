@@ -37,7 +37,7 @@ def safe_request(address, short_format=False):
             return data
         except:
             sleep(0.2)
-            print('[RASP] API REQUEST request error')
+            print('[REQUEST] API REQUEST request error')
 
 
 def get_request(address, short_format=False):
