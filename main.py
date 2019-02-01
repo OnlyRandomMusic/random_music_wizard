@@ -11,7 +11,7 @@ import ExplorationManager
 from time import sleep
 import FeedbackReceiver
 
-auto_start = True
+auto_start = False
 default_user = 'remi'
 
 print("[MAIN] starting")
