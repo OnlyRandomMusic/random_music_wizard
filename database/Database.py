@@ -43,7 +43,8 @@ class Database:
                 data = self.sql_request(request, values)
                 return data
             except:
-                sleep(0.1)
+                sleep(0.2)
+                print('[RASP] SQL request error')
 
     def print_data(self, table, attribute='*'):
         data = self.safe_sql_request('SELECT {} FROM {}'.format(attribute, table))
