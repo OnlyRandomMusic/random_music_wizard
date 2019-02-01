@@ -15,7 +15,7 @@ def playlist_brute_explore(n, m):
     identifier = n
     while True:
         try:
-            data = requests_tools.get_request("playlist/" + str(identifier), True)
+            data = requests_tools.safe_request("playlist/" + str(identifier), True)
             if len(data['tracks']['data']) != 0:
                 playlist_database.add_raw_playlist(data)
         except:
@@ -34,7 +34,7 @@ def playlist_random_explore(lowest_id, highest_id, n=50):
         identifier = randint(lowest_id, highest_id)
 
         try:
-            data = requests_tools.get_request("playlist/" + str(identifier), True)
+            data = requests_tools.safe_request("playlist/" + str(identifier), True)
             if len(data['tracks']['data']) != 0:
                 playlist_database.add_raw_playlist(data)
                 success_nb += 1
