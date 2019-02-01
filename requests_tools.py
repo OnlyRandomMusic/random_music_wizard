@@ -4,7 +4,7 @@ import json
 
 def songs_of_artist(artist_id, number_of_songs=30):
     """return the main songs of a given artist"""
-    song_list = get_request('artist/{}/top?limit={}'.format(artist_id, number_of_songs), True)
+    song_list = safe_request('artist/{}/top?limit={}'.format(artist_id, number_of_songs), True)
     if 'error' in song_list.keys():
         return
     return song_list['data']
@@ -33,6 +33,7 @@ def safe_request(address, short_format=False):
     try:
         return get_request(address, short_format)
     except:
+        print('[RASP] REQUEST ERROR')
         return
 
 

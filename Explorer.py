@@ -57,7 +57,7 @@ class Explorer:
         playlist_ids = self.playlist_database.get_related_playlists(music_id, self.nb_playlist_explore)
 
         for playlist_id in playlist_ids:
-            playlist = requests_tools.get_request('playlist/' + str(playlist_id), True)
+            playlist = requests_tools.safe_request('playlist/' + str(playlist_id), True)
             for song in playlist['tracks']['data']:
                 # self.music_database.add_song(song)
                 # self.user_database.update_score(song['id'], score * 0.05)
@@ -80,7 +80,7 @@ class Explorer:
 # m = MusicDatabase.MusicDatabase()
 # d = UserDatabase.UserDatabase('remi')
 # exp = Explorer(d)
-# song = requests_tools.get_request('https://api.deezer.com/track/94935172')
+# song = requests_tools.safe_request('https://api.deezer.com/track/94935172')
 # m.add_song(song)
 # exp.set_score(94935172, 1)
 # d.print_data('remi')

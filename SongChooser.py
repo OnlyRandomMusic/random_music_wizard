@@ -23,12 +23,12 @@ class SongChooser:
         self.playlist_database = PlaylistDatabase.PlaylistDatabase()
 
         # to avoid making a lot of requests during the tests
-        # self.starting_playlist = requests_tools.get_request("https://api.deezer.com/playlist/5164440904")  # playlist raspi
-        self.starting_playlist = requests_tools.get_request(
+        # self.starting_playlist = requests_tools.safe_request("https://api.deezer.com/playlist/5164440904")  # playlist raspi
+        self.starting_playlist = requests_tools.safe_request(
             "https://api.deezer.com/playlist/1083721131")  # playlist au coin du feu
 
         self.deezer_user_id = 430225295
-        self.deezer_user_data = requests_tools.get_request("https://api.deezer.com/user/" + str(self.deezer_user_id))
+        self.deezer_user_data = requests_tools.safe_request("https://api.deezer.com/user/" + str(self.deezer_user_id))
         self.deezer_flow = []
 
         self.need_to_put_first = 0
@@ -89,7 +89,7 @@ class SongChooser:
         if link == -1:
             content = self.starting_playlist
         else:
-            content = requests_tools.get_request(link)
+            content = requests_tools.safe_request(link)
 
         song_list = content["tracks"]["data"]
         success = False
@@ -104,7 +104,7 @@ class SongChooser:
     def increase_flow_buffer(self):
         """increase the size of the self.flow list"""
         while not self.deezer_flow:
-            flow = requests_tools.get_request(self.deezer_user_data['tracklist'])
+            flow = requests_tools.safe_request(self.deezer_user_data['tracklist'])
             self.deezer_flow = self.deezer_flow + [song['id'] for song in flow['data']]
 
             for song in flow["data"]:
@@ -163,7 +163,7 @@ class SongChooser:
         success = False
         while not success:
             music_id = self.playlist_database.get_really_random_song()
-            song = requests_tools.get_request('track/' + str(music_id), True)
+            song = requests_tools.safe_request('track/' + str(music_id), True)
             try:
                 self.music_database.add_song(song)
                 success = True
@@ -174,7 +174,7 @@ class SongChooser:
 
     def play_search(self, research, immediately, from_feedback=False):
         """play the researched song, immediately or after the current song"""
-        results = requests_tools.get_request("https://api.deezer.com/search?q=" + research)
+        results = requests_tools.safe_request("https://api.deezer.com/search?q=" + research)
         try:
             song = results['data'][0]
             self.music_database.add_song(song)
