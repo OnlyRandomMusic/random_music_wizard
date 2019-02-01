@@ -78,7 +78,7 @@ class SongChooser:
             # check=False for not check if song already exist
             # quality can be FLAC, MP3_320, MP3_256 or MP3_128
             self.music_database.song_downloaded(music_id, path)
-            print('[SONGCHOOSER] Succesfully downloaded ' + file_name)
+            print('[SONGCHOOSER] Successfully downloaded ' + file_name)
             return True
         # except TrackNotFound:  # incomming
         except:
