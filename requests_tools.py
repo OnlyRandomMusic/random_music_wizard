@@ -1,5 +1,6 @@
 import requests
 import json
+from time import sleep
 
 
 def songs_of_artist(artist_id, number_of_songs=30):
@@ -29,12 +30,14 @@ def collaboration(artist_id, songs_list=None):
 
 def safe_request(address, short_format=False):
     """return the content of a selected request in a json format
-    and if the request failed return None"""
-    try:
-        return get_request(address, short_format)
-    except:
-        print('[RASP] REQUEST ERROR')
-        return
+    and if the request failed do it again"""
+    while True:
+        try:
+            data = get_request(address, short_format)
+            return data
+        except:
+            sleep(0.2)
+            print('[RASP] API REQUEST request error')
 
 
 def get_request(address, short_format=False):
