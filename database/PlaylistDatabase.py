@@ -9,11 +9,11 @@ class PlaylistDatabase(Database.Database):
 
     def create(self):
         try:
-            self.safe_sql_request('''CREATE TABLE raw_playlist
+            self.sql_request('''CREATE TABLE raw_playlist
                             (address, id, name)''')
 
             # WARNING playlist_id is address and not the real playlist_id
-            self.safe_sql_request('''CREATE TABLE playlist_link
+            self.sql_request('''CREATE TABLE playlist_link
                             (playlist_id, music_id)''')
         except:
             print('[RASP] Playlist Database already created')

@@ -8,11 +8,11 @@ class MusicDatabase(Database.Database):
 
     def create(self):
         try:
-            self.safe_sql_request('''CREATE TABLE music
+            self.sql_request('''CREATE TABLE music
                                (id, title_short, duration, preview_link, artist_id,
                                 album_id, path, downloaded)''')
 
-            self.safe_sql_request('''CREATE TABLE artist
+            self.sql_request('''CREATE TABLE artist
                                 (id, name)''')
         except:
             print('[RASP] Music Database already created')

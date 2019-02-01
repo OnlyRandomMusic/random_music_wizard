@@ -11,7 +11,7 @@ class UserDatabase(Database.Database):
 
     def create_user(self, user_name):
         try:
-            self.safe_sql_request('''CREATE TABLE {}
+            self.sql_request('''CREATE TABLE {}
                            (address, music_id, score, has_been_played)'''.format(user_name))
         except:
             print('[RASP] User already created')
