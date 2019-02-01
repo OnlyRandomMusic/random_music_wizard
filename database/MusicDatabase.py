@@ -1,4 +1,5 @@
 from database import Database
+import requests_tools
 
 
 class MusicDatabase(Database.Database):
@@ -55,7 +56,11 @@ class MusicDatabase(Database.Database):
             return data[0][0]
         else:
             print("[DATABASE_M] DATABASE CRITICAL ERROR")
-            return ""
+            print("[DATABASE_M] trying to solve it")
+            song = requests_tools.safe_request('track/' + music_id, True)
+            self.add_song(song)
+
+            return self.get_music_info(music_id, info_needed)
 
     def song_downloaded(self, music_id, path):
         self.safe_sql_request("""UPDATE music
