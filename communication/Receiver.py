@@ -16,7 +16,7 @@ class Receiver:
                 if connexion_queue.qsize() > 0:
                     instruction = connexion_queue.get()
                     self.instruction_queue.put(instruction)
-                    print("[RASP] instruction received: " + instruction)
+                    print("[RECEIVER] instruction received: " + instruction)
             except:
                 continue
 

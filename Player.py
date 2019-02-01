@@ -2,7 +2,7 @@ import vlc
 
 
 class Player:
-    def __init__(self, queue, music_database, explorer):
+    def __init__(self, queue, music_database, score_update_queue):
         """initialize a player and set a path for the file it will read"""
         self.instance = vlc.Instance()
         self.music_player = self.instance.media_player_new()  # the class used to play the tracks
@@ -10,7 +10,7 @@ class Player:
         self.current_music_id = 0  # the id of the music played
         self.music_queue = queue
         self.music_database = music_database
-        self.explorer = explorer
+        self.score_update_queue = score_update_queue
 
     def play_next_music(self, score):
         """play the selected music"""
@@ -18,15 +18,19 @@ class Player:
             old_id = self.current_music_id
             self.current_music_id = self.music_queue.get()
             music_path = self.music_database.get_music_info(self.current_music_id, 'path')
-            song = self.instance.media_new(music_path)
-            self.music_player.set_media(song)
-            self.music_player.play()
 
-            self.explorer.set_score(old_id, score)
+            if music_path:
+                song = self.instance.media_new(music_path)
+                self.music_player.set_media(song)
+                self.music_player.play()
 
-            return True
-        else:
-            return False
+                self.score_update_queue.put((old_id, score))
+
+                return True
+            else:
+                self.current_music_id = old_id
+                print("[PLAYER] music could not be found")
+        return False
 
     def set_volume(self, percentage):
         """set the player volume between 0 and 100"""
@@ -51,13 +55,13 @@ class Player:
     def play(self):
         if not self.music_player.is_playing():
             self.music_player.play()
-            print("[RASP] music now playing")
+            print("[PLAYER] music now playing")
         else:
-            print("[RASP] music already playing")
+            print("[PLAYER] music already playing")
 
     def pause(self):
         if self.music_player.is_playing():
             self.music_player.pause()
-            print("[RASP] music now paused")
+            print("[PLAYER] music now paused")
         else:
-            print("[RASP] music already paused")
+            print("[PLAYER] music already paused")

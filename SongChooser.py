@@ -8,7 +8,7 @@ from database import PlaylistDatabase
 
 
 class SongChooser:
-    def __init__(self, music_database, player, user_name, song_quality="MP3_128"):
+    def __init__(self, music_database, player, user_name, score_update_queue,song_quality="MP3_128"):
         """music_quality can be FLAC, MP3_320, MP3_256 or MP3_128"""
         # name of the current directory in order to save musics in the right place
         self.dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -23,12 +23,12 @@ class SongChooser:
         self.playlist_database = PlaylistDatabase.PlaylistDatabase()
 
         # to avoid making a lot of requests during the tests
-        # self.starting_playlist = requests_tools.get_request("https://api.deezer.com/playlist/5164440904")  # playlist raspi
-        self.starting_playlist = requests_tools.get_request(
+        # self.starting_playlist = requests_tools.safe_request("https://api.deezer.com/playlist/5164440904")  # playlist raspi
+        self.starting_playlist = requests_tools.safe_request(
             "https://api.deezer.com/playlist/1083721131")  # playlist au coin du feu
 
         self.deezer_user_id = 430225295
-        self.deezer_user_data = requests_tools.get_request("https://api.deezer.com/user/" + str(self.deezer_user_id))
+        self.deezer_user_data = requests_tools.safe_request("https://api.deezer.com/user/" + str(self.deezer_user_id))
         self.deezer_flow = []
 
         self.need_to_put_first = 0
@@ -37,6 +37,8 @@ class SongChooser:
         self.mem_size = 4
         self.score_list = [0] * self.mem_size
         self.score_threshold = 0
+
+        self.score_update_queue = score_update_queue
 
         # for song in self.starting_playlist["tracks"]["data"]:
         #     self.music_database.add_song(song)
@@ -76,18 +78,18 @@ class SongChooser:
             # check=False for not check if song already exist
             # quality can be FLAC, MP3_320, MP3_256 or MP3_128
             self.music_database.song_downloaded(music_id, path)
-            print('[RASP] Succesfully downloaded ' + file_name)
+            print('[SONGCHOOSER] Successfully downloaded ' + file_name)
             return True
         # except TrackNotFound:  # incomming
         except:
-            print("[RASP] error couldn't download " + self.music_database.get_music_info(music_id, 'title'))
+            print("[SONGCHOOSER] error couldn't download " + self.music_database.get_music_info(music_id, 'title'))
 
     def get_random_from_playlist(self, link):
         """choose a random song in a playlist add it in the database and download it"""
         if link == -1:
             content = self.starting_playlist
         else:
-            content = requests_tools.get_request(link)
+            content = requests_tools.safe_request(link)
 
         song_list = content["tracks"]["data"]
         success = False
@@ -102,7 +104,7 @@ class SongChooser:
     def increase_flow_buffer(self):
         """increase the size of the self.flow list"""
         while not self.deezer_flow:
-            flow = requests_tools.get_request(self.deezer_user_data['tracklist'])
+            flow = requests_tools.safe_request(self.deezer_user_data['tracklist'])
             self.deezer_flow = self.deezer_flow + [song['id'] for song in flow['data']]
 
             for song in flow["data"]:
@@ -161,7 +163,7 @@ class SongChooser:
         success = False
         while not success:
             music_id = self.playlist_database.get_really_random_song()
-            song = requests_tools.get_request('track/' + str(music_id), True)
+            song = requests_tools.safe_request('track/' + str(music_id), True)
             try:
                 self.music_database.add_song(song)
                 success = True
@@ -170,9 +172,9 @@ class SongChooser:
 
         return music_id
 
-    def play_search(self, research, immediately):
+    def play_search(self, research, immediately, from_feedback=False):
         """play the researched song, immediately or after the current song"""
-        results = requests_tools.get_request("https://api.deezer.com/search?q=" + research)
+        results = requests_tools.safe_request("https://api.deezer.com/search?q=" + research)
         try:
             song = results['data'][0]
             self.music_database.add_song(song)
@@ -181,8 +183,11 @@ class SongChooser:
 
             if immediately:
                 self.play_when_placed = True
+
+            if from_feedback:
+                self.score_update_queue.put((song['id'], 0.5))
         except:
-            print('No results found')
+            print('[SONGCHOOSER] No results found')
 
     def put_first(self, music_id):
         self.need_to_put_first = music_id
@@ -205,4 +210,4 @@ class SongChooser:
                 password = ids[1]
                 return mail, password
         except:
-            print("[error] missing the file identifiers.txt or missing mail and password in this file")
+            print("[SONGCHOOSER] missing the file identifiers.txt or missing mail and password in this file")

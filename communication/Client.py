@@ -1,7 +1,11 @@
 from multiprocessing.connection import Client
 
-address = ('localhost', 6000)
-conn = Client(address, authkey=b'secret password')
+try:
+    address = ('localhost', 6000)
+    conn = Client(address, authkey=b'secret password')
+except:
+    address = ('localhost', 6001)
+    conn = Client(address, authkey=b'secret password')
 
 print("""Welcome
 If the music isn't playing, type start""")
