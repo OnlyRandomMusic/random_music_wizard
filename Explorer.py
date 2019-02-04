@@ -1,58 +1,86 @@
 import requests_tools
-import Database
-from time import sleep
-from random import randint
+from database import MusicDatabase
+from database import PlaylistDatabase
+from database import UserDatabase
+# from time import sleep
 
 
 class Explorer:
-    def __init__(self):
-        self.database = Database.Database()
+    def __init__(self, user_name):
+        self.music_database = MusicDatabase.MusicDatabase()
+        self.playlist_database = PlaylistDatabase.PlaylistDatabase()
+        self.user_database = UserDatabase.UserDatabase(user_name)
+        self.user_database.reset_music_played()
+        self.nb_playlist_explore = 5
 
-    def explore_related(self, music_id):
-        artist_id = self.database.get_music_info(music_id, 'artist_id')
+    def set_score(self, music_id, score):
+        print("[EXPLORER] updating scores")
+
+        if not score:
+            return
+
+        artist_id = self.music_database.get_music_info(music_id, 'artist_id')
+        self.user_database.update_score(music_id, score)
+        song_updated = [music_id]
+        database_buffer = []
 
         # first step
+        songs_of_artist = requests_tools.songs_of_artist(artist_id)
 
-    def playlist_brute_explore(self, n, m):
-        """make requests to deezer about playlist between id = n and id = m"""
-        identifier = n
-        while True:
-            try:
-                data = requests_tools.get_request("playlist/" + str(identifier), True)
-                if len(data['tracks']['data']) != 0:
-                    self.database.add_raw_playlist(data)
-            except:
-                print('fail')
+        if songs_of_artist:
+            for song in songs_of_artist:
+                if not song['id'] in song_updated:
+                    # self.user_database.update_score(song['id'], score*0.5)
+                    song_updated.append(song['id'])
+                    # self.music_database.add_song(song, verbose=False)
+                    database_buffer.append((song, 0.5))
 
-            identifier += 1
-            if identifier > m:
-                break
+            print("[EXPLORER] first step done")
 
-    def playlist_random_explore(self, n):
-        """make requests to deezer about playlist randomly"""
-        for _ in range(n):
-            identifier = randint(10000, 2000000000)
+            # second step
+            collaborators = requests_tools.collaboration(artist_id, songs_of_artist)
 
-            try:
-                data = requests_tools.get_request("playlist/" + str(identifier), True)
-                if len(data['tracks']['data']) != 0:
-                    self.database.add_raw_playlist(data)
-            except:
-                print('fail')
+            if collaborators:
+                for collaborator in collaborators:
+                    songs_of_collaborator = requests_tools.songs_of_artist(collaborator, 10)
+                    for song in songs_of_collaborator:
+                        if not song['id'] in song_updated:
+                            # self.user_database.update_score(song['id'], score*0.1)
+                            song_updated.append(song['id'])
+                            # self.music_database.add_song(song, verbose=False)
+                            database_buffer.append((song, 0.1))
 
-    def playlist_moderate_explore(self, identifier=0, step_size=50, sleep_time=10):
-        if identifier == 0:
-            identifier = self.database.get_raw_playlist_max_id()
+        print("[EXPLORER] second step done")
 
-        while True:
-            # self.playlist_brute_explore(identifier, identifier + step_size)
-            # identifier += step_size
-            # print(identifier)
+        # third step
+        # playlist search
+        playlist_ids = self.playlist_database.get_related_playlists(music_id, self.nb_playlist_explore)
 
-            self.playlist_random_explore(step_size)
+        for playlist_id in playlist_ids:
+            playlist = requests_tools.safe_request('playlist/' + str(playlist_id), True)
+            for song in playlist['tracks']['data']:
+                # self.music_database.add_song(song)
+                # self.user_database.update_score(song['id'], score * 0.05)
+                database_buffer.append((song, 0.05))
 
-            sleep(sleep_time)
+        self.user_database.open_fast_connexion()
+        for elem in database_buffer:
+            self.user_database.update_score(elem[0]['id'], score*elem[1])
+        self.user_database.close_fast_connexion()
+
+        self.music_database.open_fast_connexion()
+        for elem in database_buffer:
+            self.music_database.add_song(elem[0], verbose=False)
+        self.music_database.close_fast_connexion()
+
+        print("[EXPLORER] Scores updated")
 
 
-exp = Explorer()
-exp.playlist_moderate_explore()
+# from database import UserDatabase
+# m = MusicDatabase.MusicDatabase()
+# d = UserDatabase.UserDatabase('remi')
+# exp = Explorer(d)
+# song = requests_tools.safe_request('https://api.deezer.com/track/94935172')
+# m.add_song(song)
+# exp.set_score(94935172, 1)
+# d.print_data('remi')
