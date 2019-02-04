@@ -14,7 +14,7 @@ class Explorer:
         self.nb_playlist_explore = 5
 
     def set_score(self, music_id, score):
-        print("updating scores")
+        print("[EXPLORER] updating scores")
 
         if not score:
             return
@@ -35,7 +35,7 @@ class Explorer:
                     # self.music_database.add_song(song, verbose=False)
                     database_buffer.append((song, 0.5))
 
-            print("first step done")
+            print("[EXPLORER] first step done")
 
             # second step
             collaborators = requests_tools.collaboration(artist_id, songs_of_artist)
@@ -50,14 +50,14 @@ class Explorer:
                             # self.music_database.add_song(song, verbose=False)
                             database_buffer.append((song, 0.1))
 
-        print("second step done")
+        print("[EXPLORER] second step done")
 
         # third step
         # playlist search
         playlist_ids = self.playlist_database.get_related_playlists(music_id, self.nb_playlist_explore)
 
         for playlist_id in playlist_ids:
-            playlist = requests_tools.get_request('playlist/' + str(playlist_id), True)
+            playlist = requests_tools.safe_request('playlist/' + str(playlist_id), True)
             for song in playlist['tracks']['data']:
                 # self.music_database.add_song(song)
                 # self.user_database.update_score(song['id'], score * 0.05)
@@ -73,14 +73,14 @@ class Explorer:
             self.music_database.add_song(elem[0], verbose=False)
         self.music_database.close_fast_connexion()
 
-        print("[RASP] Scores updated")
+        print("[EXPLORER] Scores updated")
 
 
 # from database import UserDatabase
 # m = MusicDatabase.MusicDatabase()
 # d = UserDatabase.UserDatabase('remi')
 # exp = Explorer(d)
-# song = requests_tools.get_request('https://api.deezer.com/track/94935172')
+# song = requests_tools.safe_request('https://api.deezer.com/track/94935172')
 # m.add_song(song)
 # exp.set_score(94935172, 1)
 # d.print_data('remi')

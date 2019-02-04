@@ -7,13 +7,17 @@ import queue
 class ConnexionManager(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
-        self.address = ('localhost', 6001)  # family is deduced to be 'AF_INET'
-        self.listener = Listener(self.address, authkey=b'secret password')
+        self.address = ('localhost', 6000)  # family is deduced to be 'AF_INET'
+        try:
+            self.listener = Listener(self.address, authkey=b'secret password')
+        except:
+            self.address = ('localhost', 6001)  # family is deduced to be 'AF_INET'
+            self.listener = Listener(self.address, authkey=b'secret password')
         self.connexions_list = []
 
     def run(self):
         """an infinite loop which wait for new connections"""
-        print("[RASP] start connecting")
+        print("[CONNEXION_MANAGER] start connecting")
         while True:
             self.connexion_init()
 
@@ -26,4 +30,4 @@ class ConnexionManager(threading.Thread):
 
         new_connexion_thread.start()
         self.connexions_list.append(new_connexion_queue)
-        print('[RASP] connexion accepted from', self.listener.last_accepted)
+        print('[CONNEXION_MANAGER] connexion accepted from', self.listener.last_accepted)

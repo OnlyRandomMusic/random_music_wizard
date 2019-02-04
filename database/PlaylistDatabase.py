@@ -16,26 +16,26 @@ class PlaylistDatabase(Database.Database):
             self.sql_request('''CREATE TABLE playlist_link
                             (playlist_id, music_id)''')
         except:
-            print('[RASP] Playlist Database already created')
+            print('[DATABASE_P] Playlist Database already created')
 
     def add_raw_playlist(self, playlist):
-        data = self.sql_request('SELECT * FROM raw_playlist WHERE id=?', (playlist['id'],))
+        data = self.safe_sql_request('SELECT * FROM raw_playlist WHERE id=?', (playlist['id'],))
 
         if data:
-            print("[RASP] Playlist {} already in database".format(playlist['title']))
+            print("[DATABASE_P] Playlist {} already in database".format(playlist['title']))
             return
 
         address = self.get_count('raw_playlist')
-        self.sql_request("INSERT INTO raw_playlist VALUES (?,?,?)", (
+        self.safe_sql_request("INSERT INTO raw_playlist VALUES (?,?,?)", (
             address, playlist['id'], playlist['title']))
 
         for music in playlist['tracks']['data']:
-            self.sql_request("INSERT INTO playlist_link VALUES (?,?)", (address, music['id']))
+            self.safe_sql_request("INSERT INTO playlist_link VALUES (?,?)", (address, music['id']))
 
-        print("[RASP] Successfully added {} in database".format(playlist['title']))
+        print("[DATABASE_P] Successfully added {} in database".format(playlist['title']))
 
     def get_raw_playlist_max_id(self):
-        data = self.sql_request('SELECT MAX(id) FROM raw_playlist')
+        data = self.safe_sql_request('SELECT MAX(id) FROM raw_playlist')
 
         if data:
             if data[0][0] == None:
@@ -45,7 +45,7 @@ class PlaylistDatabase(Database.Database):
     def get_really_random_song(self):
         address_max = self.get_count("raw_playlist") - 1
         address = randint(0, address_max)
-        data = self.sql_request(
+        data = self.safe_sql_request(
             'SELECT music_id FROM playlist_link WHERE playlist_id = {}'.format(str(address)))
 
         # print(data)
@@ -54,7 +54,7 @@ class PlaylistDatabase(Database.Database):
 
     def get_related_playlists(self, music_id, n):
         """return the id of approximately n playlist in which the given music is"""
-        data = self.sql_request(
+        data = self.safe_sql_request(
             "SELECT id FROM raw_playlist JOIN playlist_link ON address = playlist_id WHERE music_id = {}".format(
                 str(music_id)))
 

@@ -29,7 +29,7 @@ class Player:
                 return True
             else:
                 self.current_music_id = old_id
-                print("[RASP] music could not be found")
+                print("[PLAYER] music could not be found")
         return False
 
     def set_volume(self, percentage):
@@ -55,13 +55,13 @@ class Player:
     def play(self):
         if not self.music_player.is_playing():
             self.music_player.play()
-            print("[RASP] music now playing")
+            print("[PLAYER] music now playing")
         else:
-            print("[RASP] music already playing")
+            print("[PLAYER] music already playing")
 
     def pause(self):
         if self.music_player.is_playing():
             self.music_player.pause()
-            print("[RASP] music now paused")
+            print("[PLAYER] music now paused")
         else:
-            print("[RASP] music already paused")
+            print("[PLAYER] music already paused")

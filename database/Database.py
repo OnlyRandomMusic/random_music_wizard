@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from time import sleep
 
 
 class Database:
@@ -36,20 +37,23 @@ class Database:
 
         return data
 
-    # def safe_sql_request(self, request, values=None):
-    #         try:
-    #             self.sql_request(request, values)
-    #         except:
-    #             self.sql_request(request, values)
+    def safe_sql_request(self, request, values=None):
+        while True:
+            try:
+                data = self.sql_request(request, values)
+                return data
+            except:
+                sleep(0.2)
+                print('[DATABASE] SQL request error')
 
     def print_data(self, table, attribute='*'):
-        data = self.sql_request('SELECT {} FROM {}'.format(attribute, table))
+        data = self.safe_sql_request('SELECT {} FROM {}'.format(attribute, table))
 
         for element in data:
             print(element)
 
     def get_count(self, table):
-        data = self.sql_request('SELECT COUNT(*) FROM {}'.format(table))
+        data = self.safe_sql_request('SELECT COUNT(*) FROM {}'.format(table))
 
         if data:
             return data[0][0]
@@ -65,5 +69,5 @@ class Database:
         try:
             self.connexion.close()
         except:
-            print("error no connexion currently open")
+            print("[DATABASE] error no fast connexion currently open")
         self.connexion = False
