@@ -1,24 +1,19 @@
-import socket
-from time import sleep
+import threading
 
-HOST = '10.57.167.107'
-PORT = 8484
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind((HOST, PORT))
-s.listen(2)
 
-#JS
-conn1, addr1 = s.accept()
-print('Connected by', addr1)
+class WebConnexion(threading.Thread):
+    def __init__(self, connexion, queue):
+        threading.Thread.__init__(self)
+        self.connexion = connexion
+        self.instruction_list = queue
 
-while 1:
-    try:
-        print("receiving")
-        data = conn1.recv(1024)
-        print("received")
-    except socket.error:
-        print('error')
-    if data:
-        print(data.decode('utf-8'))
+    def run(self):
+        """an infinite loop which wait for new messages"""
+        while True:
+            try:
+                message = self.connexion.recv()
+                print(message)
+                self.instruction_list.put(message)
+            except:
+                self.connexion.close()
 
-    sleep(1)
