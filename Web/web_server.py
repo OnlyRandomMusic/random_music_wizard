@@ -1,12 +1,14 @@
 from flask import Flask
 from flask import render_template
 from multiprocessing.connection import Client
+
 app = Flask(__name__)
 
 
 @app.route("/")
 def home():
     return render_template('index.html')
+
 
 @app.route('/you')
 def get_ses():
@@ -20,4 +22,4 @@ def get_ses():
     conn.send('lalalallalallalalalalalalala')
 
     print('done')
-    return home()
+    return 'hi'
