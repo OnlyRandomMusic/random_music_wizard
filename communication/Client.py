@@ -1,4 +1,5 @@
 from multiprocessing.connection import Client
+import Connexion
 
 try:
     address = ('localhost', 6000)
@@ -9,6 +10,10 @@ except:
 
 print("""Welcome
 If the music isn't playing, type start""")
+
+message_receiver = Connexion.Connexion(conn)
+message_receiver.daemon = True
+message_receiver.start()
 
 while True:
     message = input()

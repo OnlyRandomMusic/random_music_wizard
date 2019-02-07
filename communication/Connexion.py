@@ -2,7 +2,7 @@ import threading
 
 
 class Connexion(threading.Thread):
-    def __init__(self, connexion, queue):
+    def __init__(self, connexion, queue=None):
         threading.Thread.__init__(self)
         self.connexion = connexion
         self.instruction_list = queue
@@ -12,6 +12,14 @@ class Connexion(threading.Thread):
         while True:
             try:
                 message = self.connexion.recv()
-                self.instruction_list.put(message)
+
+                # if message == 'get':
+                #     self.connexion.send('je suis là')
+
+                if self.instruction_list:
+                    self.instruction_list.put((message, self.connexion))
+                else:
+                    # used for client side connexions
+                    print(message)
             except:
                 self.connexion.close()
