@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8">
     <title class="title">Random Music Wizard</title>
-    <link rel="stylesheet" href="home_style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='home_style.css') }}">
   </head>
 
 
@@ -24,41 +24,7 @@
 		<button onclick="connect()" class="center center_vert">Connect</button>
 
   	</div>
-  </body>
+</body>
 </html>
 
-<script>
-//var socket = io.connect('http://10.57.167.107:8484');
-//socket.send('lalala');
-
-//var socket = io.connect('http://10.57.167.107:8484');
-
-function connect(){
-    console.log("connect");
-    axios.get('/you')
-      .then(function (response) {
-        // handle success
-        console.log(response);
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .then(function () {
-        // always executed
-      });
-//	var socket = io.connect('http://10.57.167.107:8484');
-}
-
-function play(){
-//	socket.send('lalala');
-}
-
-function other_test(){
-//    var io = io.emitter({ host: '10.57.167.107', port: 8484 });
-//    setInterval(function(){
-//        io.emit('time', new Date);
-//    }, 5000);
-}
-console.log("test");
-connect();</script>
+<script src="{{ url_for('static', filename='home.js') }}"></script>
