@@ -26,9 +26,14 @@ class MusicDatabase(Database.Database):
                 print("[DATABASE_M] Song {} already in database".format(song['title_short']))
             return
 
-        self.safe_sql_request("INSERT INTO music VALUES (?,?,?,?,?,?,?,?)", (
-            song['id'], song['title_short'], song['duration'], song['preview'],
-            song['artist']['id'], song['album']['id'], path, downloaded))
+        try:
+            self.safe_sql_request("INSERT INTO music VALUES (?,?,?,?,?,?,?,?)", (
+                song['id'], song['title_short'], song['duration'], song['preview'],
+                song['artist']['id'], song['album']['id'], path, downloaded))
+        except:
+            self.safe_sql_request("INSERT INTO music VALUES (?,?,?,?,?,?,?,?)", (
+                song['id'], song['title_short'], song['duration'], '',
+                song['artist']['id'], song['album']['id'], path, downloaded))
 
         data = self.safe_sql_request('SELECT * FROM artist WHERE id=?', (song['artist']['id'],))
 
