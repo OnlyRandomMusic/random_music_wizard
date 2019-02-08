@@ -31,5 +31,5 @@ function other_test(){
 //        io.emit('time', new Date);
 //    }, 5000);
 }
+
 console.log("test");
-connect();
