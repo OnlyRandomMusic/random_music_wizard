@@ -1,1 +1,1 @@
-from Web.flask_dev import web_server
+from flask_dev import web_server
