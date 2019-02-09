@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-rm -rf venv
+#rm -rf venv
 
-virtualenv venv
-source venv/bin/activate
-pip install requests
-pip install deezloader
-pip install simplejson
-pip install flask
-pip install python-vlc
+#virtualenv venv
+#source venv/bin/activate
+pip3 install requests
+pip3 install deezloader
+pip3 install simplejson
+pip3 install flask
+pip3 install python-vlc
