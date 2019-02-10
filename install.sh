@@ -8,5 +8,5 @@ sudo apt-get install vlc
 sudo apt-get install sqlite3
 sudo apt-get install libapache2-mod-wsgi
 
-bash deploy.sh
 bash install_short.sh
+bash web_config
