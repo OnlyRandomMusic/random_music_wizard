@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title class="title">Random Music Wizard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home_style.css') }}">
+  </head>
+
+
+  <body>
+  	<div class="left">
+  		<img src="{{ url_for('static', filename='Logo.png') }}" class="center logo_size">
+  	</div>
+
+  	<div class="right">
+  		<img src="{{ url_for('static', filename='Logo.png') }}" class="center logo_size">
+  	</div>
+  	<div class="mid">
+  		<button onclick="play()" class="center center_vert">Play</button>
+		<button onclick="connect()" class="center center_vert">Connect</button>
+
+  	</div>
+</body>
+</html>
+
+<script src="{{ url_for('static', filename='home.js') }}"></script>
