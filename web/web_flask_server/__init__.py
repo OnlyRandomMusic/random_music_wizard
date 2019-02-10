@@ -24,3 +24,7 @@ def get_ses():
 
     print('done')
     return 'hi'
+
+
+if __name__ == "__main__":
+    app.run()
