@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-for file in Web/*
-do
-    cp -rf ${file} ../../../var/www/
-    echo "copied ${file}"
-done
+cp -rf web ../../../var/www/
+
+#for file in Web/*
+#do
+#    cp -rf ${file} ../../../var/www/
+#    echo "copied ${file}"
+#done
