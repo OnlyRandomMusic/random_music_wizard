@@ -1,4 +1,4 @@
-from communication import WebConnexionManager
+import WebConnexionManager
 
 w = WebConnexionManager.WebConnexionManager()
 w.daemon = True
