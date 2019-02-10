@@ -11,7 +11,7 @@ def home():
     return render_template('home.html')
 
 
-@app.route('/you')
+@app.route('/you/')
 def get_ses():
     # try:
     #     address = ('localhost', 6003)
