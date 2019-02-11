@@ -26,7 +26,7 @@ def home():
             connexion = connect()
             return render_template('home.html')
         except:
-            return render_template('no_instance.html')
+            return error_page()
 
 
 @app.route("/play")
@@ -37,9 +37,12 @@ def play():
 @app.route('/you/')
 def get_ses():
     connexion.send('lalalallalallalalalalalalala')
-
     print('done')
     return 'hi'
+
+
+def error_page():
+    return render_template('error.html')
 
 
 if __name__ == "__main__":
