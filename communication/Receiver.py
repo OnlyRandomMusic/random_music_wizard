@@ -31,14 +31,18 @@ class Receiver:
 
         # receiving messages from web connexions
         for web_connexion_queue in self.web_connexion_manager.web_connexions_list:
-            try:
-                if web_connexion_queue.qsize() > 0:
-                    instruction = web_connexion_queue.get()
-                    self.instruction_queue.put(instruction)
-                    print("[RECEIVER] web instruction received: " + instruction)
-            except:
-                print("[RECEIVER] error in web reception")
-                continue
+            if web_connexion_queue.qsize() > 0:
+                instruction = web_connexion_queue.get()
+                self.instruction_queue.put(instruction)
+
+            # try:
+            #     if web_connexion_queue.qsize() > 0:
+            #         instruction = web_connexion_queue.get()
+            #         self.instruction_queue.put(instruction)
+            #         print("[RECEIVER] web instruction received: " + instruction)
+            # except:
+            #     print("[RECEIVER] error in web reception")
+            #     continue
 
 # receiver = Receiver(1)
 #
