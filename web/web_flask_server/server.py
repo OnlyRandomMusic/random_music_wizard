@@ -1,14 +1,32 @@
 from flask import Flask
 from flask import render_template
-
 from multiprocessing.connection import Client
 
 app = Flask(__name__)
+connexion = None
+
+
+def connect():
+    try:
+        address = ('localhost', 6003)
+        new_connexion = Client(address, authkey=b'secret password')
+    except:
+        address = ('localhost', 6004)
+        new_connexion = Client(address, authkey=b'secret password')
+
+    return new_connexion
 
 
 @app.route("/")
 def home():
-    return render_template('home.html')
+    global connexion
+
+    if not connexion:
+        try:
+            connexion = connect()
+            return render_template('home.html')
+        except:
+            return render_template('no_instance.html')
 
 
 @app.route("/play")
@@ -18,14 +36,7 @@ def play():
 
 @app.route('/you/')
 def get_ses():
-    try:
-        address = ('localhost', 6003)
-        conn = Client(address, authkey=b'secret password')
-    except:
-        address = ('localhost', 6004)
-        conn = Client(address, authkey=b'secret password')
-
-    conn.send('lalalallalallalalalalalalala')
+    connexion.send('lalalallalallalalalalalalala')
 
     print('done')
     return 'hi'
