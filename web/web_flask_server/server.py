@@ -58,7 +58,7 @@ def display_home():
 
 @app.route('/search/<research>')
 def search(research):
-    if '/' == research[0]:
+    if '$' == research[0]:
         connexion.send(research[1:])
     else:
         connexion.send('search:{}:1'.format(research))
