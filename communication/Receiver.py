@@ -34,6 +34,7 @@ class Receiver:
             if web_connexion_queue.qsize() > 0:
                 instruction = web_connexion_queue.get()
                 self.instruction_queue.put(instruction)
+                print("[RECEIVER] web instruction received: " + instruction)
 
             # try:
             #     if web_connexion_queue.qsize() > 0:
