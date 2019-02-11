@@ -56,6 +56,13 @@ def display_home():
     return render_template('home.html')
 
 
+@app.route('/get_title/')
+def get_title():
+    connexion.send('get title')
+    title = connexion.recv()
+    return title
+
+
 @app.route('/search/<research>')
 def search(research):
     if '$' == research[0]:

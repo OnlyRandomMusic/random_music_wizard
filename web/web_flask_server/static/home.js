@@ -9,6 +9,7 @@ function request(route){
       .then(function (response) {
         // handle success
         console.log(response);
+        return response;
       })
       .catch(function (error) {
         // handle error
@@ -20,23 +21,33 @@ function request(route){
 }
 
 function play(){
-    request('/play')
+    request('/play');
+    refresh();
 }
 
 function pause(){
-    request('/pause')
+    request('/pause');
+    refresh();
 }
 
 function next(){
-    request('/next')
+    request('/next');
+    refresh();
 }
 
 function like(){
-    request('/like')
+    request('/like');
+    refresh();
 }
 
 function search(){
     content = document.getElementById("search_bar").value;
     document.getElementById("search_bar").value = '';
-    request('/search/' + content)
+    request('/search/' + content);
+    refresh();
+}
+
+function refresh(){
+    title = request('/get_title/');
+    document.getElementById("paragraph").value = title;
 }
