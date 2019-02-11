@@ -30,4 +30,4 @@ class WebConnexionManager(threading.Thread):
 
         new_connexion_thread.start()
         self.web_connexions_list.append(new_connexion_queue)
-        print('[CONNEXION_MANAGER] connexion accepted from', self.listener.last_accepted)
+        print('[WEB_CONNEXION_MANAGER] connexion accepted from', self.listener.last_accepted)

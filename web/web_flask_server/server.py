@@ -40,7 +40,7 @@ def play():
     connexion.send('play')
 
 
-@app.route("/next/")
+@app.route("/ pagenext/")
 def next():
     connexion.send('next')
 
@@ -48,6 +48,20 @@ def next():
 @app.route('/like/')
 def like():
     connexion.send('like')
+
+
+@app.route('/home/')
+def display_home():
+    # used to see home
+    return render_template('home.html')
+
+
+@app.route('/search/<research>')
+def search(research):
+    if '/' == research[0]:
+        connexion.send(research[1:])
+    else:
+        connexion.send('search:{}:1'.format(research))
 
 
 def error_page():

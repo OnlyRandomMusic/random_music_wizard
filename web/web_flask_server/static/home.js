@@ -34,3 +34,8 @@ function next(){
 function like(){
     request('/like')
 }
+
+function search(){
+    content = document.getElementById("search_bar").value;
+    request('/search/' + content)
+}

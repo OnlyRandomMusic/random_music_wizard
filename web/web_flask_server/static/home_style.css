@@ -41,3 +41,22 @@ body{
 	left: 30%;
 	right: 30%;
 }
+
+.half_right {
+    position: absolute;
+	right: 10px;
+	top: 10px;
+	width: 40%;
+}
+
+.half_left {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	width: 40%;
+}
+
+.top{
+	top: 10px;
+	height: 20%;
+}

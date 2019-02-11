@@ -18,6 +18,10 @@
   		<img src="{{ url_for('static', filename='Logo.png') }}" class="center logo_size">
   	</div>
   	<div class="mid">
+		<div class="top">
+			<input type="text" id="search_bar" maxlength="100" class="half_left">
+			<button onclick="search()" class="half_right">Search</button>
+		</div>
   		<button onclick="play()" class="center center_vert">Play</button>
 		<button onclick="pause()" class="center center_vert">Pause</button>
 		<button onclick="next()" class="center center_vert">Next</button>
