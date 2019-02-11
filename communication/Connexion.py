@@ -18,6 +18,7 @@ class Connexion(threading.Thread):
 
                 if self.instruction_list:
                     self.instruction_list.put((message, self.connexion))
+                    print(message)
                 else:
                     # used for client side connexions
                     print(message)
