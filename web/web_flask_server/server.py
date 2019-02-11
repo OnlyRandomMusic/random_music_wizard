@@ -61,7 +61,7 @@ def search(research):
     if '$' == research[0]:
         connexion.send(research[1:])
     else:
-        connexion.send('search:{}:1'.format(research))
+        connexion.send('search:{}:0'.format(research))
 
 
 def error_page():
