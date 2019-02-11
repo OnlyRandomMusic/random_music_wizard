@@ -1,6 +1,6 @@
 import threading
 from multiprocessing.connection import Listener
-import communication.WebConnexion as WebConnexion
+import communication.Connexion as Connexion
 import queue
 
 
@@ -25,7 +25,7 @@ class WebConnexionManager(threading.Thread):
         new_connexion = self.listener.accept()
         new_connexion_queue = queue.Queue()
 
-        new_connexion_thread = WebConnexion.WebConnexion(new_connexion, new_connexion_queue)
+        new_connexion_thread = Connexion.Connexion(new_connexion, new_connexion_queue)
         new_connexion_thread.daemon = True
 
         new_connexion_thread.start()

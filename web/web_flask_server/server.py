@@ -29,16 +29,24 @@ def home():
             return error_page()
 
 
-@app.route("/play")
+@app.route("/pause/")
 def play():
-    return 'playing'
+    connexion.send('pause')
 
 
-@app.route('/you/')
+@app.route("/play/")
+def play():
+    connexion.send('play')
+
+
+@app.route("/next/")
+def play():
+    connexion.send('next')
+
+
+@app.route('/like/')
 def get_ses():
-    connexion.send('lalalallalallalalalalalalala')
-    print('done')
-    return 'hi'
+    connexion.send('like')
 
 
 def error_page():

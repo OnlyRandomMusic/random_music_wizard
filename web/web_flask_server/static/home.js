@@ -1,12 +1,11 @@
-//const axios = require('axios');
-//var socket = io.connect('http://10.57.167.107:8484');
-//socket.send('lalala');
 
-//var socket = io.connect('http://10.57.167.107:8484');
+//function connect(){
+//    console.log("connect");
+//    request('/connect')
+//}
 
-function connect(){
-    console.log("connect");
-    axios.get('/you')
+function request(route){
+    axios.get(route)
       .then(function (response) {
         // handle success
         console.log(response);
@@ -18,18 +17,20 @@ function connect(){
       .then(function () {
         // always executed
       });
-//	var socket = io.connect('http://10.57.167.107:8484');
 }
 
 function play(){
-//	socket.send('lalala');
+    request('/play')
 }
 
-function other_test(){
-//    var io = io.emitter({ host: '10.57.167.107', port: 8484 });
-//    setInterval(function(){
-//        io.emit('time', new Date);
-//    }, 5000);
+function pause(){
+    request('/pause')
 }
 
-console.log("test");
+function next(){
+    request('/next')
+}
+
+function like(){
+    request('/like')
+}
