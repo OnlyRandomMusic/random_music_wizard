@@ -24,26 +24,21 @@ class Receiver:
                 if connexion_queue.qsize() > 0:
                     instruction = connexion_queue.get()
                     self.instruction_queue.put(instruction)
-                    print("[RECEIVER] ssh instruction received: " + instruction)
+                    print("[RECEIVER] ssh instruction received: " + instruction[0])
             except:
                 print("[RECEIVER] error in ssh reception")
                 continue
 
         # receiving messages from web connexions
         for web_connexion_queue in self.web_connexion_manager.web_connexions_list:
-            if web_connexion_queue.qsize() > 0:
-                instruction = web_connexion_queue.get()
-                self.instruction_queue.put(instruction)
-                print("[RECEIVER] web instruction received: " + instruction)
-
-            # try:
-            #     if web_connexion_queue.qsize() > 0:
-            #         instruction = web_connexion_queue.get()
-            #         self.instruction_queue.put(instruction)
-            #         print("[RECEIVER] web instruction received: " + instruction)
-            # except:
-            #     print("[RECEIVER] error in web reception")
-            #     continue
+            try:
+                if web_connexion_queue.qsize() > 0:
+                    instruction = web_connexion_queue.get()
+                    self.instruction_queue.put(instruction)
+                    print("[RECEIVER] web instruction received: " + instruction[0])
+            except:
+                print("[RECEIVER] error in web reception")
+                continue
 
 # receiver = Receiver(1)
 #
