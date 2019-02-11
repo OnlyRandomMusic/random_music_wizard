@@ -30,7 +30,7 @@ def home():
 
 
 @app.route("/pause/")
-def play():
+def pause():
     connexion.send('pause')
 
 
@@ -40,12 +40,12 @@ def play():
 
 
 @app.route("/next/")
-def play():
+def next():
     connexion.send('next')
 
 
 @app.route('/like/')
-def get_ses():
+def like():
     connexion.send('like')
 
 
