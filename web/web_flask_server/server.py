@@ -28,6 +28,9 @@ def home():
         except:
             return error_page()
 
+    else:
+        return render_template('home.html')
+
 
 @app.route("/pause/")
 def pause():
