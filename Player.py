@@ -65,3 +65,8 @@ class Player:
             print("[PLAYER] music now paused")
         else:
             print("[PLAYER] music already paused")
+
+    def get_current_music_info(self):
+        title = self.music_database.get_music_info(self.current_music_id, 'title')
+        artist = self.music_database.get_music_info(self.current_music_id, 'artist')
+        return title + ' - ' + artist

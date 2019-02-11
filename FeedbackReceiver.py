@@ -31,13 +31,13 @@ class FeedbackReceiver(threading.Thread):
             self.receiver.receive()
 
             if self.instructions_queue.qsize() > 0:
-                instruction = self.instructions_queue.get()
-                self.decode_instruction(instruction)
+                instruction, connexion = self.instructions_queue.get()
+                self.decode_instruction(instruction, connexion)
 
             sleep(0.5)
             # print("[RASP] received instruction " + instruction)
 
-    def decode_instruction(self, instruction):
+    def decode_instruction(self, instruction, connexion):
         if "start" in instruction:
             self.user_name = instruction.split(':')[-1]
             print("[FEEDBACK] loading {} profile".format(self.user_name))
@@ -77,3 +77,6 @@ class FeedbackReceiver(threading.Thread):
 
             if "like" in instruction:
                 self.score_update_queue.put((self.player.current_music_id, 1))
+
+            if "get" in instruction and "title" in instruction:
+                connexion.send(self.player.get_current_music_info())
