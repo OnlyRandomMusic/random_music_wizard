@@ -40,7 +40,7 @@ def play():
     connexion.send('play')
 
 
-@app.route("/ pagenext/")
+@app.route("/next/")
 def next():
     connexion.send('next')
 
