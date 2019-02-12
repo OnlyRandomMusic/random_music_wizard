@@ -33,21 +33,25 @@ def home():
 @app.route("/pause/", methods=['POST'])
 def pause():
     connexion.send('pause')
+    return 'done'
 
 
 @app.route("/play/", methods=['POST'])
 def play():
     connexion.send('play')
+    return 'done'
 
 
 @app.route("/next/", methods=['POST'])
 def next():
     connexion.send('next')
+    return 'done'
 
 
 @app.route('/like/', methods=['POST'])
 def like():
     connexion.send('like')
+    return 'done'
 
 
 @app.route('/home/')
