@@ -26,22 +26,22 @@ function request(url){
 }
 
 function play(){
-    request('/play');
+    request('/play/');
     refresh();
 }
 
 function pause(){
-    request('/pause');
+    request('/pause/');
     refresh();
 }
 
 function next(){
-    request('/next');
+    request('/next/');
     refresh();
 }
 
 function like(){
-    request('/like');
+    request('/like/');
     refresh();
 }
 
@@ -53,6 +53,6 @@ function search(){
 }
 
 function refresh(){
-    title = request('/get_title/');
-    document.getElementById("paragraph").value = title;
+//    title = request('/get_title/');
+//    document.getElementById("paragraph").value = title;
 }
