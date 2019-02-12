@@ -74,6 +74,7 @@ def search(research):
         connexion.send(research[1:])
     else:
         connexion.send('search:{}:0'.format(research))
+    return 'done'
 
 
 def error_page():
