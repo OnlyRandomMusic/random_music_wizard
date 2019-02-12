@@ -46,6 +46,14 @@ body{
 	right: 30%;
 }
 
+.bottom {
+	position: absolute;
+	height: 100px;
+	bottom: 10px;
+	left: 30%;
+	right: 30%;
+}
+
 .half_right {
     position: absolute;
 	right: 10px;
