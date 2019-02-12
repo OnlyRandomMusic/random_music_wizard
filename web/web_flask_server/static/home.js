@@ -4,20 +4,25 @@
 //    request('/connect')
 //}
 
-function request(route){
-    axios.get(route)
-      .then(function (response) {
-        // handle success
-        console.log(response);
-        return response;
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .then(function () {
-        // always executed
-      });
+function request(url){
+//    axios.get(route)
+//      .then(function (response) {
+//        // handle success
+//        console.log(response);
+//        return response;
+//      })
+//      .catch(function (error) {
+//        // handle error
+//        console.log(error);
+//      })
+//      .then(function () {
+//        // always executed
+//      });
+
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "POST", url, false ); // false for synchronous request
+    xmlHttp.send( null );
+//    return xmlHttp.responseText;
 }
 
 function play(){

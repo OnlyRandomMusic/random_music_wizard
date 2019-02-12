@@ -30,22 +30,22 @@ def home():
     return render_template('home.html')
 
 
-@app.route("/pause/")
+@app.route("/pause/", methods=['POST'])
 def pause():
     connexion.send('pause')
 
 
-@app.route("/play/")
+@app.route("/play/", methods=['POST'])
 def play():
     connexion.send('play')
 
 
-@app.route("/next/")
+@app.route("/next/", methods=['POST'])
 def next():
     connexion.send('next')
 
 
-@app.route('/like/')
+@app.route('/like/', methods=['POST'])
 def like():
     connexion.send('like')
 
@@ -63,7 +63,7 @@ def get_title():
     return title
 
 
-@app.route('/search/<research>')
+@app.route('/search/<research>', methods=['POST'])
 def search(research):
     if '$' == research[0]:
         connexion.send(research[1:])
