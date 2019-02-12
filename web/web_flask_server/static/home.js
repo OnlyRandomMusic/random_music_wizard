@@ -20,7 +20,7 @@ function request(url){
 //      });
 
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "POST", url, false ); // false for synchronous request
+    xmlHttp.open( "POST", url, true ); // false for synchronous request
     xmlHttp.send( null );
 //    return xmlHttp.responseText;
 }
