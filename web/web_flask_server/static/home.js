@@ -9,8 +9,9 @@ function get_request(url){
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "POST", url, true ); // false for synchronous request
     xmlHttp.send( null );
-    console.log(xmlHttp.responseText)
-    return xmlHttp.responseText;
+    result = xmlHttp.responseText;
+    console.log(result);
+    return result;
 }
 
 function play(){
@@ -42,7 +43,7 @@ function search(){
 
 function refresh(){
     title = get_request('/get_title/');
-    document.getElementById("paragraph").value = 'rere';
+//    document.getElementById("paragraph").value = 'rere';
 }
 
 // Get the input field
