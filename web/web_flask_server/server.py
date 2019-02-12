@@ -60,7 +60,7 @@ def display_home():
     return render_template('home.html')
 
 
-@app.route('/get_title/', methods='GET')
+@app.route('/get_title/', methods=['GET'])
 def get_title():
     connexion.send('get title')
     title = connexion.recv()
