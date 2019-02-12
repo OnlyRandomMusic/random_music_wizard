@@ -35,15 +35,15 @@ function like(){
 }
 
 function search(){
-    content = document.getElementById("search_bar").value;
+    var content = document.getElementById("search_bar").value;
     document.getElementById("search_bar").value = '';
     post_request('/search/' + content);
     refresh();
 }
 
 function refresh(){
-//    title = get_request('/get_title/');
-//    document.getElementById("paragraph").value = 'rere';
+    var title = get_request('/get_title/');
+    document.getElementById("search_bar").value = title;
 }
 
 // Get the input field
