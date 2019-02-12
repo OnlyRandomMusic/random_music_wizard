@@ -1,58 +1,45 @@
 
-//function connect(){
-//    console.log("connect");
-//    request('/connect')
-//}
-
-function request(url){
-//    axios.get(route)
-//      .then(function (response) {
-//        // handle success
-//        console.log(response);
-//        return response;
-//      })
-//      .catch(function (error) {
-//        // handle error
-//        console.log(error);
-//      })
-//      .then(function () {
-//        // always executed
-//      });
-
+function post_request(url){
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "POST", url, true ); // false for synchronous request
     xmlHttp.send( null );
-//    return xmlHttp.responseText;
+}
+
+function get_request(url){
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "POST", url, true ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
 }
 
 function play(){
-    request('/play/');
+    post_request('/play/');
     refresh();
 }
 
 function pause(){
-    request('/pause/');
+    post_request('/pause/');
     refresh();
 }
 
 function next(){
-    request('/next/');
+    post_request('/next/');
     refresh();
 }
 
 function like(){
-    request('/like/');
+    post_request('/like/');
     refresh();
 }
 
 function search(){
     content = document.getElementById("search_bar").value;
     document.getElementById("search_bar").value = '';
-    request('/search/' + content);
+    post_request('/search/' + content);
     refresh();
 }
 
 function refresh(){
-//    title = request('/get_title/');
-//    document.getElementById("paragraph").value = title;
+    title = get_request('/get_title/');
+    document.getElementById("paragraph").value = title;
 }
