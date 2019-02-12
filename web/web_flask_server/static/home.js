@@ -44,3 +44,17 @@ function refresh(){
     title = get_request('/get_title/');
     document.getElementById("paragraph").value = 'rere';
 }
+
+// Get the input field
+var input = document.getElementById("search_bar");
+
+// Execute a function when the user releases a key on the keyboard
+input.addEventListener("keyup", function(event) {
+  // Cancel the default action, if needed
+  event.preventDefault();
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Trigger the button element with a click
+    document.getElementById("search_button").click();
+  }
+});
