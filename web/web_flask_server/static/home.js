@@ -42,5 +42,5 @@ function search(){
 
 function refresh(){
     title = get_request('/get_title/');
-    document.getElementById("paragraph").value = title;
+    document.getElementById("paragraph").value = 'rere';
 }
