@@ -60,7 +60,7 @@ def display_home():
     return render_template('home.html')
 
 
-@app.route('/get_title/')
+@app.route('/get_title/', methods='GET')
 def get_title():
     connexion.send('get title')
     title = connexion.recv()
@@ -70,6 +70,7 @@ def get_title():
 @app.route('/search/<research>', methods=['POST'])
 def search(research):
     if '$' == research[0]:
+        # used to execute command directly from the web interface
         connexion.send(research[1:])
     else:
         connexion.send('search:{}:0'.format(research))

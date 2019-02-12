@@ -9,7 +9,7 @@ function get_request(url){
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open( "POST", url, true ); // false for synchronous request
     xmlHttp.send( null );
-    result = xmlHttp.responseText;
+    var result = xmlHttp.responseText;
     console.log(result);
     return result;
 }
