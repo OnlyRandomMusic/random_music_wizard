@@ -33,6 +33,7 @@ def home():
 @app.route("/pause/", methods=['POST'])
 def pause():
     connexion.send('pause')
+    app.logger('PAUSE')
     return 'done'
 
 
