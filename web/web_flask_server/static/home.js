@@ -1,13 +1,13 @@
 
 function post_request(url){
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "POST", url, false); // false for synchronous request
+    xmlHttp.open( "POST", url, true); // false for synchronous request
     xmlHttp.send( null );
 }
 
 function get_request(url){
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "POST", url, true ); // false for synchronous request
+    xmlHttp.open( "GET", url, true ); // false for synchronous request
     xmlHttp.send( null );
     var result = xmlHttp.responseText;
     console.log(result);
