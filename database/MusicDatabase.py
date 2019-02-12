@@ -62,7 +62,7 @@ class MusicDatabase(Database.Database):
         else:
             print("[DATABASE_M] DATABASE CRITICAL ERROR")
             print("[DATABASE_M] trying to solve it")
-            song = requests_tools.safe_request('track/' + music_id, True)
+            song = requests_tools.safe_request('track/' + str(music_id), True)
             self.add_song(song)
 
             return self.get_music_info(music_id, info_needed)
