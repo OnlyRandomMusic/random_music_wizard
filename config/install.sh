@@ -7,8 +7,8 @@ sudo apt-get install vlc
 #sudo apt-get install virtualenv
 sudo apt-get install sqlite3
 
-bash install_short.sh
-bash web_config
+bash config/install_short.sh
+bash config/web_config
 
 # things to do manually:
 # change pi user (cf. https://gordonlesti.com/change-default-users-on-raspberry-pi/)
