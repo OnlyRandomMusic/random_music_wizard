@@ -22,7 +22,7 @@ bash web_config
 ## (set boot mode to Desktop with autologin in raspi-config)
 
 # enable ssh (and VNC)
-# install git ;)
 # static IP configuration (/etc/dhcpcd.conf)
 # ethernet local IP configuration (/boot/cmdline.txt add ip=169.254.51.51 and change 51 by the number you want)
+# (if needed reconfigure network with raspi-config)
 # git clone and then run this script
