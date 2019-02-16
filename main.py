@@ -9,7 +9,7 @@ from time import sleep
 import FeedbackReceiver
 
 auto_start = True
-default_user = 'remi'
+default_user = 'elodie'
 
 print("[MAIN] starting")
 
