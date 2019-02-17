@@ -18,7 +18,7 @@ class MusicWizard:
         self.exploration_manager = ExplorationManager.ExplorationManager(self.user_name, self.score_update_queue)
         self.exploration_manager.daemon = True
 
-        print("[MAIN] explorer initialized")
+        print("[MUSIC WIZARD] explorer initialized")
 
         self.song_queue = queue.Queue()  # the queue used for receiving information from the song_chooser thread
 
@@ -31,7 +31,7 @@ class MusicWizard:
                                                        self.score_update_queue)  # creating a thread that will work in parallel
         self.queue_manager.daemon = True  # when the main is closed this thread will also close
 
-        print("[MAIN] vlc player initialized")
+        print("[MUSIC WIZARD] vlc player initialized")
 
         self.feedback_receiver.initialize(self.player, self.queue_manager.song_chooser, self.score_update_queue)
 
@@ -42,16 +42,20 @@ class MusicWizard:
         self.player.play_next_music(0)
         # player.pause()
 
-        print("[MAIN] starting to play")
+        print("[MUSIC WIZARD] starting to play")
 
         while True:
             if self.player.music_ended():
                 self.player.play_next_music(0.1)
 
             if self.feedback_receiver.need_to_stop_main:
+                self.close()
                 break
 
             sleep(self.sleep_time)
             continue
-
-        print("[MAIN] bye bye")
+        
+    def close(self):
+        self.queue_manager.stop = True
+        self.exploration_manager.stop = True
+        print("[MUSIC WIZARD] session closed")

@@ -24,3 +24,5 @@ else:
     music_wizard = MusicWizard.MusicWizard(feedback_receiver, feedback_receiver.user_name)
 
 music_wizard.run()
+
+print("[MAIN] bye")
