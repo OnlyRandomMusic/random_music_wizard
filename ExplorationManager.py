@@ -2,6 +2,7 @@ import Explorer
 import threading
 from time import sleep
 
+
 # Thread used to manage exploration of the database with the score updates
 # its main goal is to explore in parallel in order not to block user instructions
 
@@ -12,6 +13,7 @@ class ExplorationManager(threading.Thread):
         self.user_name = user_name
         self.explorer = Explorer.Explorer(user_name)
         self.score_update_queue = score_update_queue
+        self.stop = False
 
     def run(self):
         while True:
@@ -21,3 +23,8 @@ class ExplorationManager(threading.Thread):
                 self.explorer.set_score(music_id, score)
             else:
                 sleep(0.5)
+
+            if self.stop:
+                break
+
+        print("[EXPLORATION MANAGER] stopped")

@@ -10,11 +10,12 @@ class QueueManager(threading.Thread):
         self.queue = queue
         self.player = player
         self.song_chooser = SongChooser.SongChooser(music_database, player, user_name, score_update_queue)
+        self.stop = False
         queue.put(self.song_chooser.get_next_song())
 
     def run(self):
         """an infinite loop which add songs to the queue"""
-        print("[MUSIC QUEUE] start downloading")
+        print("[QUEUE MANAGER] start downloading")
         while True:
             if self.queue.qsize() < 10:
                 new_id = self.song_chooser.get_next_song()
@@ -25,6 +26,11 @@ class QueueManager(threading.Thread):
             if self.song_chooser.need_to_put_first != 0:
                 self.put_first(self.song_chooser.need_to_put_first)
                 self.song_chooser.now_placed()
+
+            if self.stop:
+                break
+
+        print("[QUEUE MANAGER] stopped")
 
     def put_first(self, song_id):
         """function used to put a song at the beginning of the queue"""

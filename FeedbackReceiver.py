@@ -13,8 +13,10 @@ class FeedbackReceiver(threading.Thread):
 
         self.player = None
         self.song_chooser = None
+        self.score_update_queue = None
 
         self.user_name = None
+        self.need_to_stop_main = False
         self.stop = False
 
         self.instructions_queue = queue.Queue()
@@ -36,6 +38,12 @@ class FeedbackReceiver(threading.Thread):
 
             sleep(0.5)
             # print("[RASP] received instruction " + instruction)
+
+            if self.stop:
+                break
+
+        print("[FEEDBACK] stopped")
+
 
     def decode_instruction(self, instruction, connexion):
         if "start" in instruction:
@@ -61,7 +69,7 @@ class FeedbackReceiver(threading.Thread):
                     print("[FEEDBACK] the music can't be changed now")
 
             if "close" in instruction:
-                self.stop = True
+                self.need_to_stop_main = True
                 print("[FEEDBACK] program ended")
 
             if "search" in instruction:
