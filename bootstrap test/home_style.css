@@ -10,3 +10,11 @@ footer {
     line-height: 40px;
     text-align: center;
 }
+
+h5 {
+  text-align: left;
+}
+
+li {
+  text-align: left;
+}
