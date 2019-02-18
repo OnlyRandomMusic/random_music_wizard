@@ -24,6 +24,7 @@ class MusicWizard:
             self.exploration_manager.daemon = True
         else:
             self.score_update_queue = None
+            self.exploration_manager = None
 
             print("[MUSIC WIZARD] explorer initialized")
 
@@ -65,9 +66,14 @@ class MusicWizard:
     def close(self):
         self.player.close()
         self.queue_manager.stop = True
-        self.exploration_manager.stop = True
 
-        while self.queue_manager.working or self.exploration_manager.working:
+        if self.exploration_manager:
+            self.exploration_manager.stop = True
+            # waiting for the threads to stop
+            while self.exploration_manager.working:
+                sleep(0.5)
+
+        while self.queue_manager.working:
             sleep(0.5)
 
         self.feedback_receiver.main_stopped()
