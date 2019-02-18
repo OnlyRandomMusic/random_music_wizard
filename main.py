@@ -7,7 +7,7 @@ from time import sleep
 import FeedbackReceiver
 import MusicWizard
 
-start_on_boot = False
+start_on_boot = True
 
 print("[MAIN] starting")
 
@@ -24,5 +24,13 @@ else:
     music_wizard = MusicWizard.MusicWizard(feedback_receiver, feedback_receiver.user_name)
 
 music_wizard.run()
+
+print("[MAIN] relaunching")
+
+sleep(4)
+
+music_wizard = MusicWizard.MusicWizard(feedback_receiver, 'lala')
+music_wizard.run()
+print(music_wizard.user_name)
 
 print("[MAIN] bye")

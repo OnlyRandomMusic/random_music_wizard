@@ -33,7 +33,7 @@ class MusicWizard:
 
         print("[MUSIC WIZARD] vlc player initialized")
 
-        self.feedback_receiver.initialize(self.player, self.queue_manager.song_chooser, self.score_update_queue)
+        self.feedback_receiver.initialize(self)
 
         self.queue_manager.start()
         self.exploration_manager.start()
@@ -59,3 +59,4 @@ class MusicWizard:
         self.queue_manager.stop = True
         self.exploration_manager.stop = True
         print("[MUSIC WIZARD] session closed")
+        sleep(1)
