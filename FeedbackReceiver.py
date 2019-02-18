@@ -14,10 +14,10 @@ class FeedbackReceiver(threading.Thread):
         self.music_wizard = None
 
         self.user_name = None
-        self.need_to_stop_main = False
+        self.need_to_stop_instance = False # to close current music_wizard instance
         self.initialized = False
         self.stop = False
-        self.kill_main = False
+        self.kill_main = False # to kill the main program
 
         self.instructions_queue = queue.Queue()
         self.receiver = communication.Receiver.Receiver(self.instructions_queue)
@@ -68,12 +68,12 @@ class FeedbackReceiver(threading.Thread):
 
             if "close" in instruction:
                 # stop the current music_wizard instance
-                self.need_to_stop_main = True
+                self.need_to_stop_instance = True
                 print("[FEEDBACK] program ended")
 
             if "kill" in instruction:
                 # kill the all python program
-                self.need_to_stop_main = True
+                self.need_to_stop_instance = True
                 self.kill_main = True
 
             if "search" in instruction:
@@ -93,5 +93,12 @@ class FeedbackReceiver(threading.Thread):
             if "get" in instruction and "title" in instruction:
                 connexion.send(self.music_wizard.player.get_current_music_info())
 
-    def main_stopped(self):
-        self.need_to_stop_main = False
+            if "change_user" in instruction:
+                # instruction structure : "change_user:new_user_name"
+                new_user_name = instruction.split(':')[1]
+                print("[FEEDBACK] changing user, current user is now " + new_user_name)
+                self.need_to_stop_instance = True
+                self.user_name = new_user_name
+
+    def instance_stopped(self):
+        self.need_to_stop_instance = False

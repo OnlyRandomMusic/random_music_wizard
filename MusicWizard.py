@@ -44,7 +44,8 @@ class MusicWizard:
         self.feedback_receiver.initialize(self)
 
         self.queue_manager.start()
-        self.exploration_manager.start()
+        if self.exploration_manager:
+            self.exploration_manager.start()
 
     def run(self):
         self.player.play_next_music(0)
@@ -56,7 +57,7 @@ class MusicWizard:
             if self.player.music_ended():
                 self.player.play_next_music(0.1)
 
-            if self.feedback_receiver.need_to_stop_main:
+            if self.feedback_receiver.need_to_stop_instance:
                 self.close()
                 break
 
@@ -76,5 +77,5 @@ class MusicWizard:
         while self.queue_manager.working:
             sleep(0.5)
 
-        self.feedback_receiver.main_stopped()
+        self.feedback_receiver.instance_stopped()
         print("[MUSIC WIZARD] session closed")
