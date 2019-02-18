@@ -13,15 +13,17 @@ class MusicWizard:
         or 'flow' for the deezer flow"""
         self.user_name = user_name
         self.feedback_receiver = feedback_receiver
+        self.mode = mode
 
         self.music_database = MusicDatabase.MusicDatabase()
         self.music_database.create()
 
-        self.score_update_queue = queue.Queue()
-        self.exploration_manager = ExplorationManager.ExplorationManager(self.user_name, self.score_update_queue)
-        self.exploration_manager.daemon = True
+        if self.mode == 'exploration':
+            self.score_update_queue = queue.Queue()
+            self.exploration_manager = ExplorationManager.ExplorationManager(self.user_name, self.score_update_queue)
+            self.exploration_manager.daemon = True
 
-        print("[MUSIC WIZARD] explorer initialized")
+            print("[MUSIC WIZARD] explorer initialized")
 
         self.song_queue = queue.Queue()  # the queue used for receiving information from the song_chooser thread
 
@@ -31,7 +33,7 @@ class MusicWizard:
 
         self.queue_manager = QueueManager.QueueManager(self.song_queue, self.music_database, self.player,
                                                        self.user_name,
-                                                       self.score_update_queue, mode)  # creating a thread that will work in parallel
+                                                       self.score_update_queue, self.mode)  # creating a thread that will work in parallel
         self.queue_manager.daemon = True  # when the main is closed this thread will also close
 
         print("[MUSIC WIZARD] vlc player initialized")

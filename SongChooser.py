@@ -124,7 +124,6 @@ class SongChooser:
 
             next_music_id = self.deezer_flow.pop(0)
             success = self.download_song(next_music_id)
-            print('fail')
 
         return next_music_id
 
@@ -132,7 +131,7 @@ class SongChooser:
         """return the next song to play must be completed"""
         if self.mode == 'flow':
             queue_data = self.get_next_in_flow()
-        else:
+        elif self.mode == 'exploration':
             success = False
             while not success:
                 next_music_id = self.choose_next_song()
@@ -140,6 +139,8 @@ class SongChooser:
                 self.user_database.has_been_played(next_music_id)
 
             queue_data = next_music_id
+        else:
+            print('[SONGCHOOSER] CRITICAL ERROR UNKNOW MODE')
 
         return queue_data
 
