@@ -14,6 +14,7 @@ class ExplorationManager(threading.Thread):
         self.explorer = Explorer.Explorer(user_name)
         self.score_update_queue = score_update_queue
         self.stop = False
+        self.working = True
 
     def run(self):
         while True:
@@ -27,4 +28,5 @@ class ExplorationManager(threading.Thread):
             if self.stop:
                 break
 
+        self.working = False
         print("[EXPLORATION MANAGER] stopped")

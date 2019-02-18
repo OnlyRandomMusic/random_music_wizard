@@ -70,3 +70,7 @@ class Player:
         title = self.music_database.get_music_info(self.current_music_id, 'title')
         artist = self.music_database.get_music_info(self.current_music_id, 'artist')
         return title + ' - ' + artist
+
+    def close(self):
+        # need to be improved
+        self.pause()

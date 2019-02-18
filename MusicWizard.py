@@ -56,7 +56,14 @@ class MusicWizard:
             continue
         
     def close(self):
+        self.player.close()
         self.queue_manager.stop = True
         self.exploration_manager.stop = True
+
+        while self.queue_manager.working or self.exploration_manager.working:
+            sleep(0.5)
+            print('r')
+
+        self.feedback_receiver.main_stopped()
         print("[MUSIC WIZARD] session closed")
         sleep(5)

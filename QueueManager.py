@@ -11,6 +11,7 @@ class QueueManager(threading.Thread):
         self.player = player
         self.song_chooser = SongChooser.SongChooser(music_database, player, user_name, score_update_queue)
         self.stop = False
+        self.working = True
         queue.put(self.song_chooser.get_next_song())
 
     def run(self):
@@ -30,6 +31,7 @@ class QueueManager(threading.Thread):
             if self.stop:
                 break
 
+        self.working = False
         print("[QUEUE MANAGER] stopped")
 
     def put_first(self, song_id):

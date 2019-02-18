@@ -83,3 +83,6 @@ class FeedbackReceiver(threading.Thread):
 
             if "get" in instruction and "title" in instruction:
                 connexion.send(self.music_wizard.player.get_current_music_info())
+
+    def main_stopped(self):
+        self.need_to_stop_main = False
