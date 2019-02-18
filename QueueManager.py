@@ -4,12 +4,12 @@ from time import sleep
 
 
 class QueueManager(threading.Thread):
-    def __init__(self, queue, music_database, player, user_name, score_update_queue):
+    def __init__(self, queue, music_database, player, user_name, score_update_queue, mode):
         """queue is a list of music_id in order to communicate with the main"""
         threading.Thread.__init__(self)
         self.queue = queue
         self.player = player
-        self.song_chooser = SongChooser.SongChooser(music_database, player, user_name, score_update_queue)
+        self.song_chooser = SongChooser.SongChooser(music_database, player, user_name, score_update_queue, mode)
         self.stop = False
         self.working = True
         queue.put(self.song_chooser.get_next_song())

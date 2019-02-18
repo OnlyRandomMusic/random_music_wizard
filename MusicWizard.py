@@ -7,7 +7,10 @@ from time import sleep
 
 
 class MusicWizard:
-    def __init__(self, feedback_receiver, user_name='remi'):
+    def __init__(self, feedback_receiver, user_name='remi', mode='exploration'):
+        """mode could be:
+        'exploration' for custom exploration algorithm
+        or 'flow' for the deezer flow"""
         self.user_name = user_name
         self.feedback_receiver = feedback_receiver
 
@@ -28,7 +31,7 @@ class MusicWizard:
 
         self.queue_manager = QueueManager.QueueManager(self.song_queue, self.music_database, self.player,
                                                        self.user_name,
-                                                       self.score_update_queue)  # creating a thread that will work in parallel
+                                                       self.score_update_queue, mode)  # creating a thread that will work in parallel
         self.queue_manager.daemon = True  # when the main is closed this thread will also close
 
         print("[MUSIC WIZARD] vlc player initialized")

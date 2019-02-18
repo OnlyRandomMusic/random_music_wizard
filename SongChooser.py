@@ -8,8 +8,11 @@ from database import PlaylistDatabase
 
 
 class SongChooser:
-    def __init__(self, music_database, player, user_name, score_update_queue,song_quality="MP3_128"):
-        """music_quality can be FLAC, MP3_320, MP3_256 or MP3_128"""
+    def __init__(self, music_database, player, user_name, score_update_queue, mode, song_quality="MP3_128"):
+        """music_quality can be FLAC, MP3_320, MP3_256 or MP3_128
+        mode could be:
+        'exploration' for custom exploration algorithm
+        or 'flow' for the deezer flow"""
         # name of the current directory in order to save musics in the right place
         self.dir_path = os.path.dirname(os.path.realpath(__file__))
         self.musics_path = self.dir_path + os.sep + "musics"
@@ -39,6 +42,8 @@ class SongChooser:
         self.score_threshold = 0
 
         self.score_update_queue = score_update_queue
+
+        self.mode = mode
 
         # for song in self.starting_playlist["tracks"]["data"]:
         #     self.music_database.add_song(song)
@@ -124,15 +129,17 @@ class SongChooser:
 
     def get_next_song(self):
         """return the next song to play must be completed"""
-        # queue_data = self.get_next_in_flow()
+        if self.mode == 'flow':
+            queue_data = self.get_next_in_flow()
+        else:
+            success = False
+            while not success:
+                next_music_id = self.choose_next_song()
+                success = self.download_song(next_music_id)
+                self.user_database.has_been_played(next_music_id)
 
-        success = False
-        while not success:
-            next_music_id = self.choose_next_song()
-            success = self.download_song(next_music_id)
-            self.user_database.has_been_played(next_music_id)
+            queue_data = next_music_id
 
-        queue_data = next_music_id
         return queue_data
 
     def choose_next_song(self):
