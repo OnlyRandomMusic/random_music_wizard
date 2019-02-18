@@ -59,4 +59,4 @@ class MusicWizard:
         self.queue_manager.stop = True
         self.exploration_manager.stop = True
         print("[MUSIC WIZARD] session closed")
-        sleep(1)
+        sleep(5)

@@ -27,7 +27,7 @@ music_wizard.run()
 
 print("[MAIN] relaunching")
 
-sleep(4)
+sleep(1)
 
 music_wizard = MusicWizard.MusicWizard(feedback_receiver, 'lala')
 music_wizard.run()
