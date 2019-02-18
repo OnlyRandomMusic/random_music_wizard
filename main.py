@@ -12,17 +12,17 @@ default_mode = 'flow'
 
 print("[MAIN] starting")
 
-feedback_receiver = FeedbackReceiver.FeedbackReceiver()  # creating a thread that will work in parallel
+feedback_receiver = FeedbackReceiver.FeedbackReceiver(default_mode)  # creating a thread that will work in parallel
 feedback_receiver.daemon = True  # when the main is closed this thread will also close
 feedback_receiver.start()
 
 if start_on_boot:
-    music_wizard = MusicWizard.MusicWizard(feedback_receiver, mode=default_mode)
+    music_wizard = MusicWizard.MusicWizard(feedback_receiver, mode=feedback_receiver.mode)
     feedback_receiver.user_name = music_wizard.user_name
 else:
     while not feedback_receiver.user_name:
         sleep(1)
-    music_wizard = MusicWizard.MusicWizard(feedback_receiver, user_name=feedback_receiver.user_name, mode=default_mode)
+    music_wizard = MusicWizard.MusicWizard(feedback_receiver, user_name=feedback_receiver.user_name, mode=feedback_receiver.mode)
 
 while True:
     music_wizard.run()
@@ -32,7 +32,7 @@ while True:
 
     print("[MAIN] relaunching")
 
-    music_wizard = MusicWizard.MusicWizard(feedback_receiver, user_name=feedback_receiver.user_name, mode=default_mode)
+    music_wizard = MusicWizard.MusicWizard(feedback_receiver, user_name=feedback_receiver.user_name, mode=feedback_receiver.mode)
 
 
 print("[MAIN] bye")

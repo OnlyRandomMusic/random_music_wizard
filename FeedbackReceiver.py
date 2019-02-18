@@ -7,11 +7,12 @@ volume_step = 4  # the volume step in percentage
 
 
 class FeedbackReceiver(threading.Thread):
-    def __init__(self):
+    def __init__(self, mode):
         """instructions_queue is a list of instructions in order to communicate with the main"""
         threading.Thread.__init__(self)
 
         self.music_wizard = None
+        self.mode = mode
 
         self.user_name = None
         self.need_to_stop_instance = False # to close current music_wizard instance
@@ -99,6 +100,32 @@ class FeedbackReceiver(threading.Thread):
                 print("[FEEDBACK] changing user, current user is now " + new_user_name)
                 self.need_to_stop_instance = True
                 self.user_name = new_user_name
+
+            if "change_mode" in instruction:
+                # instruction structure : "change_mode:new_mode:user_name" (user_name is optional, only for exploration)
+                possible_modes = ['flow', 'exploration']
+                new_mode = instruction.split(':')[1]
+
+                if new_mode in possible_modes:
+                    if new_mode != self.mode:
+                        if new_mode == 'exploration':
+                            if len(instruction.split(':')) < 3:
+                                print("[FEEDBACK] couldn't change mode, user hasn't been specified")
+                            else:
+                                self.user_name = instruction.split(':')[2]
+                                print("[FEEDBACK] changing user, current user is now " + self.user_name)
+
+                                print("[FEEDBACK] changing mode, current mode is now " + new_mode)
+                                self.need_to_stop_instance = True
+                                self.mode = new_mode
+                        else:
+                            print("[FEEDBACK] changing mode, current mode is now " + new_mode)
+                            self.need_to_stop_instance = True
+                            self.mode = new_mode
+                    else:
+                        print("[FEEDBACK] current mode is already " + new_mode)
+                else:
+                    print("[FEEDBACK] instruction rejected, chosen mode: {} not in possible modes".format(new_mode))
 
     def instance_stopped(self):
         self.need_to_stop_instance = False
