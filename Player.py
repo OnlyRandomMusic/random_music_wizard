@@ -24,7 +24,9 @@ class Player:
                 self.music_player.set_media(song)
                 self.music_player.play()
 
-                self.score_update_queue.put((old_id, score))
+                if self.score_update_queue:
+                    # in flow mode no exploration needed and score_update_queue = None
+                    self.score_update_queue.put((old_id, score))
 
                 return True
             else:

@@ -22,6 +22,8 @@ class MusicWizard:
             self.score_update_queue = queue.Queue()
             self.exploration_manager = ExplorationManager.ExplorationManager(self.user_name, self.score_update_queue)
             self.exploration_manager.daemon = True
+        else:
+            self.score_update_queue = None
 
             print("[MUSIC WIZARD] explorer initialized")
 
