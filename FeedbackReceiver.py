@@ -15,6 +15,7 @@ class FeedbackReceiver(threading.Thread):
 
         self.user_name = None
         self.need_to_stop_main = False
+        self.initialized = False
         self.stop = False
         self.kill_main = False
 
@@ -23,6 +24,7 @@ class FeedbackReceiver(threading.Thread):
 
     def initialize(self, music_wizard):
         self.music_wizard = music_wizard
+        self.initialized = True
 
     def run(self):
         print("[FEEDBACK] waiting for instructions")
@@ -46,7 +48,7 @@ class FeedbackReceiver(threading.Thread):
             self.user_name = instruction.split(':')[-1]
             print("[FEEDBACK] loading {} profile".format(self.user_name))
 
-        if self.music_wizard:
+        if self.initialized:
             if "+" in instruction:
                 step_number = instruction.count("+")
                 volume = self.music_wizard.player.increase_volume(step_number * volume_step)
