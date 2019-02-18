@@ -124,6 +124,7 @@ class SongChooser:
 
             next_music_id = self.deezer_flow.pop(0)
             success = self.download_song(next_music_id)
+            print('fail')
 
         return next_music_id
 

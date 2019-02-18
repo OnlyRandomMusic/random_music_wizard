@@ -46,7 +46,7 @@ class FeedbackReceiver(threading.Thread):
             self.user_name = instruction.split(':')[-1]
             print("[FEEDBACK] loading {} profile".format(self.user_name))
 
-        if self.music_wizard.queue_manager.song_chooser and self.music_wizard.player:
+        if self.music_wizard:
             if "+" in instruction:
                 step_number = instruction.count("+")
                 volume = self.music_wizard.player.increase_volume(step_number * volume_step)
