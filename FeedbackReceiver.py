@@ -45,7 +45,7 @@ class FeedbackReceiver(threading.Thread):
             self.user_name = instruction.split(':')[-1]
             print("[FEEDBACK] loading {} profile".format(self.user_name))
 
-        if self.music_wizard.song_chooser and self.music_wizard.player:
+        if self.music_wizard.queue_manager.song_chooser and self.music_wizard.player:
             if "+" in instruction:
                 step_number = instruction.count("+")
                 volume = self.music_wizard.player.increase_volume(step_number * volume_step)
@@ -70,7 +70,7 @@ class FeedbackReceiver(threading.Thread):
             if "search" in instruction:
                 research = instruction.split(':')
                 # instruction structure : "search:research_text:(1 or 0)" last boolean to indicate if the music should be play immediatly or not
-                self.music_wizard.song_chooser.play_search(research[1], int(research[2]), from_feedback=True)
+                self.music_wizard.queue_manager.song_chooser.play_search(research[1], int(research[2]), from_feedback=True)
 
             if "play" in instruction:
                 self.music_wizard.player.play()
