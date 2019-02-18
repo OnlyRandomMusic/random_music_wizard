@@ -23,14 +23,15 @@ else:
         sleep(1)
     music_wizard = MusicWizard.MusicWizard(feedback_receiver, feedback_receiver.user_name)
 
-music_wizard.run()
+while True:
+    music_wizard.run()
 
-print("[MAIN] relaunching")
+    if feedback_receiver.kill_main:
+        break
 
-sleep(1)
+    print("[MAIN] relaunching")
 
-music_wizard = MusicWizard.MusicWizard(feedback_receiver, 'lala')
-music_wizard.run()
-print(music_wizard.user_name)
+    music_wizard = MusicWizard.MusicWizard(feedback_receiver, feedback_receiver.user_name)
+
 
 print("[MAIN] bye")

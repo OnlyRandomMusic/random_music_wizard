@@ -16,6 +16,7 @@ class FeedbackReceiver(threading.Thread):
         self.user_name = None
         self.need_to_stop_main = False
         self.stop = False
+        self.kill_main = False
 
         self.instructions_queue = queue.Queue()
         self.receiver = communication.Receiver.Receiver(self.instructions_queue)
@@ -64,8 +65,14 @@ class FeedbackReceiver(threading.Thread):
                     print("[FEEDBACK] the music can't be changed now")
 
             if "close" in instruction:
+                # stop the current music_wizard instance
                 self.need_to_stop_main = True
                 print("[FEEDBACK] program ended")
+
+            if "kill" in instruction:
+                # kill the all python program
+                self.need_to_stop_main = True
+                self.kill_main = True
 
             if "search" in instruction:
                 research = instruction.split(':')
