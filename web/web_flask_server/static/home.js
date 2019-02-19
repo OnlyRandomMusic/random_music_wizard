@@ -1,19 +1,3 @@
-
-//function post_request(url){
-//    var request = new XMLHttpRequest();
-//    request.open( "POST", url, false); // false for synchronous request
-//    request.send( null );
-//}
-//
-//function get_request(url){
-//    var request = new XMLHttpRequest();
-//    request.open( "GET", url, false); // false for synchronous request
-//    request.send( null );
-//    var result = XMLHttpRequest.responseText;
-//    console.log(result);
-//    return result;
-//}
-
 function play(){
     post_request('/play/');
     refresh();
@@ -45,6 +29,8 @@ function refresh(){
     post_request('/get_title/', document.getElementById("music_0"))
 }
 
+
+// to activate search bar on enter pressed :
 // Get the input field
 var input = document.getElementById("search_bar");
 
@@ -59,13 +45,7 @@ input.addEventListener("keyup", function(event) {
   }
 });
 
-//function post_request(url) {
-//    var req = new XMLHttpRequest();
-//    req.open('POST', url, true);
-//    req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-//    req.send( null );
-//}
-
+//post request function
 function post_request(url, where_to_post_result) {
     var req = new XMLHttpRequest();
 
