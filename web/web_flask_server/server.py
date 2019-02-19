@@ -1,6 +1,7 @@
 from flask import Flask
-from flask import render_template
+from flask import render_template, request
 from multiprocessing.connection import Client
+from time import sleep
 
 app = Flask(__name__)
 connexion = None
@@ -61,10 +62,11 @@ def display_home():
     return render_template('home.html')
 
 
-@app.route('/get_title/', methods=['GET'])
+@app.route('/get_title/', methods=['POST'])
 def get_title():
     connexion.send('get title')
     title = connexion.recv()
+    app.logger.error(title)
     return title
 
 

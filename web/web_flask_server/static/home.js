@@ -1,18 +1,18 @@
 
-function post_request(url){
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "POST", url, true); // false for synchronous request
-    xmlHttp.send( null );
-}
-
-function get_request(url){
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open( "GET", url, true ); // false for synchronous request
-    xmlHttp.send( null );
-    var result = xmlHttp.responseText;
-    console.log(result);
-    return result;
-}
+//function post_request(url){
+//    var request = new XMLHttpRequest();
+//    request.open( "POST", url, false); // false for synchronous request
+//    request.send( null );
+//}
+//
+//function get_request(url){
+//    var request = new XMLHttpRequest();
+//    request.open( "GET", url, false); // false for synchronous request
+//    request.send( null );
+//    var result = XMLHttpRequest.responseText;
+//    console.log(result);
+//    return result;
+//}
 
 function play(){
     post_request('/play/');
@@ -42,8 +42,7 @@ function search(){
 }
 
 function refresh(){
-    var title = get_request('/get_title/');
-    document.getElementById("search_bar").value = title;
+    post_request_with_result('/get_title/')
 }
 
 // Get the input field
@@ -59,3 +58,24 @@ input.addEventListener("keyup", function(event) {
     document.getElementById("search_button").click();
   }
 });
+
+function post_request(url) {
+    var req = new XMLHttpRequest();
+    req.open('POST', url, true);
+    req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+    req.send( null );
+}
+
+function post_request_with_result(url) {
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function()
+    {
+      if(this.readyState == 4 && this.status == 200) {
+        document.getElementById("music_0").innerHTML = this.responseText;
+        console.log("response")
+      }
+    }
+    req.open('POST', url, true);
+    req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+    req.send( null );
+}
