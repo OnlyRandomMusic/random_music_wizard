@@ -64,9 +64,12 @@ def display_home():
 
 @app.route('/get_title/', methods=['POST'])
 def get_title():
-    connexion.send('get title')
-    title = connexion.recv()
-    app.logger.error(title)
+    try:
+        connexion.send('get title')
+        title = connexion.recv()
+        app.logger.error(title)
+    except:
+        title = 'nope'
     return title
 
 

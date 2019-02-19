@@ -42,7 +42,7 @@ function search(){
 }
 
 function refresh(){
-    post_request_with_result('/get_title/')
+    post_request('/get_title/', document.getElementById("music_0"))
 }
 
 // Get the input field
@@ -59,22 +59,26 @@ input.addEventListener("keyup", function(event) {
   }
 });
 
-function post_request(url) {
-    var req = new XMLHttpRequest();
-    req.open('POST', url, true);
-    req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
-    req.send( null );
-}
+//function post_request(url) {
+//    var req = new XMLHttpRequest();
+//    req.open('POST', url, true);
+//    req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+//    req.send( null );
+//}
 
-function post_request_with_result(url) {
+function post_request(url, where_to_post_result) {
     var req = new XMLHttpRequest();
-    req.onreadystatechange = function()
-    {
-      if(this.readyState == 4 && this.status == 200) {
-        document.getElementById("music_0").innerHTML = this.responseText;
-        console.log("response")
-      }
+
+    if (where_to_post_result !== undefined){
+        req.onreadystatechange = function()
+        {
+          if(this.readyState == 4 && this.status == 200) {
+            where_to_post_result.innerHTML = this.responseText;
+            console.log("response")
+          }
+        }
     }
+
     req.open('POST', url, true);
     req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
     req.send( null );
