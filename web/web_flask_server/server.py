@@ -56,6 +56,18 @@ def like():
     return 'done'
 
 
+@app.route('/volume_up/', methods=['POST'])
+def volume_up():
+    connexion.send('++')
+    return 'done'
+
+
+@app.route('/volume_down/', methods=['POST'])
+def volume_down():
+    connexion.send('--')
+    return 'done'
+
+
 @app.route('/home/')
 def display_home():
     # used to see home
@@ -64,12 +76,9 @@ def display_home():
 
 @app.route('/get_title/', methods=['POST'])
 def get_title():
-    try:
-        connexion.send('get title')
-        title = connexion.recv()
-        app.logger.error(title)
-    except:
-        title = 'nope'
+    connexion.send('get title')
+    title = connexion.recv()
+    app.logger.error(title)
     return title
 
 

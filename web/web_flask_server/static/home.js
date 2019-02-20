@@ -25,8 +25,18 @@ function search(){
     refresh();
 }
 
+function volume_up(){
+    post_request('/volume_up/');
+    refresh();
+}
+
+function volume_down(){
+    post_request('/volume_down/');
+    refresh();
+}
+
 function refresh(){
-    post_request('/get_title/', document.getElementById("music_0"))
+    post_request('/get_title/', document.getElementById("music_0"));
 }
 
 
@@ -54,7 +64,7 @@ function post_request(url, where_to_post_result) {
         {
           if(this.readyState == 4 && this.status == 200) {
             where_to_post_result.innerHTML = this.responseText;
-            console.log("response")
+            console.log("response");
           }
         }
     }
