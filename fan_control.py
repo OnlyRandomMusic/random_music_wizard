@@ -1,6 +1,9 @@
 import RPi.GPIO as GPIO
 # import time
 
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
 pin_number = 0
 
 GPIO.setup(pin_number, GPIO.OUT)
