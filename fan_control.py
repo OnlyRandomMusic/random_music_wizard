@@ -1,7 +1,7 @@
 import RPi.GPIO as GPIO
 # import time
 
-pin_number = 7
+pin_number = 0
 
 GPIO.setup(pin_number, GPIO.OUT)
 
