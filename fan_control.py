@@ -13,11 +13,11 @@ pwm = GPIO.PWM(pin_number, 100)  # 100 is the frequency of the PWM signal
 pwm.start(50)  # value in percent
 
 duty_cycle = input()
-pwm.ChangeDutyCycle(duty_cycle)
+pwm.ChangeDutyCycle(float(duty_cycle))
 
 duty_cycle = input()
 
-pwm.ChangeDutyCycle(duty_cycle)
+pwm.ChangeDutyCycle(float(duty_cycle))
 
 input()
 
