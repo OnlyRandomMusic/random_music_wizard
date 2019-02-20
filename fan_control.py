@@ -18,3 +18,8 @@ pwm.ChangeDutyCycle(duty_cycle)
 duty_cycle = input()
 
 pwm.ChangeDutyCycle(duty_cycle)
+
+input()
+
+GPIO.cleanup()
+
