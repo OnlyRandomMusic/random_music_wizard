@@ -87,7 +87,10 @@ def get_title():
     title = connexion_receiver.last_message_received
     app.logger.error("TITLE: " + str(title))
     app.logger.error("RECEIVER ALIVE: " + str(connexion_receiver.is_open))
-    return title
+
+    if title:
+        return title
+    return "no title"
 
 
 @app.route('/search/<research>', methods=['POST'])
