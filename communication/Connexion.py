@@ -1,4 +1,5 @@
 import threading
+from time import sleep
 
 
 class Connexion(threading.Thread):
@@ -25,7 +26,8 @@ class Connexion(threading.Thread):
                         # used for client side connexions
                         print(message)
             except:
-                self.connexion.close()
-                break
+                sleep(0.5)
+                # self.connexion.close()
+                # break
 
         self.is_open = False
