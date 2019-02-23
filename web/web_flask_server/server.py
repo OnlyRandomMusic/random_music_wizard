@@ -1,6 +1,6 @@
 import sys
 
-sys.path.insert(0, "/home/rengati/random_music_wizard/communication")  # WARNING depends on path
+sys.path.insert(0, "/home/rengati/random_music_wizard/")  # WARNING depends on path
 from flask import Flask
 from flask import render_template, request
 from multiprocessing.connection import Client
