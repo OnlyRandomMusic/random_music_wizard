@@ -19,7 +19,7 @@ class Receiver:
 
     def receive(self):
         # receiving messages from ssh connexions
-        for connexion_queue in self.connexion_manager.connexions_list:
+        for connexion_queue in self.connexion_manager.connexions_queue_list:
             try:
                 if connexion_queue.qsize() > 0:
                     instruction = connexion_queue.get()
@@ -30,7 +30,7 @@ class Receiver:
                 continue
 
         # receiving messages from web connexions
-        for web_connexion_queue in self.web_connexion_manager.web_connexions_list:
+        for web_connexion_queue in self.web_connexion_manager.web_connexions_queue_list:
             try:
                 if web_connexion_queue.qsize() > 0:
                     instruction = web_connexion_queue.get()

@@ -1,5 +1,6 @@
 import threading
 import communication.Receiver
+import communication.StateInformationBroadcaster
 import queue
 from time import sleep
 
@@ -22,6 +23,10 @@ class FeedbackReceiver(threading.Thread):
 
         self.instructions_queue = queue.Queue()
         self.receiver = communication.Receiver.Receiver(self.instructions_queue)
+
+        self.broadcaster = communication.StateInformationBroadcaster.StateInformationBroadcaster(self)
+        self.broadcaster.daemon = True
+        self.broadcaster.start()
 
     def initialize(self, music_wizard):
         self.music_wizard = music_wizard

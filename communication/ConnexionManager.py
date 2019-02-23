@@ -13,6 +13,7 @@ class ConnexionManager(threading.Thread):
         except:
             self.address = ('localhost', 6001)  # family is deduced to be 'AF_INET'
             self.listener = Listener(self.address, authkey=b'secret password')
+        self.connexions_queue_list = []
         self.connexions_list = []
 
     def run(self):
@@ -29,5 +30,6 @@ class ConnexionManager(threading.Thread):
         new_connexion_thread.daemon = True
 
         new_connexion_thread.start()
-        self.connexions_list.append(new_connexion_queue)
+        self.connexions_queue_list.append(new_connexion_queue)
+        self.connexions_list.append(new_connexion_thread)
         print('[CONNEXION_MANAGER] connexion accepted from', self.listener.last_accepted)

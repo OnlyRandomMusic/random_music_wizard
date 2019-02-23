@@ -1,10 +1,15 @@
+import sys
+
+sys.path.insert(0, "/home/rengati/random_music_wizard/communication")  # WARNING depends on path
 from flask import Flask
 from flask import render_template, request
 from multiprocessing.connection import Client
+from communication import Connexion
 from time import sleep
 
 app = Flask(__name__)
 connexion = None
+connexion_receiver = None
 
 
 def connect():
@@ -15,16 +20,19 @@ def connect():
         address = ('localhost', 6004)
         new_connexion = Client(address, authkey=b'secret password')
 
-    return new_connexion
+    new_connexion_receiver = Connexion.Connexion(new_connexion)
+    new_connexion_receiver.start()
+
+    return new_connexion, new_connexion_receiver
 
 
 @app.route("/")
 def home():
-    global connexion
+    global connexion, connexion_receiver
 
     if not connexion:
         try:
-            connexion = connect()
+            connexion, connexion_receiver = connect()
         except:
             return error_page()
 
@@ -76,9 +84,8 @@ def display_home():
 
 @app.route('/get_title/', methods=['POST'])
 def get_title():
-    connexion.send('get title')
-    title = connexion.recv()
-    app.logger.error(title)
+    title = connexion_receiver.last_message_received
+    app.logger.error("TITLE: " + str(title))
     return title
 
 
