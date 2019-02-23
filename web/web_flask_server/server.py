@@ -86,6 +86,7 @@ def display_home():
 def get_title():
     title = connexion_receiver.last_message_received
     app.logger.error("TITLE: " + str(title))
+    app.logger.error("RECEIVER ALIVE" + str(connexion_receiver.is_open))
     return title
 
 
