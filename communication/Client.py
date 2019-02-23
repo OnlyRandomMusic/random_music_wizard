@@ -45,11 +45,11 @@ search  search for a music""")
             else:
                 message = "search:{}:{}".format(research, '0')
 
+    conn.send(message)
+
     if message == 'quit' or message == 'kill':
         # 'quit' only close the client whereas 'kill' close the program too
         break
-
-    conn.send(message)
 
 
 conn.close()
