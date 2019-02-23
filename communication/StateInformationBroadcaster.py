@@ -4,22 +4,24 @@ from time import sleep
 
 
 class StateInformationBroadcaster(threading.Thread):
-    def __init__(self, connexion_manager, web_connexion_manager):
+    def __init__(self, feedback_receiver):
         threading.Thread.__init__(self)
-        self.connexion_list = connexion_manager.connexions_list
-        self.web_connexion_list = web_connexion_manager.web_connexions_list
+        self.feedback_receiver = feedback_receiver
 
     def run(self):
         while True:
-            self.broadcast(self.connexion_list)
-            self.broadcast(self.web_connexion_list)
+            state_information = self.monitor_state()
+
+            if state_information:
+                self.broadcast(self.feedback_receiver.receiver.connexion_manager.connexions_list, state_information)
+                self.broadcast(self.feedback_receiver.receiver.web_connexion_manager.web_connexions_list, state_information)
+
             sleep(0.5)
 
-    def broadcast(self, connexions):
-        state_informations = self.monitor_state()
-
+    def broadcast(self, connexions, information):
         for connexion in connexions:
-            connexion.send(state_informations)
+            connexion.send(information)
 
     def monitor_state(self):
-        # get title
+        if self.feedback_receiver.player:
+            return self.feedback_receiver.player.get_current_music_info()
