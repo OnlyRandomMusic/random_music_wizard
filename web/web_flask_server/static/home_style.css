@@ -2,6 +2,10 @@ body{
 	background: rgb(0,0,0);
 }
 
+.text_white{
+    color: white;
+}
+
 .center {
     display: block;
     margin-left: auto;
@@ -40,4 +44,31 @@ body{
 	top: 10px;
 	left: 30%;
 	right: 30%;
+}
+
+.bottom {
+	position: absolute;
+	height: 100px;
+	bottom: 10px;
+	left: 30%;
+	right: 30%;
+}
+
+.half_right {
+    position: absolute;
+	right: 10px;
+	top: 10px;
+	width: 40%;
+}
+
+.half_left {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	width: 40%;
+}
+
+.top{
+	top: 10px;
+	height: 20%;
 }

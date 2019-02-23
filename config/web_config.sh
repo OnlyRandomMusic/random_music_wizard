@@ -8,4 +8,4 @@ sudo cp -rf config/flask_server.conf /etc/apache2/sites-available/flask_server.c
 
 sudo a2ensite flask_server.conf
 
-sudo bash deploy.sh
+sudo bash config/deploy.sh

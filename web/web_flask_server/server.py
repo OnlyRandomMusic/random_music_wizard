@@ -1,6 +1,7 @@
 from flask import Flask
-from flask import render_template
+from flask import render_template, request
 from multiprocessing.connection import Client
+from time import sleep
 
 app = Flask(__name__)
 connexion = None
@@ -30,24 +31,65 @@ def home():
     return render_template('home.html')
 
 
-@app.route("/pause/")
+@app.route("/pause/", methods=['POST'])
 def pause():
     connexion.send('pause')
+    app.logger.error('PAUSE')
+    return 'done'
 
 
-@app.route("/play/")
+@app.route("/play/", methods=['POST'])
 def play():
     connexion.send('play')
+    return 'done'
 
 
-@app.route("/next/")
+@app.route("/next/", methods=['POST'])
 def next():
     connexion.send('next')
+    return 'done'
 
 
-@app.route('/like/')
+@app.route('/like/', methods=['POST'])
 def like():
     connexion.send('like')
+    return 'done'
+
+
+@app.route('/volume_up/', methods=['POST'])
+def volume_up():
+    connexion.send('++')
+    return 'done'
+
+
+@app.route('/volume_down/', methods=['POST'])
+def volume_down():
+    connexion.send('--')
+    return 'done'
+
+
+@app.route('/home/')
+def display_home():
+    # used to see home
+    return render_template('home.html')
+
+
+@app.route('/get_title/', methods=['POST'])
+def get_title():
+    connexion.send('get title')
+    title = connexion.recv()
+    app.logger.error(title)
+    return title
+
+
+@app.route('/search/<research>', methods=['POST'])
+def search(research):
+    if '$' == research[0]:
+        # used to execute command directly from the web interface
+        connexion.send(research[1:])
+    else:
+        connexion.send('search:{}:1'.format(research))
+    return 'done'
 
 
 def error_page():

@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <html lang="en">
   <head>
@@ -18,13 +17,29 @@
   		<img src="{{ url_for('static', filename='Logo.png') }}" class="center logo_size">
   	</div>
   	<div class="mid">
+		<div class="top">
+			<input type="text" id="search_bar" maxlength="100" class="half_left">
+			<button id="search_button" onclick="search()" class="half_right">Search</button>
+		</div>
   		<button onclick="play()" class="center center_vert">Play</button>
 		<button onclick="pause()" class="center center_vert">Pause</button>
 		<button onclick="next()" class="center center_vert">Next</button>
 		<button onclick="like()" class="center center_vert">Like</button>
+		<button onclick="volume_up()" class="center center_vert">+</button>
+		<button onclick="volume_down()" class="center center_vert">-</button>
 
   	</div>
-</body>
+
+	<!--<div id="result" class="text_white"></div>-->
+
+	<div class="bottom">
+		<ol id="music_queue" class="text_white">
+			<li id="music_0">current music</li>
+			<li>second</li>
+			<li>third</li>
+		</ol>
+	</div>
+  </body>
 </html>
 
 <script src="{{ url_for('static', filename='home.js') }}"></script>

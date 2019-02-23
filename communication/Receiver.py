@@ -15,6 +15,8 @@ class Receiver:
         self.web_connexion_manager.start()
         self.instruction_queue = instruction_queue
 
+        print("[RECEIVER] receiver initialized")
+
     def receive(self):
         # receiving messages from ssh connexions
         for connexion_queue in self.connexion_manager.connexions_list:
@@ -22,8 +24,9 @@ class Receiver:
                 if connexion_queue.qsize() > 0:
                     instruction = connexion_queue.get()
                     self.instruction_queue.put(instruction)
-                    print("[RECEIVER] ssh instruction received: " + instruction)
+                    print("[RECEIVER] ssh instruction received: " + instruction[0])
             except:
+                print("[RECEIVER] error in ssh reception")
                 continue
 
         # receiving messages from web connexions
@@ -32,8 +35,9 @@ class Receiver:
                 if web_connexion_queue.qsize() > 0:
                     instruction = web_connexion_queue.get()
                     self.instruction_queue.put(instruction)
-                    print("[RECEIVER] web instruction received: " + instruction)
+                    print("[RECEIVER] web instruction received: " + instruction[0])
             except:
+                print("[RECEIVER] error in web reception")
                 continue
 
 # receiver = Receiver(1)
