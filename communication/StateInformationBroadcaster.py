@@ -21,7 +21,10 @@ class StateInformationBroadcaster(threading.Thread):
     def broadcast(self, connexions, information):
         for connexion in connexions:
             if connexion.is_open:
-                connexion.connexion.send(information)
+                try:
+                    connexion.connexion.send(information)
+                except:
+                    continue
 
     def monitor_state(self):
         if self.feedback_receiver.music_wizard:

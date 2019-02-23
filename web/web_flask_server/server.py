@@ -21,6 +21,7 @@ def connect():
         new_connexion = Client(address, authkey=b'secret password')
 
     new_connexion_receiver = Connexion.Connexion(new_connexion)
+    new_connexion_receiver.daemon = True
     new_connexion_receiver.start()
 
     return new_connexion, new_connexion_receiver
