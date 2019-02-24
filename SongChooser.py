@@ -219,4 +219,4 @@ class SongChooser:
                 password = ids[1]
                 return mail, password
         except:
-            print("[SONGCHOOSER] missing the file identifiers.txt or missing mail and password in this file")
+            raise Exception("[SONGCHOOSER] missing the file identifiers.txt or missing mail and password in this file")
