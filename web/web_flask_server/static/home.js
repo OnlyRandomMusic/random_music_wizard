@@ -50,8 +50,7 @@ input.addEventListener("keyup", function(event) {
   event.preventDefault();
   // Number 13 is the "Enter" key on the keyboard
   if (event.keyCode === 13) {
-    // Trigger the button element with a click
-    document.getElementById("search_button").click();
+    search();
   }
 });
 

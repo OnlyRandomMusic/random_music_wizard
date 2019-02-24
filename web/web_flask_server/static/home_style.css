@@ -1,74 +1,25 @@
-body{
-	background: rgb(0,0,0);
+body, html {
+	height: 100%;
 }
 
-.text_white{
-    color: white;
+.bg {
+	/* The image used */
+	background-image: url("purple_stars_darker.jpg");
+
+	/* Full height */
+	height: 100%;
+
+	/* Center and scale the image nicely */
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
-.center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
+table {
+	height: 100%;
+	width: 100%;
 }
 
-.center_vert {
-    margin-top: 5%;
-}
-
-.logo_size {
-	width: 150px;
-	height: 225px;
-}
-
-.left {
-	position: absolute;
-	left: 10px;
-	top: 10px;
-	height: 300px;
-	width: 30%;
-}
-
-.right {
-	position: absolute;
-	right: 10px;
-	top: 10px;
-	height: 300px;
-	width: 30%;
-}
-
-.mid {
-	position: absolute;
-	height: 300px;
-	top: 10px;
-	left: 30%;
-	right: 30%;
-}
-
-.bottom {
-	position: absolute;
-	height: 100px;
-	bottom: 10px;
-	left: 30%;
-	right: 30%;
-}
-
-.half_right {
-    position: absolute;
-	right: 10px;
-	top: 10px;
-	width: 40%;
-}
-
-.half_left {
-	position: absolute;
-	left: 10px;
-	top: 10px;
-	width: 40%;
-}
-
-.top{
-	top: 10px;
-	height: 20%;
+input {
+	background: transparent;
 }
