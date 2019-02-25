@@ -22,11 +22,37 @@ table {
 
 input {
 	background: transparent;
+	/* border: none; */
+	width: 80%;
 }
 
-.half {
+.bottom_placed {
+	position: absolute;
+	bottom: 0%;
+	width: 100%;
+}
+
+.upper_half{
 	height: 50%;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
+	width: 100%;
+	top: 0%;
+}
+
+.lower_half{
+	height: 50%;
+	width: 100%;
+	top: 50%;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: white;
+	opacity: 1; /* Firefox */
+}
+  
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	color: white;
+}
+  
+::-ms-input-placeholder { /* Microsoft Edge */
+	color: white;
 }
