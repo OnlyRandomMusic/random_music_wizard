@@ -4,7 +4,7 @@ body, html {
 
 .bg {
 	/* The image used */
-	background-image: url("purple_stars_darker_light.jpg");
+	background-image: url("lost_cat_large.png");
 
 	/* Full height */
 	height: 100%;
@@ -13,20 +13,4 @@ body, html {
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
-}
-
-table {
-	height: 100%;
-	width: 100%;
-}
-
-input {
-	background: transparent;
-}
-
-.half {
-	height: 50%;
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
 }
