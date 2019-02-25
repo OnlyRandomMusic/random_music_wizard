@@ -41,7 +41,7 @@ class FeedbackReceiver(threading.Thread):
                 instruction, connexion = self.instructions_queue.get()
                 self.decode_instruction(instruction, connexion)
 
-            sleep(0.5)
+            sleep(0.1)
             # print("[RASP] received instruction " + instruction)
 
             if self.stop:
