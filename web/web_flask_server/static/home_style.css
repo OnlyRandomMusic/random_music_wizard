@@ -22,8 +22,8 @@ table {
 
 input {
 	background: transparent;
-	/* border: none; */
-	width: 80%;
+	border: none;
+	width: 90%;
 }
 
 .bottom_placed {
@@ -33,15 +33,17 @@ input {
 }
 
 .upper_half{
+	position: relative;
 	height: 50%;
 	width: 100%;
 	top: 0%;
 }
 
 .lower_half{
+	position: relative;
 	height: 50%;
 	width: 100%;
-	top: 50%;
+	bottom: 0%;
 }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
