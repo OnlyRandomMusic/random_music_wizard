@@ -4,7 +4,7 @@ sys.path.insert(0, "/home/rengati/random_music_wizard/")  # WARNING depends on p
 from flask import Flask
 from flask import render_template, request
 from multiprocessing.connection import Client
-from communication import Connexion
+from multiprocessing import Process
 from time import sleep
 
 app = Flask(__name__)
@@ -20,11 +20,25 @@ def connect():
         address = ('localhost', 6004)
         new_connexion = Client(address, authkey=b'secret password')
 
-    new_connexion_receiver = Connexion.Connexion(new_connexion, logger=app.logger)
+    new_connexion_receiver = Process(target=receive, args=(new_connexion,))
     new_connexion_receiver.daemon = True
     new_connexion_receiver.start()
 
     return new_connexion, new_connexion_receiver
+
+
+def receive(connexion):
+    while True:
+        # try:
+        message = connexion.recv()
+
+        app.logger.error("MESSAGE RECEIVED: " + message)
+        # except:
+        #     sleep(0.5)
+        # self.connexion.close()
+        # break
+
+    self.is_open = False
 
 
 @app.route("/")
