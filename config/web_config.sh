@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-sudo apt-get install libapache2-mod-wsgi python-dev
+sudo apt-get install libapache2-mod-wsgi-py3
 sudo a2enmod wsgi
 
 sudo mkdir /var/www/flask_server
