@@ -101,7 +101,7 @@ def get_title():
     connexion.send('get_title')
     title = connexion.recv()
     app.logger.error("TITLE: " + str(title))
-    app.logger.error("RECEIVER ALIVE: " + str(connexion_receiver.is_open))
+    # app.logger.error("RECEIVER ALIVE: " + str(connexion_receiver.is_open))
 
     if title:
         return title
