@@ -42,11 +42,11 @@ def receive(connexion):
 
 @app.route("/")
 def home():
-    global connexion, connexion_receiver
+    global connexion
 
     if not connexion:
         try:
-            connexion, connexion_receiver = connect()
+            connexion = connect()
         except:
             return error_page()
 
