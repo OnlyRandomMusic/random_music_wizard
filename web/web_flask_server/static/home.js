@@ -55,16 +55,19 @@ function play(){
 }
 
 function pause(){
+    document.getElementById("pause").blur();
     post_request('/pause/');
     refresh();
 }
 
 function next(){
+    document.getElementById("next").blur();
     post_request('/next/');
     refresh();
 }
 
 function like(){
+    document.getElementById("like").blur();
     post_request('/like/');
     refresh();
 }
@@ -83,7 +86,7 @@ function volume_up(){
 }
 
 function volume_down(){
-    document.getElementById("play").blur();
+    document.getElementById("volume_down").blur();
     post_request('/volume_down/');
     refresh();
 }
