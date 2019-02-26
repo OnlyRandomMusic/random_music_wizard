@@ -18,23 +18,23 @@ class Connexion(threading.Thread):
     def run(self):
         """an infinite loop which wait for new messages"""
         while True:
-            # try:
-            message = self.connexion.recv()
-            self.last_message_received = message
+            try:
+                message = self.connexion.recv()
+                self.last_message_received = message
 
-            if self.instruction_list:
-                self.instruction_list.put((message, self.connexion))
-                # print(message)
-            else:
-                if self.verbose:
-                    # used for client side connexions
-                    print(message)
+                if self.instruction_list:
+                    self.instruction_list.put((message, self.connexion))
+                    # print(message)
+                else:
+                    if self.verbose:
+                        # used for client side connexions
+                        print(message)
 
-            if self.logger:
-                self.logger.error("MESSAGE RECEIVED: " + message)
-            # except:
-            #     sleep(0.5)
-                # self.connexion.close()
-                # break
+                if self.logger:
+                    self.logger.error("MESSAGE RECEIVED: " + message)
+            except:
+                sleep(0.5)
+                self.connexion.close()
+                break
 
         self.is_open = False
