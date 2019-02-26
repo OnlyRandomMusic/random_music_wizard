@@ -49,6 +49,7 @@ adjust_size(input);
 //HERE IS THE CODE RELATIVE TO THE COMMUNICATION WITH THE BACKEND
 
 function play(){
+    document.getElementById("play").blur();
     post_request('/play/');
     refresh();
 }
@@ -76,11 +77,13 @@ function search(){
 }
 
 function volume_up(){
+    document.getElementById("volume_up").blur();
     post_request('/volume_up/');
     refresh();
 }
 
 function volume_down(){
+    document.getElementById("play").blur();
     post_request('/volume_down/');
     refresh();
 }
