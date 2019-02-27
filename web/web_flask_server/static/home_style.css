@@ -2,6 +2,10 @@ body, html {
 	height: 100%;
 }
 
+.black_back {
+	background-color: black;
+}
+
 .bg {
 	/* The image used */
 	background-image: url("purple_stars_darker_light.jpg");
@@ -45,6 +49,9 @@ input {
 	width: 100%;
 	bottom: 0%;
 }
+
+::-moz-focus-inner {border: 0;}
+:focus {outline: none;}
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
 	color: white;
