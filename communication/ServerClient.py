@@ -46,8 +46,8 @@ class ServerClient:
         self.connexion.send(message)
 
     def get_title(self):
-        if self.connexion:
-            if self.connexion.last_message_received:
-                return self.connexion.last_message_received
+        if self.message_receiver:
+            if self.message_receiver.last_message_received:
+                return self.message_receiver.last_message_received
             return 'no song currently playing'
         return 'no connexion'
