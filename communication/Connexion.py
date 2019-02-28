@@ -15,26 +15,41 @@ class Connexion(threading.Thread):
         self.verbose = verbose
         self.logger = logger
 
+        self.kill_buffer = 0
+        self.kill_threshold = 20
+
     def run(self):
         """an infinite loop which wait for new messages"""
         while True:
+            # self.receive()
+
             try:
-                message = self.connexion.recv()
-                self.last_message_received = message
+                self.receive()
 
-                if self.instruction_list:
-                    self.instruction_list.put((message, self.connexion))
-                    # print(message)
-                else:
-                    if self.verbose:
-                        # used for client side connexions
-                        print(message)
-
-                if self.logger:
-                    self.logger.error("MESSAGE RECEIVED: " + message)
+                self.kill_buffer = 0
             except:
                 sleep(0.5)
-                self.connexion.close()
-                break
+                self.logger.error("error in reception")
+
+                self.kill_buffer += 1
+
+                if self.kill_buffer>self.kill_threshold:
+                    self.connexion.close()
+                    break
 
         self.is_open = False
+
+    def receive(self):
+        message = self.connexion.recv()
+        self.last_message_received = message
+
+        if self.instruction_list:
+            self.instruction_list.put((message, self.connexion))
+            # print(message)
+        else:
+            if self.verbose:
+                # used for client side connexions
+                print(message)
+
+        # if self.logger:
+        #     self.logger.error("MESSAGE RECEIVED: " + message)

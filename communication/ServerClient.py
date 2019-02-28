@@ -33,7 +33,7 @@ class ServerClient:
 
             self.connexion = new_connexion
 
-            self.message_receiver = Connexion.Connexion(new_connexion)
+            self.message_receiver = Connexion.Connexion(new_connexion, logger=self.logger)
             self.message_receiver.daemon = True
             self.message_receiver.start()
         else:

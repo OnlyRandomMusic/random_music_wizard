@@ -24,9 +24,9 @@ class FeedbackReceiver(threading.Thread):
         self.instructions_queue = queue.Queue()
         self.receiver = communication.Receiver.Receiver(self.instructions_queue)
 
-        # self.broadcaster = communication.StateInformationBroadcaster.StateInformationBroadcaster(self)
-        # self.broadcaster.daemon = True
-        # self.broadcaster.start()
+        self.broadcaster = communication.StateInformationBroadcaster.StateInformationBroadcaster(self)
+        self.broadcaster.daemon = True
+        self.broadcaster.start()
 
     def initialize(self, music_wizard):
         self.music_wizard = music_wizard
@@ -94,7 +94,8 @@ class FeedbackReceiver(threading.Thread):
                 self.music_wizard.player.pause()
 
             if "like" in instruction:
-                self.music_wizard.score_update_queue.put((self.music_wizard.player.current_music_id, 1))
+                if self.music_wizard.score_update_queue:
+                    self.music_wizard.score_update_queue.put((self.music_wizard.player.current_music_id, 1))
 
             if "get" in instruction and "title" in instruction:
                 connexion.send(self.music_wizard.player.get_current_music_info())
