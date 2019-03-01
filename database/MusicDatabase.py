@@ -4,7 +4,7 @@ import requests_tools
 
 class MusicDatabase(Database.Database):
     def __init__(self):
-        # self.connexion = sqlite3.connect(database_name + '.db')
+        # self.connection = sqlite3.connect(database_name + '.db')
         Database.Database.__init__(self, "music_database")
 
     def create(self):
@@ -44,7 +44,7 @@ class MusicDatabase(Database.Database):
             print("[DATABASE_M] Successfully added {} in database".format(song['title_short']))
 
     def get_music_info(self, music_id, info_needed):
-        # on utilise pas la connexion globale pour des problèmes de Thread
+        # on utilise pas la connection globale pour des problèmes de Thread
         data = None
 
         if info_needed == 'artist':

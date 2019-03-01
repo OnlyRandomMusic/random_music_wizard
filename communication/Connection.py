@@ -2,13 +2,13 @@ import threading
 from time import sleep
 
 
-class Connexion(threading.Thread):
-    def __init__(self, connexion, queue=None, verbose=False, logger=None):
+class Connection(threading.Thread):
+    def __init__(self, connection, queue=None, verbose=False, logger=None):
         """if a queue is given the messages will be stored in it
         if verbose is True, the messages will be printed
         if a logger is given the messages will be logged in it"""
         threading.Thread.__init__(self)
-        self.connexion = connexion
+        self.connection = connection
         self.instruction_list = queue
         self.is_open = True
         self.last_message_received = None
@@ -36,21 +36,21 @@ class Connexion(threading.Thread):
                 self.kill_buffer += 1
 
                 if self.kill_buffer>self.kill_threshold:
-                    self.connexion.close()
+                    self.connection.close()
                     break
 
         self.is_open = False
 
     def receive(self):
-        message = self.connexion.recv()
+        message = self.connection.recv()
         self.last_message_received = message
 
         if self.instruction_list:
-            self.instruction_list.put((message, self.connexion))
+            self.instruction_list.put((message, self.connection))
             # print(message)
         else:
             if self.verbose:
-                # used for client side connexions
+                # used for client side connections
                 print(message)
 
         # if self.logger:

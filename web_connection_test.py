@@ -1,6 +1,6 @@
-from communication import WebConnexionManager
+from communication import WebConnectionManager
 
-w = WebConnexionManager.WebConnexionManager()
+w = WebConnectionManager.WebConnectionManager()
 w.daemon = True
 w.start()
 input()
