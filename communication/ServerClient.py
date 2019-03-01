@@ -42,8 +42,11 @@ class ServerClient:
         return True
 
     def send(self, message):
-        self.logger.error("message sent: " + message)
-        self.connexion.send(message)
+        if self.connexion:
+            self.logger.error("message sent: " + message)
+            self.connexion.send(message)
+        else:
+            self.logger.error("no connexion available")
 
     def get_title(self):
         if self.message_receiver:

@@ -27,15 +27,18 @@ class QueueManager(threading.Thread):
 
                 if song_id:
                     self.put_first(song_id)
-                    self.score_update_queue.put((song_id, 0.5))
+                    if self.score_update_queue and from_feedback:
+                        self.score_update_queue.put((song_id, 0.5))
                     if immediately:
                         self.player.play_next_music(0)
 
-            if self.queue.qsize() < 10:
-                new_id = self.song_chooser.get_next_song()
-                self.queue.put(new_id)
+                self.need_to_search = None
             else:
-                sleep(0.5)
+                if self.queue.qsize() < 10:
+                    new_id = self.song_chooser.get_next_song()
+                    self.queue.put(new_id)
+                else:
+                    sleep(0.5)
 
             if self.stop:
                 break
