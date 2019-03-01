@@ -1,19 +1,73 @@
+//HERE IS THE CODE RELATIVE TO THE FRONT ANIMATION
+
+// to activate search bar on enter pressed :
+// Get the input field
+var input = document.getElementById("search_bar");
+
+// Execute a function when the user releases a key on the keyboard
+input.addEventListener("keyup", function(event) {
+    // Cancel the default action, if needed
+    event.preventDefault();
+
+    // Number 13 is the "Enter" key on the keyboard
+    if (event.keyCode === 13) {
+        search();
+    }
+
+    adjust_size(input);
+});
+
+input.addEventListener("keydown", function(event){
+    adjust_size(input);
+});
+
+function adjust_size(element) {
+    function f(x) {
+        var y = 800 / (x + 5);
+        if(y>13){
+            return y;
+        }
+        return 14;
+    }
+
+    var new_size;
+
+    if(element.value.length == 0){
+        new_size = f(8);
+    }else{
+        new_size = f(element.value.length);
+    }
+    
+    element.style.fontSize = new_size +'px';
+
+    // console.log(String(input.style.fontSize));
+    // console.log(String(input.value.length));
+}
+
+adjust_size(input);
+
+//HERE IS THE CODE RELATIVE TO THE COMMUNICATION WITH THE BACKEND
+
 function play(){
+    document.getElementById("play").blur();
     post_request('/play/');
     refresh();
 }
 
 function pause(){
+    document.getElementById("pause").blur();
     post_request('/pause/');
     refresh();
 }
 
 function next(){
+    document.getElementById("next").blur();
     post_request('/next/');
     refresh();
 }
 
 function like(){
+    document.getElementById("like").blur();
     post_request('/like/');
     refresh();
 }
@@ -26,11 +80,13 @@ function search(){
 }
 
 function volume_up(){
+    document.getElementById("volume_up").blur();
     post_request('/volume_up/');
     refresh();
 }
 
 function volume_down(){
+    document.getElementById("volume_down").blur();
     post_request('/volume_down/');
     refresh();
 }
@@ -38,22 +94,6 @@ function volume_down(){
 function refresh(){
     post_request('/get_title/', document.getElementById("music_0"));
 }
-
-
-// to activate search bar on enter pressed :
-// Get the input field
-var input = document.getElementById("search_bar");
-
-// Execute a function when the user releases a key on the keyboard
-input.addEventListener("keyup", function(event) {
-  // Cancel the default action, if needed
-  event.preventDefault();
-  // Number 13 is the "Enter" key on the keyboard
-  if (event.keyCode === 13) {
-    // Trigger the button element with a click
-    document.getElementById("search_button").click();
-  }
-});
 
 //post request function
 function post_request(url, where_to_post_result) {

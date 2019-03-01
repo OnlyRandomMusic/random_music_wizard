@@ -11,7 +11,7 @@ except:
 print("""Welcome
 If the music isn't playing, type start""")
 
-message_receiver = Connexion.Connexion(conn)
+message_receiver = Connexion.Connexion(conn, verbose=False)
 message_receiver.daemon = True
 message_receiver.start()
 
@@ -45,11 +45,14 @@ search  search for a music""")
             else:
                 message = "search:{}:{}".format(research, '0')
 
+    if 'get' in message and 'title' in message:
+        print(message_receiver.last_message_received)
+    else:
+        conn.send(message)
+
     if message == 'quit' or message == 'kill':
         # 'quit' only close the client whereas 'kill' close the program too
         break
-
-    conn.send(message)
 
 
 conn.close()

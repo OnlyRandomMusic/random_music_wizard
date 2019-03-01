@@ -1,0 +1,7 @@
+__pycache__/
+.idea/
+database/music_database.db
+database/user_database.db
+identifiers.txt
+musics/
+

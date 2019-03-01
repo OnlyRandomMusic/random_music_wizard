@@ -1,70 +1,58 @@
+import sys
+
+sys.path.insert(0, "/home/rengati/random_music_wizard/")  # WARNING depends on path
 from flask import Flask
 from flask import render_template, request
-from multiprocessing.connection import Client
-from time import sleep
+from communication import ServerClient
+
 
 app = Flask(__name__)
-connexion = None
 
-
-def connect():
-    try:
-        address = ('localhost', 6003)
-        new_connexion = Client(address, authkey=b'secret password')
-    except:
-        address = ('localhost', 6004)
-        new_connexion = Client(address, authkey=b'secret password')
-
-    return new_connexion
+server_client = ServerClient.ServerClient(app.logger)
 
 
 @app.route("/")
 def home():
-    global connexion
+    success = server_client.connect()
 
-    if not connexion:
-        try:
-            connexion = connect()
-        except:
-            return error_page()
-
-    return render_template('home.html')
+    if success:
+        return render_template('home.html')
+    return error_page()
 
 
 @app.route("/pause/", methods=['POST'])
 def pause():
-    connexion.send('pause')
-    app.logger.error('PAUSE')
+    server_client.send('pause')
     return 'done'
 
 
 @app.route("/play/", methods=['POST'])
 def play():
-    connexion.send('play')
+    server_client.send('play')
     return 'done'
 
 
 @app.route("/next/", methods=['POST'])
 def next():
-    connexion.send('next')
+    server_client.send('next')
     return 'done'
 
 
 @app.route('/like/', methods=['POST'])
 def like():
-    connexion.send('like')
+    server_client.send('like')
     return 'done'
 
 
 @app.route('/volume_up/', methods=['POST'])
 def volume_up():
-    connexion.send('++')
+    server_client.send('++')
     return 'done'
 
 
 @app.route('/volume_down/', methods=['POST'])
 def volume_down():
-    connexion.send('--')
+    server_client.send('--')
     return 'done'
 
 
@@ -76,9 +64,10 @@ def display_home():
 
 @app.route('/get_title/', methods=['POST'])
 def get_title():
-    connexion.send('get title')
-    title = connexion.recv()
-    app.logger.error(title)
+    title = server_client.get_title()
+    app.logger.error("TITLE: " + str(title))
+    # app.logger.error("RECEIVER ALIVE: " + str(connexion_receiver.is_open))
+
     return title
 
 
@@ -86,9 +75,9 @@ def get_title():
 def search(research):
     if '$' == research[0]:
         # used to execute command directly from the web interface
-        connexion.send(research[1:])
+        server_client.send(research[1:])
     else:
-        connexion.send('search:{}:1'.format(research))
+        server_client.send('search:{}:1'.format(research))
     return 'done'
 
 

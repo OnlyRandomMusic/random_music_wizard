@@ -1,74 +1,67 @@
-body{
-	background: rgb(0,0,0);
+body, html {
+	height: 100%;
 }
 
-.text_white{
-    color: white;
+.black_back {
+	background-color: black;
 }
 
-.center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
+.bg {
+	/* The image used */
+	background-image: url("purple_stars_darker_light.jpg");
+
+	/* Full height */
+	height: 100%;
+
+	/* Center and scale the image nicely */
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
-.center_vert {
-    margin-top: 5%;
+table {
+	height: 100%;
+	width: 100%;
 }
 
-.logo_size {
-	width: 150px;
-	height: 225px;
+input {
+	background: transparent;
+	border: none;
+	width: 90%;
 }
 
-.left {
+.bottom_placed {
 	position: absolute;
-	left: 10px;
-	top: 10px;
-	height: 300px;
-	width: 30%;
+	bottom: 0%;
+	width: 100%;
 }
 
-.right {
-	position: absolute;
-	right: 10px;
-	top: 10px;
-	height: 300px;
-	width: 30%;
+.upper_half{
+	position: relative;
+	height: 50%;
+	width: 100%;
+	top: 0%;
 }
 
-.mid {
-	position: absolute;
-	height: 300px;
-	top: 10px;
-	left: 30%;
-	right: 30%;
+.lower_half{
+	position: relative;
+	height: 50%;
+	width: 100%;
+	bottom: 0%;
 }
 
-.bottom {
-	position: absolute;
-	height: 100px;
-	bottom: 10px;
-	left: 30%;
-	right: 30%;
-}
+::-moz-focus-inner {border: 0;}
+:focus {outline: none;}
 
-.half_right {
-    position: absolute;
-	right: 10px;
-	top: 10px;
-	width: 40%;
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: white;
+	opacity: 1; /* Firefox */
 }
-
-.half_left {
-	position: absolute;
-	left: 10px;
-	top: 10px;
-	width: 40%;
+  
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	color: white;
 }
-
-.top{
-	top: 10px;
-	height: 20%;
+  
+::-ms-input-placeholder { /* Microsoft Edge */
+	color: white;
 }

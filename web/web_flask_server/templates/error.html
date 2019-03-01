@@ -3,8 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>an error occurred</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='error_style.css') }}">
 </head>
-<body>
-    <img src="{{ url_for('static', filename='lost_cat.png') }}">
+<body class="bg">
+    <!-- <table>
+        <tbody>
+            <tr>
+                <td class="align-middle">
+                    <img src="{{ url_for('static', filename='lost_cat.png') }}" class="half">
+                </td>
+            </tr>
+        </tbody>
+    </table> -->
 </body>
 </html>
