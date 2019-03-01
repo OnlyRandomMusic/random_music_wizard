@@ -29,7 +29,9 @@ class Connexion(threading.Thread):
                 self.kill_buffer = 0
             except:
                 sleep(0.5)
-                self.logger.error("error in reception")
+
+                if self.logger:
+                    self.logger.error("error in reception")
 
                 self.kill_buffer += 1
 

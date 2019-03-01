@@ -45,7 +45,10 @@ search  search for a music""")
             else:
                 message = "search:{}:{}".format(research, '0')
 
-    conn.send(message)
+    if 'get' in message and 'title' in message:
+        print(message_receiver.last_message_received)
+    else:
+        conn.send(message)
 
     if message == 'quit' or message == 'kill':
         # 'quit' only close the client whereas 'kill' close the program too

@@ -97,11 +97,13 @@ class FeedbackReceiver(threading.Thread):
                 if self.music_wizard.score_update_queue:
                     self.music_wizard.score_update_queue.put((self.music_wizard.player.current_music_id, 1))
 
-            if "get" in instruction and "title" in instruction:
-                connexion.send(self.music_wizard.player.get_current_music_info())
+            # if "get" in instruction and "title" in instruction:
+            #     # obsolete thanks to broadcaster
+            #     connexion.send(self.music_wizard.player.get_current_music_info())
 
             if "change_user" in instruction:
                 # instruction structure : "change_user:new_user_name"
+                # need to add if exploration mode:
                 new_user_name = instruction.split(':')[1]
                 print("[FEEDBACK] changing user, current user is now " + new_user_name)
                 self.need_to_stop_instance = True
