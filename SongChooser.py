@@ -1,14 +1,13 @@
 import requests_tools
 import os
 from random import random
-# import deezer_load
 import deezloader
 from database import UserDatabase
 from database import PlaylistDatabase
 
 
 class SongChooser:
-    def __init__(self, music_database, player, user_name, score_update_queue, mode, song_quality="MP3_128"):
+    def __init__(self, music_database, player, user_name, mode, song_quality="MP3_128"):
         """music_quality can be FLAC, MP3_320, MP3_256 or MP3_128
         mode could be:
         'exploration' for custom exploration algorithm
@@ -34,14 +33,9 @@ class SongChooser:
         self.deezer_user_data = requests_tools.safe_request("https://api.deezer.com/user/" + str(self.deezer_user_id))
         self.deezer_flow = []
 
-        self.need_to_put_first = 0
-        self.play_when_placed = False
-
         self.mem_size = 4
         self.score_list = [0] * self.mem_size
         self.score_threshold = 0
-
-        self.score_update_queue = score_update_queue
 
         self.mode = mode
 
@@ -181,31 +175,17 @@ class SongChooser:
 
         return music_id
 
-    def play_search(self, research, immediately, from_feedback=False):
+    def play_search(self, research):
         """play the researched song, immediately or after the current song"""
         results = requests_tools.safe_request("https://api.deezer.com/search?q=" + research)
+
         try:
             song = results['data'][0]
             self.music_database.add_song(song)
             self.download_song(song['id'])
-            self.put_first(song['id'])
-
-            if immediately:
-                self.play_when_placed = True
-
-            if from_feedback:
-                self.score_update_queue.put((song['id'], 0.5))
+            return song['id']
         except:
             print('[SONGCHOOSER] No results found')
-
-    def put_first(self, music_id):
-        self.need_to_put_first = music_id
-
-    def now_placed(self):
-        self.need_to_put_first = 0
-        if self.play_when_placed:
-            self.player.play_next_music(0)
-            self.play_when_placed = False
 
     def read_id(self):
         """read the id (mail and password) in the file identifiers.txt
