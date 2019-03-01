@@ -9,24 +9,36 @@ class QueueManager(threading.Thread):
         threading.Thread.__init__(self)
         self.queue = queue
         self.player = player
-        self.song_chooser = SongChooser.SongChooser(music_database, player, user_name, score_update_queue, mode)
+        self.score_update_queue = score_update_queue
+        self.song_chooser = SongChooser.SongChooser(music_database, player, user_name, mode)
         self.stop = False
         self.working = True
+        self.need_to_search = None
+
         queue.put(self.song_chooser.get_next_song())
 
     def run(self):
         """an infinite loop which add songs to the queue"""
         print("[QUEUE MANAGER] start downloading")
         while True:
-            if self.queue.qsize() < 10:
-                new_id = self.song_chooser.get_next_song()
-                self.queue.put(new_id)
-            else:
-                sleep(0.5)
+            if self.need_to_search:
+                research, immediately, from_feedback = self.need_to_search
+                song_id = self.song_chooser.play_search(research)
 
-            if self.song_chooser.need_to_put_first != 0:
-                self.put_first(self.song_chooser.need_to_put_first)
-                self.song_chooser.now_placed()
+                if song_id:
+                    self.put_first(song_id)
+                    if self.score_update_queue and from_feedback:
+                        self.score_update_queue.put((song_id, 0.5))
+                    if immediately:
+                        self.player.play_next_music(0)
+
+                self.need_to_search = None
+            else:
+                if self.queue.qsize() < 10:
+                    new_id = self.song_chooser.get_next_song()
+                    self.queue.put(new_id)
+                else:
+                    sleep(0.5)
 
             if self.stop:
                 break
@@ -47,3 +59,6 @@ class QueueManager(threading.Thread):
 
         for old_id in old_ids:
             self.queue.put(old_id)
+
+    def make_search(self, research, immediately, from_feedback=False):
+        self.need_to_search = (research, immediately, from_feedback)
