@@ -7,14 +7,14 @@ class Database:
     def __init__(self, database_name='database'):
         self.dir_path = os.path.dirname(os.path.realpath(__file__))
         self.database_name = self.dir_path + '/' + database_name + '.db'
-        self.connexion = False
+        self.connection = False
         self.cursor = None
 
     def sql_request(self, request, values=None):
         """values is a tuple"""
-        if not self.connexion:
-            connexion = sqlite3.connect(self.database_name)
-            cursor = connexion.cursor()
+        if not self.connection:
+            connection = sqlite3.connect(self.database_name)
+            cursor = connection.cursor()
 
             if values:
                 cursor.execute(request, values)
@@ -22,8 +22,8 @@ class Database:
                 cursor.execute(request)
 
             data = cursor.fetchall()
-            connexion.commit()
-            connexion.close()
+            connection.commit()
+            connection.close()
         else:
             # print('fast')
 
@@ -33,7 +33,7 @@ class Database:
                 self.cursor.execute(request)
 
             data = self.cursor.fetchall()
-            self.connexion.commit()
+            self.connection.commit()
 
         return data
 
@@ -60,14 +60,14 @@ class Database:
         else:
             return 0
 
-    def open_fast_connexion(self):
-        """open a fast access connexion but needs to be close"""
-        self.connexion = sqlite3.connect(self.database_name)
-        self.cursor = self.connexion.cursor()
+    def open_fast_connection(self):
+        """open a fast access connection but needs to be close"""
+        self.connection = sqlite3.connect(self.database_name)
+        self.cursor = self.connection.cursor()
 
-    def close_fast_connexion(self):
+    def close_fast_connection(self):
         try:
-            self.connexion.close()
+            self.connection.close()
         except:
-            print("[DATABASE] error no fast connexion currently open")
-        self.connexion = False
+            print("[DATABASE] error no fast connection currently open")
+        self.connection = False

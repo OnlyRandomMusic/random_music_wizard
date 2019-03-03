@@ -38,8 +38,8 @@ class FeedbackReceiver(threading.Thread):
             self.receiver.receive()
 
             if self.instructions_queue.qsize() > 0:
-                instruction, connexion = self.instructions_queue.get()
-                self.decode_instruction(instruction, connexion)
+                instruction, connection = self.instructions_queue.get()
+                self.decode_instruction(instruction, connection)
 
             sleep(0.1)
             # print("[RASP] received instruction " + instruction)
@@ -49,7 +49,7 @@ class FeedbackReceiver(threading.Thread):
 
         print("[FEEDBACK] stopped")
 
-    def decode_instruction(self, instruction, connexion):
+    def decode_instruction(self, instruction, connection):
         if "start" in instruction:
             self.user_name = instruction.split(':')[-1]
             print("[FEEDBACK] loading {} profile".format(self.user_name))
@@ -99,7 +99,7 @@ class FeedbackReceiver(threading.Thread):
 
             # if "get" in instruction and "title" in instruction:
             #     # obsolete thanks to broadcaster
-            #     connexion.send(self.music_wizard.player.get_current_music_info())
+            #     connection.send(self.music_wizard.player.get_current_music_info())
 
             if "change_user" in instruction:
                 # instruction structure : "change_user:new_user_name"

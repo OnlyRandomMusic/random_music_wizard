@@ -1,4 +1,4 @@
-# aims at sending information to all client side connexion in the form of a dictionary
+# aims at sending information to all client side connection in the form of a dictionary
 import threading
 from time import sleep
 
@@ -13,16 +13,16 @@ class StateInformationBroadcaster(threading.Thread):
             state_information = self.monitor_state()
 
             if state_information:
-                self.broadcast(self.feedback_receiver.receiver.connexion_manager.connexions_list, state_information)
-                self.broadcast(self.feedback_receiver.receiver.web_connexion_manager.web_connexions_list, state_information)
+                self.broadcast(self.feedback_receiver.receiver.connection_manager.connections_list, state_information)
+                self.broadcast(self.feedback_receiver.receiver.web_connection_manager.web_connections_list, state_information)
 
             sleep(0.5)
 
-    def broadcast(self, connexions, information):
-        for connexion in connexions:
-            if connexion.is_open:
+    def broadcast(self, connections, information):
+        for connection in connections:
+            if connection.is_open:
                 try:
-                    connexion.connexion.send(information)
+                    connection.connection.send(information)
                 except:
                     continue
 

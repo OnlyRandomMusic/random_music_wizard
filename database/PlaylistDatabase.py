@@ -4,7 +4,7 @@ from random import randint
 
 class PlaylistDatabase(Database.Database):
     def __init__(self):
-        # self.connexion = sqlite3.connect(database_name + '.db')
+        # self.connection = sqlite3.connect(database_name + '.db')
         Database.Database.__init__(self, "playlist_database")
 
     def create(self):

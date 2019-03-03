@@ -63,15 +63,15 @@ class Explorer:
                 # self.user_database.update_score(song['id'], score * 0.05)
                 database_buffer.append((song, 0.05))
 
-        self.user_database.open_fast_connexion()
+        self.user_database.open_fast_connection()
         for elem in database_buffer:
             self.user_database.update_score(elem[0]['id'], score*elem[1])
-        self.user_database.close_fast_connexion()
+        self.user_database.close_fast_connection()
 
-        self.music_database.open_fast_connexion()
+        self.music_database.open_fast_connection()
         for elem in database_buffer:
             self.music_database.add_song(elem[0], verbose=False)
-        self.music_database.close_fast_connexion()
+        self.music_database.close_fast_connection()
 
         print("[EXPLORER] Scores updated")
 
