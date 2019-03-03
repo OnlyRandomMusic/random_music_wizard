@@ -31,6 +31,7 @@ class MusicDatabase(Database.Database):
                 song['id'], song['title_short'], song['duration'], song['preview'],
                 song['artist']['id'], song['album']['id'], path, downloaded))
         except:
+            # to avoid errors due to a missing preview link
             self.safe_sql_request("INSERT INTO music VALUES (?,?,?,?,?,?,?,?)", (
                 song['id'], song['title_short'], song['duration'], '',
                 song['artist']['id'], song['album']['id'], path, downloaded))
@@ -62,8 +63,14 @@ class MusicDatabase(Database.Database):
         else:
             print("[DATABASE_M] DATABASE CRITICAL ERROR")
             print("[DATABASE_M] trying to solve it")
-            song = requests_tools.safe_request('track/' + str(music_id), True)
-            self.add_song(song)
+
+            try:
+                song = requests_tools.safe_request('track/' + str(music_id), True)
+                self.add_song(song)
+            except:
+                # to avoid key error due to error in request
+                print("[DATABASE_M] DATABASE CRITICAL ERROR ON ID = " + music_id)
+                raise SongNotFound
 
             return self.get_music_info(music_id, info_needed)
 
@@ -71,3 +78,8 @@ class MusicDatabase(Database.Database):
         self.safe_sql_request("""UPDATE music
 SET downloaded = 1, path = "{}"
 WHERE id = ?""".format(path), (music_id,))
+
+
+class SongNotFound(Exception):
+    def __init__(self, message=''):
+        super().__init__(message)

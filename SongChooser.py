@@ -4,6 +4,7 @@ from random import random
 import deezloader
 from database import UserDatabase
 from database import PlaylistDatabase
+from database.MusicDatabase import SongNotFound
 
 
 class SongChooser:
@@ -79,6 +80,8 @@ class SongChooser:
             self.music_database.song_downloaded(music_id, path)
             print('[SONGCHOOSER] Successfully downloaded ' + file_name)
             return True
+        except SongNotFound:
+            print("[SONGCHOOSER] error couldn't download the specified song CRITICAL")
         # except TrackNotFound:  # incomming
         except:
             print("[SONGCHOOSER] error couldn't download " + self.music_database.get_music_info(music_id, 'title'))
