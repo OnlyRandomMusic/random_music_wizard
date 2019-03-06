@@ -48,6 +48,20 @@ class SongChooser:
         #     self.music_database.add_song(song)
 
     def download_song(self, music_id):
+        download = Process(target=self.download_song_raw, args=(music_id,))
+        download.start()
+
+        # timeout loop
+        for t in range(self.download_timeout):
+            if not download.is_alive():
+                break
+            if t == self.download_timeout - 1:
+                download.terminate()
+                print("[SONGCHOOSER] timeout error while downloading " + self.music_database.get_music_info(music_id,
+                                                                                                            'title'))
+            sleep(1)
+
+    def download_song_raw(self, music_id):
         """download a song from a Deezer link in the musics directory
         and add the path to it in the database"""
         try:
@@ -73,19 +87,19 @@ class SongChooser:
             except:
                 None
 
-            download = Process(target=self.downloader.download, args=(url, dir_path, self.music_quality, False))
-            download.start()
+            # download = Process(target=self.downloader.download, args=(url, dir_path, self.music_quality, False))
+            # download.start()
+            #
+            # # timeout loop
+            # for t in range(self.download_timeout):
+            #     if not download.is_alive():
+            #         break
+            #     if t == self.download_timeout - 1:
+            #         download.terminate()
+            #         raise TimeoutError
+            #     sleep(1)
 
-            # timeout loop
-            for t in range(self.download_timeout):
-                if not download.is_alive():
-                    break
-                if t == self.download_timeout - 1:
-                    download.terminate()
-                    raise TimeoutError
-                sleep(1)
-
-            # self.downloader.download(url, dir_path, self.music_quality, False)
+            self.downloader.download(url, dir_path, self.music_quality, False)
 
             os.rename(dir_path + str(music_id), dir_path + file_name)
 
@@ -98,8 +112,6 @@ class SongChooser:
             return True
         except SongNotFound:
             print("[SONGCHOOSER] error couldn't download the specified song CRITICAL")
-        except TimeoutError:
-            print("[SONGCHOOSER] timeout error while downloading " + self.music_database.get_music_info(music_id, 'title'))
         # except TrackNotFound:  # incomming
         except:
             print("[SONGCHOOSER] error couldn't download " + self.music_database.get_music_info(music_id, 'title'))
