@@ -26,16 +26,11 @@ class ExplorationManager(threading.Thread):
                 score_update = self.score_update_queue.get()
                 music_id, score = score_update
 
-                print(music_id, score)
-                print(self.current_music_id, self.current_score)
-
                 # in order no to set the score of a same music many times
                 if music_id == self.current_music_id:
                     self.current_score += score
-                    print('add')
                 else:
-                    print('explore ' + str(self.current_score))
-                    if self.current_music_id:
+                    if self.current_music_id:  # only useful for the first iteration and for eventual bugs
                         self.explorer.set_score(self.current_music_id, self.current_score)
 
                     self.current_music_id = music_id
