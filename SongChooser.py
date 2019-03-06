@@ -5,7 +5,7 @@ import deezloader
 from database import UserDatabase
 from database import PlaylistDatabase
 from database.MusicDatabase import SongNotFound
-from multiprocessing import Process
+from multiprocessing import Process, Value
 from time import sleep
 
 
@@ -48,6 +48,26 @@ class SongChooser:
         #     self.music_database.add_song(song)
 
     def download_song(self, music_id):
+        success = Value('i', 0)
+        # success is a boolean represented by an integer (0 or 1) because Value does not support bolean
+
+        download = Process(target=self.download_song_raw, args=(music_id, success))
+        download.start()
+
+        # timeout loop
+        for t in range(self.download_timeout):
+            if not download.is_alive():
+                break
+            if t == self.download_timeout - 1:
+                download.terminate()
+                print("[SONGCHOOSER] timeout error while downloading " + self.music_database.get_music_info(music_id,
+                                                                                                            'title'))
+            sleep(1)
+
+        if success.value == 1:
+            return True
+
+    def download_song_raw(self, music_id, success):
         """download a song from a Deezer link in the musics directory
         and add the path to it in the database"""
         try:
@@ -73,19 +93,19 @@ class SongChooser:
             except:
                 None
 
-            download = Process(target=self.downloader.download, args=(url, dir_path, self.music_quality, False))
-            download.start()
+            # download = Process(target=self.downloader.download, args=(url, dir_path, self.music_quality, False))
+            # download.start()
+            #
+            # # timeout loop
+            # for t in range(self.download_timeout):
+            #     if not download.is_alive():
+            #         break
+            #     if t == self.download_timeout - 1:
+            #         download.terminate()
+            #         raise TimeoutError
+            #     sleep(1)
 
-            # timeout loop
-            for t in range(self.download_timeout):
-                if not download.is_alive():
-                    break
-                if t == self.download_timeout - 1:
-                    download.terminate()
-                    raise TimeoutError
-                sleep(1)
-
-            # self.downloader.download(url, dir_path, self.music_quality, False)
+            self.downloader.download(url, dir_path, self.music_quality, False)
 
             os.rename(dir_path + str(music_id), dir_path + file_name)
 
@@ -95,11 +115,11 @@ class SongChooser:
             # quality can be FLAC, MP3_320, MP3_256 or MP3_128
             self.music_database.song_downloaded(music_id, path)
             print('[SONGCHOOSER] Successfully downloaded ' + file_name)
+
+            success.value = 1
             return True
         except SongNotFound:
             print("[SONGCHOOSER] error couldn't download the specified song CRITICAL")
-        except TimeoutError:
-            print("[SONGCHOOSER] timeout error while downloading " + self.music_database.get_music_info(music_id, 'title'))
         # except TrackNotFound:  # incomming
         except:
             print("[SONGCHOOSER] error couldn't download " + self.music_database.get_music_info(music_id, 'title'))
