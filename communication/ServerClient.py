@@ -15,9 +15,7 @@ class ServerClient:
         """connect the server script to the feedback receiver
         return False if the server didn't manage to connect the feedback receiver"""
 
-        # need to use the message_receiver.is_open
-
-        if not self.connection:
+        if not self.connection or not self.message_receiver.is_open:
             self.logger.error("trying to open a new connection")
             try:
                 address = ('localhost', 6003)
