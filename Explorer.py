@@ -63,6 +63,8 @@ class Explorer:
                 # self.user_database.update_score(song['id'], score * 0.05)
                 database_buffer.append((song, 0.05))
 
+        print("[EXPLORER] third step done")
+
         self.user_database.open_fast_connection()
         for elem in database_buffer:
             self.user_database.update_score(elem[0]['id'], score*elem[1])
