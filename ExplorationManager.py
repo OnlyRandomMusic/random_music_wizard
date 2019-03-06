@@ -16,17 +16,29 @@ class ExplorationManager(threading.Thread):
         self.stop = False
         self.working = True
 
+        self.current_music_id = None
+        self.current_score = None
+
     def run(self):
         while True:
+            # score update queue structure is (music_id, score)
             if self.score_update_queue.qsize() > 0:
                 score_update = self.score_update_queue.get()
                 music_id, score = score_update
-                self.explorer.set_score(music_id, score)
+
+                # in order no to set the score of a same music many times
+                if music_id == self.current_music_id:
+                    self.current_score += score
+                else:
+                    self.explorer.set_score(self.current_music_id, self.current_score)
+                    self.current_music_id = music_id
+                    self.current_score = score
+
             else:
                 sleep(0.5)
 
             if self.stop:
                 break
 
-        self.working = False
         print("[EXPLORATION MANAGER] stopped")
+        self.working = False
