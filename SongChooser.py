@@ -5,7 +5,7 @@ import deezloader
 from database import UserDatabase
 from database import PlaylistDatabase
 from database.MusicDatabase import SongNotFound
-import multiprocessing
+from multiprocessing import Process
 from time import sleep
 
 
@@ -73,7 +73,7 @@ class SongChooser:
             except:
                 None
 
-            download = multiprocessing.Process(target=self.downloader.download, args=(url, dir_path, self.music_quality, False))
+            download = Process(target=self.downloader.download, args=(url, dir_path, self.music_quality, False))
             download.start()
 
             # timeout loop
