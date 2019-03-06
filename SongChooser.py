@@ -5,6 +5,8 @@ import deezloader
 from database import UserDatabase
 from database import PlaylistDatabase
 from database.MusicDatabase import SongNotFound
+from multiprocessing import Process
+from time import sleep
 
 
 class SongChooser:
@@ -40,6 +42,8 @@ class SongChooser:
 
         self.mode = mode
 
+        self.download_timeout = 60
+
         # for song in self.starting_playlist["tracks"]["data"]:
         #     self.music_database.add_song(song)
 
@@ -69,7 +73,19 @@ class SongChooser:
             except:
                 None
 
-            self.downloader.download(url, dir_path, self.music_quality, False)
+            download = Process(target=self.downloader.download, args=(url, dir_path, self.music_quality, False))
+            download.start()
+
+            # timeout loop
+            for t in range(self.download_timeout):
+                if not download.is_alive():
+                    break
+                if t == self.download_timeout - 1:
+                    download.terminate()
+                    raise TimeoutError
+                sleep(1)
+
+            # self.downloader.download(url, dir_path, self.music_quality, False)
 
             os.rename(dir_path + str(music_id), dir_path + file_name)
 
@@ -82,6 +98,8 @@ class SongChooser:
             return True
         except SongNotFound:
             print("[SONGCHOOSER] error couldn't download the specified song CRITICAL")
+        except TimeoutError:
+            print("[SONGCHOOSER] timeout error while downloading " + self.music_database.get_music_info(music_id, 'title'))
         # except TrackNotFound:  # incomming
         except:
             print("[SONGCHOOSER] error couldn't download " + self.music_database.get_music_info(music_id, 'title'))
