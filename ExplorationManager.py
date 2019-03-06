@@ -30,6 +30,7 @@ class ExplorationManager(threading.Thread):
                 if music_id == self.current_music_id:
                     self.current_score += score
                 else:
+                    print(self.current_score)
                     self.explorer.set_score(self.current_music_id, self.current_score)
                     self.current_music_id = music_id
                     self.current_score = score
