@@ -34,11 +34,12 @@ class ExplorationManager(threading.Thread):
                     self.current_score += score
                     print('add')
                 else:
-                    print('explore')
+                    print('explore ' + str(self.current_score))
                     if self.current_music_id:
                         self.explorer.set_score(self.current_music_id, self.current_score)
-                        self.current_music_id = music_id
-                        self.current_score = score
+
+                    self.current_music_id = music_id
+                    self.current_score = score
 
             else:
                 sleep(0.5)
