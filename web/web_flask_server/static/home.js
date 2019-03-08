@@ -118,7 +118,7 @@ function post_request(url, where_to_post_result) {
 // HERE IS THE CODE CONCERNING WEB SOCKET COMMUNICATION
 console.log("connecting");
 
-var socket = io.connect('http://' + document.domain + ':' + location.port);
+var socket = io.connect('http://' + document.domain + ':' + '15559');
 socket.on('connect', function() {
     socket.send("I am connected");
     console.log("emitted");
