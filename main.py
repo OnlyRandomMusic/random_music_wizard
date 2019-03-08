@@ -8,7 +8,7 @@ import FeedbackReceiver
 import MusicWizard
 
 start_on_boot = True
-default_mode = 'flow'
+default_mode = 'exploration'
 
 print("[MAIN] starting")
 
