@@ -4,7 +4,11 @@ import socket
 from time import sleep
 
 socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-socket.bind(('', 15559))
+
+try:
+    socket.bind(('', 15561))
+except:
+    socket.bind(('', 15560))
 
 socket.listen(5)
 client, address = socket.accept()

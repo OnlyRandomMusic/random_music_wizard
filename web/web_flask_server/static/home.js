@@ -118,7 +118,7 @@ function post_request(url, where_to_post_result) {
 // HERE IS THE CODE CONCERNING WEB SOCKET COMMUNICATION
 console.log("connecting");
 
-var socket = io.connect('10.57.167.107:15559');
+var socket = io.connect('10.57.167.107:15561');
 socket.on('connect', function() {
     socket.send("I am connected");
     console.log("emitted");
