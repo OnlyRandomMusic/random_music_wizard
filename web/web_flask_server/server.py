@@ -4,11 +4,20 @@ sys.path.insert(0, "/home/rengati/random_music_wizard/")  # WARNING depends on p
 from flask import Flask
 from flask import render_template, request
 from communication import ServerClient
-
+from flask_socketio import SocketIO
+from flask_socketio import send, emit
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret!'
+socketio = SocketIO(app)
 
 server_client = ServerClient.ServerClient(app.logger)
+
+
+@socketio.on('message')
+def handle_message(message):
+    print('received message: ' + message)
+    send(message)
 
 
 @app.route("/")
@@ -85,5 +94,8 @@ def error_page():
     return render_template('error.html')
 
 
-if __name__ == "__main__":
-    app.run()
+# if __name__ == "__main__":
+#     app.run()
+
+if __name__ == '__main__':
+    socketio.run(app)

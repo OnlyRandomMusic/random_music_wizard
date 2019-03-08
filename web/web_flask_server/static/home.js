@@ -80,9 +80,10 @@ function search(){
 }
 
 function volume_up(){
+    socket.send("up")
     document.getElementById("volume_up").blur();
-    post_request('/volume_up/');
-    refresh();
+    //post_request('/volume_up/');
+    //refresh();
 }
 
 function volume_down(){
@@ -104,7 +105,7 @@ function post_request(url, where_to_post_result) {
         {
           if(this.readyState == 4 && this.status == 200) {
             where_to_post_result.innerHTML = this.responseText;
-            console.log("response");
+            //console.log("response");
           }
         }
     }
@@ -113,3 +114,22 @@ function post_request(url, where_to_post_result) {
     req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
     req.send( null );
 }
+
+// HERE IS THE CODE CONCERNING WEB SOCKET COMMUNICATION
+console.log("connecting");
+
+var socket = io.connect('http://' + document.domain + ':' + location.port);
+socket.on('connect', function() {
+    socket.send("I am connected");
+    console.log("emitted");
+});
+
+socket.on('message', function(message) {
+    alert(message);
+});
+
+console.log("sending");
+
+socket.send("hello");
+
+console.log("sent");
