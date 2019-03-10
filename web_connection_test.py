@@ -1,30 +1,23 @@
-# coding: utf-8
+#!/usr/bin/env python
 
-import socket
-from time import sleep
+# WS server that sends messages at random intervals
 
-socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+import asyncio
+import datetime
+import random
+import websockets
 
-try:
-    socket.bind(('', 15561))
-except:
-    socket.bind(('', 15560))
+async def time(websocket, path):
+    while True:
+        now = datetime.datetime.utcnow().isoformat() + 'Z'
+        await websocket.send('hello')
+        async for message in websocket:
+            print(message)
+            continue
 
-socket.listen(5)
-client, address = socket.accept()
-print("{} connected".format( address ))
+        await asyncio.sleep(random.random() * 3)
 
-while True:
-    response = client.recv(255)
-    message = str(response, 'utf8')
+start_server = websockets.serve(time, '127.0.0.1', 5678)
 
-    if message != '':
-        print(message)
-
-    if message == 'close':
-        break
-
-
-print("Close")
-client.close()
-socket.close()
+asyncio.get_event_loop().run_until_complete(start_server)
+asyncio.get_event_loop().run_forever()

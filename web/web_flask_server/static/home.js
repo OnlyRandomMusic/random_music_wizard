@@ -80,7 +80,7 @@ function search(){
 }
 
 function volume_up(){
-    socket.send("up")
+    exampleSocket.send("up")
     document.getElementById("volume_up").blur();
     //post_request('/volume_up/');
     //refresh();
@@ -118,18 +118,25 @@ function post_request(url, where_to_post_result) {
 // HERE IS THE CODE CONCERNING WEB SOCKET COMMUNICATION
 console.log("connecting");
 
-var socket = io.connect('10.57.167.107:15561');
-socket.on('connect', function() {
-    socket.send("I am connected");
-    console.log("emitted");
-});
+//var socket = io.connect('10.57.167.107:15561');
+//socket.on('connect', function() {
+//    socket.send("I am connected");
+//    console.log("emitted");
+//});
+//
+//socket.on('message', function(message) {
+//    alert(message);
+//});
 
-socket.on('message', function(message) {
-    alert(message);
-});
+var exampleSocket = new WebSocket("ws://127.0.0.1:15560");
 
 console.log("sending");
+//exampleSocket.onopen = function (event) {
+//  exampleSocket.send("Voici un texte que le serveur attend de recevoir dès que possible !");
+//};
 
-socket.send("hello");
+exampleSocket.send("hello")
+
+//socket.send("hello");
 
 console.log("sent");
