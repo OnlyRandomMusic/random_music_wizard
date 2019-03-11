@@ -9,3 +9,4 @@ The music is downloaded directly on the raspberry, this way it minimizes the tas
 - requests
 - simplejson
 - deezloader
+- websockets
