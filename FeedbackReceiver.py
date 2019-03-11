@@ -1,6 +1,7 @@
 import threading
-import communication.Receiver
-import communication.StateInformationBroadcaster
+# import communication.Receiver
+# import communication.StateInformationBroadcaster
+from communication import WebCommunication
 import queue
 from time import sleep
 
@@ -22,11 +23,14 @@ class FeedbackReceiver(threading.Thread):
         self.kill_main = False # to kill the main program
 
         self.instructions_queue = queue.Queue()
-        self.receiver = communication.Receiver.Receiver(self.instructions_queue)
+        # self.receiver = communication.Receiver.Receiver(self.instructions_queue)
+        self.web_communication = WebCommunication.WebCommunication('10.57.167.107', 5678, self.instructions_queue)
+        self.web_communication.daemon = True
+        self.web_communication.start()
 
-        self.broadcaster = communication.StateInformationBroadcaster.StateInformationBroadcaster(self)
-        self.broadcaster.daemon = True
-        self.broadcaster.start()
+        # self.broadcaster = communication.StateInformationBroadcaster.StateInformationBroadcaster(self)
+        # self.broadcaster.daemon = True
+        # self.broadcaster.start()
 
     def initialize(self, music_wizard):
         self.music_wizard = music_wizard
@@ -35,7 +39,7 @@ class FeedbackReceiver(threading.Thread):
     def run(self):
         print("[FEEDBACK] waiting for instructions")
         while True:
-            self.receiver.receive()
+            # self.receiver.receive()
 
             if self.instructions_queue.qsize() > 0:
                 instruction, connection = self.instructions_queue.get()
