@@ -5,13 +5,14 @@ import websockets
 from threading import Thread
 
 
-class WebCommunication(Thread):
+class WebCommunication:
     def __init__(self, ip, port):
         """ip is the host ip [str]
         port is the port of the socket [integer]"""
-        Thread.__init__(self)
+        # Thread.__init__(self)
         self.ip = ip
         self.port = port
+        self.server = None
 
     def run(self):
         print("[WEB COMMUNICATION] starting")
@@ -38,5 +39,5 @@ class WebCommunication(Thread):
 
 w = WebCommunication('10.57.167.107', 5678)
 w.daemon = True
-w.start()
+w.run()
 input()
